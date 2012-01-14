@@ -6,7 +6,7 @@
 
     <TextView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="150dp"
         android:text="@string/hello" />
     
     <com.google.android.maps.MapView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -14,6 +14,5 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:apiKey="@string/GoogleMapsAPIKey"
-        android:clickable="true" 
-        android:layout_weight="1" />
+        android:clickable="true" />
 </LinearLayout>
