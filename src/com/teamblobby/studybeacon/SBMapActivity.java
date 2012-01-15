@@ -24,7 +24,7 @@ public class SBMapActivity extends MapActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.map);
         
         // add zoom
 	    MapView mapView = (MapView) findViewById(R.id.mapview);
