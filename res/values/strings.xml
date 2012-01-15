@@ -3,5 +3,6 @@
 
     <string name="app_name">StudyBeacon</string>
     <string name="myclasses">My Classes</string>
-
+    <string name="coursespinnerprompt">Show course(s)</string>
+    
 </resources>

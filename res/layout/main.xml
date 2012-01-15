@@ -19,6 +19,7 @@
             android:id="@+id/mapcoursespinner"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:prompt="@string/coursespinnerprompt"
             />
         
     </LinearLayout>
@@ -46,7 +47,7 @@
             android:layout_weight="1"
             android:text="@string/myclasses"
             android:drawableLeft="@android:drawable/btn_star_big_on"
-            android:gravity="left|center_vertical" />
+            android:gravity="left|fill_vertical" />
 
         <ImageButton
             android:id="@+id/newbeaconbutton"
