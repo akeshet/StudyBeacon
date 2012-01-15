@@ -6,5 +6,6 @@
     <string name="coursespinnerprompt">Show course(s)</string>
     <string name="allcourses">All</string>
     <string name="editcourses">Edit…</string>
+    <string name="coursedelim">:</string>
     
 </resources>
