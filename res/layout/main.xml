@@ -43,7 +43,7 @@
         <Button
             android:id="@+id/myclassesbutton"
             android:layout_width="0dip"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_weight="1"
             android:text="@string/myclasses"
             android:drawableLeft="@android:drawable/btn_star_big_on"

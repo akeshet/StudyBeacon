@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.text.TextUtils.StringSplitter;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 
 
 public class SBMapActivity extends MapActivity {
@@ -40,15 +41,19 @@ public class SBMapActivity extends MapActivity {
     }
     
     protected void loadCourses() {
-    	ArrayAdapter<CharSequence> courseSpinnerAdapter = new ArrayAdapter<CharSequence>(null, 0);
+    	ArrayAdapter<CharSequence> courseSpinnerAdapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item);
     	
-    	String courseList = Global.prefs.getString(COURSES_STR, "6.570|8.901");
+    	courseSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    	
+    	String courseList = Global.prefs.getString(COURSES_STR, "6.570:8.901");
 
-    	String courses[] = courseList.split("|");
+    	String courses[] = courseList.split(":");
     	
+    	courseSpinnerAdapter.add(getString(R.string.allcourses));
     	for( String course : courses){
     		courseSpinnerAdapter.add(course);
     	}
+    	courseSpinnerAdapter.add(getString(R.string.editcourses));
     	
     	courseSpinner.setAdapter(courseSpinnerAdapter);
     }
