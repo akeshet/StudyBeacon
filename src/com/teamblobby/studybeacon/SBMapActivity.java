@@ -5,9 +5,12 @@ import java.util.Set;
 
 import com.google.android.maps.*;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils.StringSplitter;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 
@@ -17,10 +20,11 @@ public class SBMapActivity extends MapActivity {
 	protected Spinner courseSpinner;
 	protected int courseSpinnerId;
 	
-	public final static String COURSES_STR = "courses";
+	protected Button myClassesButton;
 	
 	private MapView mapView;
 	private MapController mapViewController;
+	
 	private MyLocationOverlay myLocOverlay;
 	private List<Overlay> overlays;
 
@@ -28,17 +32,25 @@ public class SBMapActivity extends MapActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
         setContentView(R.layout.map);
         
         setUpMapView();
 	    
-	    // Set the default view?
-	    
 	    // Find the spinner
-	    courseSpinnerId = R.id.mapcoursespinner;
+	    courseSpinnerId = R.id.mapCourseSpinner;
 	    courseSpinner = (Spinner) findViewById(courseSpinnerId);
 	    
 	    loadCourses();
+	    
+	    // set up an onClickListener handler for classesButton
+	    myClassesButton = (Button) findViewById(R.id.myClassesButton);
+	    myClassesButton.setOnClickListener(new View.OnClickListener() {
+	    	public void onClick(View v) {
+	    		Intent i = new Intent(SBMapActivity.this, SBMyCoursesActivity.class);
+	    		startActivity(i);
+	    	}
+	    });
 	    
     }
 
@@ -56,7 +68,7 @@ public class SBMapActivity extends MapActivity {
     
 	protected void setUpMapView() {
 		// add zoom
-	    mapView = (MapView) findViewById(R.id.mapview);
+	    mapView = (MapView) findViewById(R.id.mapView);
 	    mapView.setBuiltInZoomControls(true);
 	    
 	    // get the mapview controller, set the default map location on MIT campus
@@ -68,25 +80,23 @@ public class SBMapActivity extends MapActivity {
 	    overlays = mapView.getOverlays();
 	    // Add a MyLocationOverlay to it
 	    myLocOverlay = new MyLocationOverlay(this,mapView);
+	    // TODO possibly add a Runnable with myLocOverlay.runOnFirstFix(r)
+	    // which should re-center the map on user's location
 	    overlays.add(myLocOverlay);
 	}
     
     protected void loadCourses() {
     	ArrayAdapter<CharSequence> courseSpinnerAdapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item);
-    	
+
     	courseSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     	
-    	String delim = getString(R.string.coursedelim);
+    	String courses[] = Global.getCourses();
     	
-    	String courseList = Global.prefs.getString(COURSES_STR, "6.570"+delim+"8.901");
-
-    	String courses[] = courseList.split(delim);
-    	
-    	courseSpinnerAdapter.add(getString(R.string.allcourses));
+    	courseSpinnerAdapter.add(getString(R.string.allCourses));
     	for( String course : courses){
     		courseSpinnerAdapter.add(course);
     	}
-    	courseSpinnerAdapter.add(getString(R.string.editcourses));
+    	courseSpinnerAdapter.add(getString(R.string.editCourses));
     	
     	courseSpinner.setAdapter(courseSpinnerAdapter);
     }

@@ -4,43 +4,32 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal" >
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
 
         <ImageView
-            android:id="@+id/mainicon"
+            android:id="@+id/coursesIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_launcher" />
 
         <TextView
-            android:id="@+id/mapcoursespinner"
+            android:id="@+id/coursesTitleText"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:text="My courses"
+            android:text="@string/coursesTitleText"
             />
         
     </LinearLayout>
 
-        <com.teamblobby.studybeacon.MyCoursesRowView
-            android:id="@+id/myCoursesRowView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-        </com.teamblobby.studybeacon.MyCoursesRowView>
-
-        <com.teamblobby.studybeacon.MyCoursesRowView
-            android:id="@+id/myCoursesRowView3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-        </com.teamblobby.studybeacon.MyCoursesRowView>
-
-        <com.teamblobby.studybeacon.MyCoursesRowView
-            android:id="@+id/myCoursesRowView4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-        </com.teamblobby.studybeacon.MyCoursesRowView>
+    
+    <!--  NOTE the following id MUST be "@android:id/list" in order for the ListActivity to work -->
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </ListView>
 
 </LinearLayout>

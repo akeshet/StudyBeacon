@@ -13,6 +13,8 @@ public class Global extends Application {
 
 	private static final String TAG = "Global";
 	
+	public final static String COURSES_STR = "courses";
+	
 	// Shared Data
 	public static SharedPreferences prefs;
 	public static Resources res;
@@ -37,6 +39,12 @@ public class Global extends Application {
 		//Global.getVersionInfo(mContext, uiHandler);
 
 		//Global.updateData(mContext, uiHandler);
+	}
+	
+	public static String[] getCourses() {
+    	String delim = res.getString(R.string.coursedelim);
+    	String courseList = Global.prefs.getString(COURSES_STR, "6.570"+delim+"8.901");
+    	return courseList.split(delim);
 	}
 	
 }

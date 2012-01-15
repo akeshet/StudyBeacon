@@ -2,10 +2,11 @@
 <resources>
 
     <string name="app_name">StudyBeacon</string>
-    <string name="myclasses">My Classes</string>
-    <string name="coursespinnerprompt">Show course(s)</string>
-    <string name="allcourses">All</string>
-    <string name="editcourses">Edit…</string>
+    <string name="myClasses">My Classes</string>
+    <string name="courseSpinnerPrompt">Show course(s)</string>
+    <string name="allCourses">All</string>
+    <string name="editCourses">Edit…</string>
     <string name="coursedelim">:</string>
+    <string name="coursesTitleText">My Classes</string>
     
 </resources>

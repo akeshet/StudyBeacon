@@ -5,19 +5,24 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.*;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class MyCoursesRowView extends android.widget.LinearLayout {
+public class MyCoursesRowView extends LinearLayout {
 
-	Activity a;
+	private Activity a;
 	
-	ImageButton starButton;
-	ImageButton newBeaconButton;
-	ImageButton notificationButton;
-	TextView    courseNameTextView;
+	private ImageButton starButton;
+	private ImageButton newBeaconButton;
+	private ImageButton notificationButton;
+	private TextView    courseNameTextView;
+	
+	public static String TAG = "MyCoursesRowView";
 	
 	public MyCoursesRowView(Context context,  AttributeSet attributeSet) {
-		super(context);
+		super(context,attributeSet);
+		
+		Log.d(TAG,"in constructor");
 		
 		a = (Activity) context;
 		
@@ -30,6 +35,10 @@ public class MyCoursesRowView extends android.widget.LinearLayout {
 		courseNameTextView = (TextView) this.findViewById(R.id.mcrCourseNameTextView);
 		
 		
+	}
+	
+	public void setCourseText(CharSequence t) {
+		courseNameTextView.setText(t);
 	}
 
 }
