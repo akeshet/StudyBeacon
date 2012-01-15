@@ -1,19 +1,15 @@
 package com.teamblobby.studybeacon;
 
 import java.util.List;
-import java.util.Set;
 
 import com.google.android.maps.*;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils.StringSplitter;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
-
 
 public class SBMapActivity extends MapActivity {
 	
