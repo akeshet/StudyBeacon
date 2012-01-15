@@ -18,6 +18,11 @@ public class SBMapActivity extends MapActivity {
 	protected int courseSpinnerId;
 	
 	public final static String COURSES_STR = "courses";
+	
+	private MapView mapView;
+	private MapController mapViewController;
+	private MyLocationOverlay myLocOverlay;
+	private List<Overlay> overlays;
 
 	/** Called when the activity is first created. */
     @Override
@@ -37,15 +42,33 @@ public class SBMapActivity extends MapActivity {
 	    
     }
 
+    @Override
+    public void onResume() {
+    	super.onResume();
+    	myLocOverlay.enableMyLocation();
+    }
+    
+    @Override
+    public void onPause() {
+    	super.onPause();
+    	myLocOverlay.disableMyLocation();
+    }
+    
 	protected void setUpMapView() {
 		// add zoom
-	    MapView mapView = (MapView) findViewById(R.id.mapview);
+	    mapView = (MapView) findViewById(R.id.mapview);
 	    mapView.setBuiltInZoomControls(true);
 	    
 	    // get the mapview controller, set the default map location on MIT campus
-	    MapController mapViewController = mapView.getController();
+	    mapViewController = mapView.getController();
 	    mapViewController.setCenter(new GeoPoint( Global.res.getInteger(R.integer.mapDefaultLatE6),Global.res.getInteger(R.integer.mapDefaultLongE6)));
 	    mapViewController.setZoom(Global.res.getInteger(R.integer.mapDefaultZoom));
+	    
+	    // get the overlays
+	    overlays = mapView.getOverlays();
+	    // Add a MyLocationOverlay to it
+	    myLocOverlay = new MyLocationOverlay(this,mapView);
+	    overlays.add(myLocOverlay);
 	}
     
     protected void loadCourses() {
