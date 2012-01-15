@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/mainicon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_launcher" />
+
+        <TextView
+            android:id="@+id/mapcoursespinner"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="My courses"
+            />
+        
+    </LinearLayout>
+
+        <com.teamblobby.studybeacon.MyCoursesRowView
+            android:id="@+id/myCoursesRowView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+        </com.teamblobby.studybeacon.MyCoursesRowView>
+
+        <com.teamblobby.studybeacon.MyCoursesRowView
+            android:id="@+id/myCoursesRowView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </com.teamblobby.studybeacon.MyCoursesRowView>
+
+        <com.teamblobby.studybeacon.MyCoursesRowView
+            android:id="@+id/myCoursesRowView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </com.teamblobby.studybeacon.MyCoursesRowView>
+
+</LinearLayout>
