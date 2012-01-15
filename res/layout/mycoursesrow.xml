@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    <ImageButton
+        android:id="@+id/mcrStarButton"
+        android:layout_width="50dip"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|fill_vertical"
+        android:src="@android:drawable/btn_star_big_on" />
+
+    <TextView
+        android:id="@+id/mcrCourseNameTextView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:text="TextView"
+        android:gravity="center_vertical"
+        android:layout_gravity="center|fill_vertical"
+        android:layout_weight="1"/>
+    
+    <ImageButton
+        android:id="@+id/mcrNewBeaconButton"
+        android:layout_width="50dip"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/btn_star_big_on"
+        android:layout_gravity="right|fill_vertical"/>
+        
+     <ImageButton
+        android:id="@+id/mcrNotificationButton"
+        android:layout_width="50dip"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/btn_star_big_on"
+        android:layout_gravity="right|fill_vertical"/>
+
+</LinearLayout>
