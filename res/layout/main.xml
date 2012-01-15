@@ -6,7 +6,7 @@
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="50dp"
+    android:layout_height="wrap_content"
     android:orientation="horizontal" >
 
         <ImageView
@@ -18,7 +18,7 @@
         <Spinner
             android:id="@+id/mapcoursespinner"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             />
         
     </LinearLayout>
@@ -27,7 +27,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/mapview"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:apiKey="@string/GoogleMapsAPIKey"
         android:clickable="true" 
         android:layout_weight="8"/>
@@ -35,14 +35,14 @@
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:gravity="bottom"
         android:orientation="horizontal" >
 
         <Button
             android:id="@+id/myclassesbutton"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_weight="1"
             android:text="@string/myclasses"
             android:drawableLeft="@android:drawable/btn_star_big_on"
