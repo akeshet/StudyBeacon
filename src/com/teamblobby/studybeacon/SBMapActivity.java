@@ -45,9 +45,11 @@ public class SBMapActivity extends MapActivity {
     	
     	courseSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     	
-    	String courseList = Global.prefs.getString(COURSES_STR, "6.570:8.901");
+    	String delim = getString(R.string.coursedelim);
+    	
+    	String courseList = Global.prefs.getString(COURSES_STR, "6.570"+delim+"8.901");
 
-    	String courses[] = courseList.split(":");
+    	String courses[] = courseList.split(delim);
     	
     	courseSpinnerAdapter.add(getString(R.string.allcourses));
     	for( String course : courses){
