@@ -28,7 +28,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/mapview"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="0dip"
         android:apiKey="@string/GoogleMapsAPIKey"
         android:clickable="true" 
         android:layout_weight="8"/>
@@ -42,8 +42,8 @@
 
         <Button
             android:id="@+id/myclassesbutton"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/myclasses"
             android:drawableLeft="@android:drawable/btn_star_big_on"
@@ -53,7 +53,7 @@
             android:id="@+id/newbeaconbutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_add"/>
+            android:src="@android:drawable/ic_menu_add" />
         
     </LinearLayout>
 </LinearLayout>
