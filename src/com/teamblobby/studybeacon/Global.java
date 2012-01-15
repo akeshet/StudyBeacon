@@ -2,6 +2,7 @@ package com.teamblobby.studybeacon;
 
 import android.app.Application;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -14,6 +15,7 @@ public class Global extends Application {
 	
 	// Shared Data
 	public static SharedPreferences prefs;
+	public static Resources res;
 
 	@Override
 	public void onCreate() {
@@ -28,7 +30,7 @@ public class Global extends Application {
 			Log.d(TAG,"error getting prefs: " + e.getMessage() + "\n" + e.getStackTrace());
 		}
 		
-		// res = this.getResources();
+		res = this.getResources();
 		
 		//Handler uiHandler = new Handler();
 

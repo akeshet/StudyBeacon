@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="mapDefaultLatE6">42360098</integer>
+    <integer name="mapDefaultLongE6">-71094997</integer>
+    <integer name="mapDefaultZoom">16</integer>
+</resources>

@@ -3,8 +3,7 @@ package com.teamblobby.studybeacon;
 import java.util.List;
 import java.util.Set;
 
-import com.google.android.maps.MapActivity;
-import com.google.android.maps.MapView;
+import com.google.android.maps.*;
 
 import android.os.Bundle;
 import android.text.TextUtils.StringSplitter;
@@ -26,9 +25,7 @@ public class SBMapActivity extends MapActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map);
         
-        // add zoom
-	    MapView mapView = (MapView) findViewById(R.id.mapview);
-	    mapView.setBuiltInZoomControls(true);
+        setUpMapView();
 	    
 	    // Set the default view?
 	    
@@ -39,6 +36,17 @@ public class SBMapActivity extends MapActivity {
 	    loadCourses();
 	    
     }
+
+	protected void setUpMapView() {
+		// add zoom
+	    MapView mapView = (MapView) findViewById(R.id.mapview);
+	    mapView.setBuiltInZoomControls(true);
+	    
+	    // get the mapview controller, set the default map location on MIT campus
+	    MapController mapViewController = mapView.getController();
+	    mapViewController.setCenter(new GeoPoint( Global.res.getInteger(R.integer.mapDefaultLatE6),Global.res.getInteger(R.integer.mapDefaultLongE6)));
+	    mapViewController.setZoom(Global.res.getInteger(R.integer.mapDefaultZoom));
+	}
     
     protected void loadCourses() {
     	ArrayAdapter<CharSequence> courseSpinnerAdapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item);
