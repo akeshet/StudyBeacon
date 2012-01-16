@@ -37,16 +37,36 @@ public class SBMyCoursesActivity extends ListActivity {
     	
     }
     
-    public void checkClicked(View view) {
+    public void starCheckClicked(View view) {
+    	Log.d("SBMyCoursesActivity", "starCheckClicked");
+    	
     	CheckBox me = (CheckBox) view;
-    	Log.d("SBMyCoursesActivity", "checkClicked");
-    	View parent = (View) view.getParent();
-    	TextView textView = (TextView) parent.findViewById(R.id.mcrCourseNameTextView);
+    	String text = getCourseNameFromClickedView(view);
+    	
     	String temp = "checked";
     	if (!me.isChecked())
     		temp = "unchecked";
-    	Toast.makeText(this, "You " + temp + " the star for course " + textView.getText(), Toast.LENGTH_SHORT).show();    	
+    	Toast.makeText(this, "You " + temp + " the star for course " + text, Toast.LENGTH_SHORT).show();    	
     }
+    
+    public void notifyCheckClicked(View view) {
+    	Log.d("SBMyCoursesActivity", "notifyCheckClicked");
+    	
+    	CheckBox me = (CheckBox) view;
+    	String text = getCourseNameFromClickedView(view);
+    	
+    	String temp = "checked";
+    	if (!me.isChecked())
+    		temp = "unchecked";
+    	Toast.makeText(this, "You " + temp + " the notification button for course " + text, Toast.LENGTH_SHORT).show();    	
+    }
+
+	private String getCourseNameFromClickedView(View view) {
+		View parent = (View) view.getParent();
+    	TextView textView = (TextView) parent.findViewById(R.id.mcrCourseNameTextView);
+    	String text = (String) textView.getText();
+		return text;
+	}
     
 	
 }
