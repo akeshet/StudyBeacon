@@ -27,7 +27,8 @@
         android:layout_width="@dimen/iconSize"
         android:layout_height="wrap_content"
         android:src="@android:drawable/btn_star_big_on"
-        android:layout_gravity="right|fill_vertical"/>
+        android:layout_gravity="right|fill_vertical"
+        android:onClick = "newBeaconClicked"/>
         
      <CheckBox
          android:id="@+id/mcrNotificationButton"

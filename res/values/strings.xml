@@ -8,5 +8,6 @@
     <string name="editCourses">Edit…</string>
     <string name="coursedelim">:</string>
     <string name="coursesTitleText">My Courses</string>
+    <string name="beaconTitleText">Beacon</string>
     
 </resources>

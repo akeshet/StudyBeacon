@@ -1,6 +1,7 @@
 package com.teamblobby.studybeacon;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Layout;
 import android.util.Log;
@@ -59,6 +60,13 @@ public class SBMyCoursesActivity extends ListActivity {
     	if (!me.isChecked())
     		temp = "unchecked";
     	Toast.makeText(this, "You " + temp + " the notification button for course " + text, Toast.LENGTH_SHORT).show();    	
+    }
+    
+    public void newBeaconClicked(View view) {
+    	// for now, just start the new beacon activity directly
+    	// with empty data so we can play with the interface
+    	Intent i = new Intent(this, SBBeaconEditActivity.class);
+    	startActivity(i);
     }
 
 	private String getCourseNameFromClickedView(View view) {

@@ -21,14 +21,20 @@
             android:theme="@android:style/Theme.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
-                </intent-filter>
+            </intent-filter>
         </activity>
         <activity
             android:name=".SBMyCoursesActivity"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.NoTitleBar" >
-            </activity>
-        </application>
+        </activity>
+        <activity
+            android:name=".SBBeaconEditActivity"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+    </application>
 
 </manifest>
