@@ -4,12 +4,14 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal" >
 
-    <ImageButton
+    <CheckBox
         android:id="@+id/mcrStarButton"
-        android:layout_width="@dimen/iconSize"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="left|fill_vertical"
-        android:src="@android:drawable/btn_star_big_on" />
+        android:button="@android:drawable/btn_star"
+        android:checked="true"
+        android:onClick="checkClicked"/>
+    
 
     <TextView
         android:id="@+id/mcrCourseNameTextView"
