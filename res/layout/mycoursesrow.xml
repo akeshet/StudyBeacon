@@ -4,12 +4,14 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal" >
 
-    <ImageButton
+    <CheckBox
         android:id="@+id/mcrStarButton"
-        android:layout_width="@dimen/iconSize"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="left|fill_vertical"
-        android:src="@android:drawable/btn_star_big_on" />
+        android:button="@android:drawable/btn_star"
+        android:checked="true"
+        android:onClick="starCheckClicked"/>
+    
 
     <TextView
         android:id="@+id/mcrCourseNameTextView"
@@ -27,11 +29,13 @@
         android:src="@android:drawable/btn_star_big_on"
         android:layout_gravity="right|fill_vertical"/>
         
-     <ImageButton
-        android:id="@+id/mcrNotificationButton"
-        android:layout_width="@dimen/iconSize"
-        android:layout_height="wrap_content"
-        android:src="@android:drawable/btn_star_big_on"
-        android:layout_gravity="right|fill_vertical"/>
+     <CheckBox
+         android:id="@+id/mcrNotificationButton"
+         android:layout_width="@dimen/iconSize"
+         android:layout_height="wrap_content"
+         android:layout_gravity="right|fill_vertical"
+         android:button="@drawable/notifytoggle" 
+         android:onClick = "notifyCheckClicked"/>     
+ 
 
 </LinearLayout>
