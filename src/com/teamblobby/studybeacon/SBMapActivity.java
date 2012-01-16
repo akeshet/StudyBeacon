@@ -102,4 +102,9 @@ public class SBMapActivity extends MapActivity {
 		
 		return false;
 	}
+	
+	public void newBeaconClicked(View view) {
+		Intent i = new Intent(this, SBBeaconEditActivity.class);
+		startActivity(i);
+	}
 }
