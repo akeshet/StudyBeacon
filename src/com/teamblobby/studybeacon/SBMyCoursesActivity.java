@@ -2,9 +2,16 @@ package com.teamblobby.studybeacon;
 
 import android.app.ListActivity;
 import android.os.Bundle;
+import android.text.Layout;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewParent;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class SBMyCoursesActivity extends ListActivity {
 	
@@ -29,5 +36,17 @@ public class SBMyCoursesActivity extends ListActivity {
     	
     	
     }
+    
+    public void checkClicked(View view) {
+    	CheckBox me = (CheckBox) view;
+    	Log.d("SBMyCoursesActivity", "checkClicked");
+    	View parent = (View) view.getParent();
+    	TextView textView = (TextView) parent.findViewById(R.id.mcrCourseNameTextView);
+    	String temp = "checked";
+    	if (!me.isChecked())
+    		temp = "unchecked";
+    	Toast.makeText(this, "You " + temp + " the star for course " + textView.getText(), Toast.LENGTH_SHORT).show();    	
+    }
+    
 	
 }
