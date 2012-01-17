@@ -24,15 +24,19 @@ public class SBCourseResourceListActivity extends ListActivity {
 	    super.onCreate(savedInstanceState);
 	
 	    setContentView(R.layout.mycourses);
-	    TextView titleText = (TextView) findViewById(R.id.coursesTitleText);
-	    titleText.setText("MIT Course List");
+	    // set the title text
+	    ((TextView) this.findViewById(R.id.coursesTitleText)).setText("MIT Course List");
 	    
 	    String[] currentCourses = Global.getCourses();
 	    final List<String> availableCourses = new ArrayList<String> ();
 	    
-		ArrayAdapter<String> aa = new ArrayAdapter<String>(SBCourseResourceListActivity.this, R.layout.mycoursesrow, R.id.mcrCourseNameTextView, availableCourses);
+		final ArrayAdapter<String> courseListAdapter = 
+				new ArrayAdapter<String>(SBCourseResourceListActivity.this, 
+										 R.layout.mycoursesrow, 
+										 R.id.mcrCourseNameTextView, 
+										 availableCourses);
     	
-    	setListAdapter(aa);
+    	this.setListAdapter(courseListAdapter);
 	    
 	    // initiate call to load courses
 	    (new AsyncTask<Void, Void, Void>() {
@@ -64,10 +68,8 @@ public class SBCourseResourceListActivity extends ListActivity {
 				availableCourses.add("6.570");
 				availableCourses.add("8.101");
 				availableCourses.add("8.901");
-				
+				courseListAdapter.notifyDataSetChanged();
 		    }
-
-	    	
 	    }).execute(); // executes the anonymous class implementing AsyncTask
 	    
 	    
