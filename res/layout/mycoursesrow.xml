@@ -9,9 +9,7 @@
         android:layout_width="@dimen/iconSize"
         android:layout_height="@dimen/iconSize"
         android:button="@android:drawable/btn_star"
-        android:checked="true"
-        android:onClick="starCheckClicked"/>
-    
+        android:checked="true"/>
 
     <TextView
         android:id="@+id/mcrCourseNameTextView"
@@ -21,24 +19,19 @@
         android:gravity="center_vertical"
         android:layout_gravity="center|fill_vertical"
         android:layout_weight="1"/>
-
-        
+    
      <CheckBox
          android:id="@+id/mcrNotificationButton"
          android:layout_width="@dimen/iconSize"
          android:layout_height="@dimen/iconSize"
          android:layout_gravity="right|fill_vertical"
-         android:gravity="center"
-         android:button="@drawable/notifytoggle" 
-         android:onClick = "notifyCheckClicked"/>     
- 
+         android:button="@drawable/notifytoggle"/>     
+         
     <ImageButton
         android:id="@+id/mcrNewBeaconButton"
         android:layout_width="@dimen/iconSize"
         android:layout_height="@dimen/iconSize"
         android:src="@android:drawable/ic_menu_add"
-        android:layout_gravity="right|fill_vertical"
-        android:gravity = "center"
-        android:onClick = "newBeaconClicked"/>
+        android:layout_gravity="right|fill_vertical"/>
 
 </LinearLayout>
