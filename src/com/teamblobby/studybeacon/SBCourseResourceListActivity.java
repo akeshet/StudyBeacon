@@ -53,28 +53,11 @@ public class SBCourseResourceListActivity extends ListActivity {
 	}
 	
 	public void addCourse(String s) {
-		//HashMap<String,Object> courseMap = new HashMap<String,Object>();
 		boolean isCourseInCurrentList = this.currentCourses.contains(s);
-		
-		//courseMap.put("courseName", s);
-		//courseMap.put("checked", isCourseInCurrentList);
-		
 		CourseInfo courseInfo = new CourseInfoSimple(s, isCourseInCurrentList);
 		
 		availableCourses.add(courseInfo);
 	}
-	
-    public void starCheckClicked(View view) {
-    	Log.d(TAG, "starCheckClicked");
-    	
-    	CheckBox me = (CheckBox) view;
-    	String text = getCourseNameFromClickedView(view);
-    	
-    	String temp = "checked";
-    	if (!me.isChecked())
-    		temp = "unchecked";
-    	Toast.makeText(this, "You " + temp + " the star for course " + text, Toast.LENGTH_SHORT).show();    	
-    }
     
     private String getCourseNameFromClickedView(View view) {
 		View parent = (View) view.getParent();
