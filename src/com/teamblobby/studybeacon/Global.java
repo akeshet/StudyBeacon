@@ -52,6 +52,11 @@ public class Global extends Application {
     	return courseList.split(delim);
 	}
 	
+	/**
+	 * This is a placeholer function. Eventually it will query the local sqlite database for courses, and return course infos which
+	 * point at that database. Changes to those courseinfos (from, for instance, mycoursesactivity) will then be reflected in the database.
+	 * 
+	 */
 	public static CourseInfo[] getCourseInfos() {
 		String [] courseNames = Global.getCourses();
 		ArrayList<CourseInfo> courseInfos = new ArrayList<CourseInfo>();
