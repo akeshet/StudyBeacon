@@ -4,7 +4,8 @@ package com.teamblobby.studybeacon.datastructures;
  * 
  * Super class which defines the interface that CourseInfo implementations will follow.
  * Implementations may either store course data locally within the object (such as {@link CourseInfoSimple})
- * or in a local SQLite database (not yet implemented) or in a cache of data that was pulled from the MIT Stellar API.
+ * or in a local SQLite database (not yet implemented) or in a cache of data that was pulled from the 
+ * MIT Stellar API (not yet implemented).
  *
  */
 public abstract class CourseInfo {
