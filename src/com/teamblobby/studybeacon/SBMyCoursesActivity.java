@@ -23,7 +23,7 @@ public class SBMyCoursesActivity extends ListActivity {
     	
     	// add footer button
     	Button footerButton = new Button(this.getApplicationContext());
-    	footerButton.setText("Add New Class");
+    	footerButton.setText(Global.res.getString(R.string.addclass));
     	footerButton.setOnClickListener(new addCourseClickListener());
     	
     	myListView = this.getListView();

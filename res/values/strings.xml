@@ -9,6 +9,9 @@
     <string name="coursedelim">:</string>
     <string name="coursesTitleText">My Courses</string>
     <string name="beaconTitleText">Beacon</string>
+    <string name="addclass">Add New Class</string>
+    <string name="courseResourceTitleText">MIT Course List</string>
     <string name="coursesEmpty">Loading…</string>
+    <string name="loadingcoursestoast">Loading Courses</string>
     
 </resources>

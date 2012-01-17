@@ -34,7 +34,8 @@ public class SBCourseResourceListActivity extends ListActivity {
 	
 	    this.setContentView(R.layout.mycourses);
 	    // set the title text
-	    ((TextView) this.findViewById(R.id.coursesTitleText)).setText("MIT Course List");
+	    ((TextView) this.findViewById(R.id.coursesTitleText))
+	    	.setText(Global.res.getString(R.string.courseResourceTitleText));
 	    
 	    currentCourses = Arrays.asList(Global.getCourses());
 	    availableCourses =  new ArrayList<CourseInfo>();
@@ -93,7 +94,9 @@ public class SBCourseResourceListActivity extends ListActivity {
     	
     	@Override
     	protected void onPreExecute() {
-    		Toast.makeText(this.callingActivity, "Loading Courses", Toast.LENGTH_SHORT).show();    
+    		Toast.makeText(this.callingActivity,
+    				Global.res.getString(R.string.loadingcoursestoast),
+    				Toast.LENGTH_SHORT).show();
     	}
     	
 		@Override
