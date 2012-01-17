@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import com.teamblobby.studybeacon.datastructures.*;
+
 import android.app.ListActivity;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,9 +23,9 @@ public class SBCourseResourceListActivity extends ListActivity {
 	
 	private ArrayAdapter<String> courseListAdapter;
 	
-	private ArrayList<HashMap<String,Object>> availableCourses;
+	private ArrayList<CourseInfo> availableCourses;
 	private List<String> currentCourses;
-	private ArrayAdapter<HashMap<String, Object>> arrayAdapter;
+	private ArrayAdapter<CourseInfo> arrayAdapter;
 	
 	/** Called when the activity is first created. */
 	@Override
@@ -35,9 +37,9 @@ public class SBCourseResourceListActivity extends ListActivity {
 	    ((TextView) this.findViewById(R.id.coursesTitleText)).setText("MIT Course List");
 	    
 	    currentCourses = Arrays.asList(Global.getCourses());
-	    availableCourses = new ArrayList<HashMap<String,Object>>();
+	    availableCourses =  new ArrayList<CourseInfo>();
 	    
-		this.arrayAdapter = new ArrayAdapter<HashMap<String, Object>>(SBCourseResourceListActivity.this, 
+		this.arrayAdapter = new ArrayAdapter<CourseInfo>(SBCourseResourceListActivity.this, 
 										 R.layout.mycoursesrow, 
 										 R.id.mcrCourseNameTextView, 
 										 availableCourses);
@@ -50,13 +52,15 @@ public class SBCourseResourceListActivity extends ListActivity {
 	}
 	
 	public void addCourse(String s) {
-		HashMap<String,Object> courseMap = new HashMap<String,Object>();
-		Boolean isCourseInCurrentList = this.currentCourses.contains(s);
+		//HashMap<String,Object> courseMap = new HashMap<String,Object>();
+		boolean isCourseInCurrentList = this.currentCourses.contains(s);
 		
-		courseMap.put("courseName", s);
-		courseMap.put("checked", isCourseInCurrentList);
+		//courseMap.put("courseName", s);
+		//courseMap.put("checked", isCourseInCurrentList);
 		
-		availableCourses.add(courseMap);
+		CourseInfo courseInfo = new CourseInfoSimple(s, isCourseInCurrentList);
+		
+		availableCourses.add(courseInfo);
 	}
 	
     public void starCheckClicked(View view) {

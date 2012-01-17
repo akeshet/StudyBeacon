@@ -11,6 +11,10 @@ public class CourseInfoSimple extends CourseInfo {
 	public CourseInfoSimple(String courseName)  {
 		this(courseName, false, false);
 	}
+	
+	public CourseInfoSimple(String courseName,boolean starred){
+		this(courseName,starred,false);
+	}
 
 	public CourseInfoSimple(String courseName, boolean starred, boolean notify) {
 		this.courseName = courseName;
