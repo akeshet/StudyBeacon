@@ -1,11 +1,13 @@
 package com.teamblobby.studybeacon;
 
 import android.app.ListActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Layout;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewParent;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -26,6 +28,8 @@ public class SBMyCoursesActivity extends ListActivity {
     	// add footer button
     	Button footerButton = new Button(this.getApplicationContext());
     	footerButton.setText("Add New Class");
+    	footerButton.setOnClickListener(new addCourseClickListener());
+    	
     	myListView = this.getListView();
     	myListView.addFooterView(footerButton);
     	
@@ -76,5 +80,12 @@ public class SBMyCoursesActivity extends ListActivity {
 		return text;
 	}
     
+	private class addCourseClickListener implements OnClickListener {
+		public void onClick(View view){
+			// launch the course resource activity
+			Intent i = new Intent(SBMyCoursesActivity.this,SBCourseResourceListActivity.class);
+			startActivity(i);
+		}
+	}
 	
 }
