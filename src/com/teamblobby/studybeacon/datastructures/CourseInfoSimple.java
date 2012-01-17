@@ -2,6 +2,16 @@ package com.teamblobby.studybeacon.datastructures;
 
 public class CourseInfoSimple extends CourseInfo {
 
+	public CourseInfoSimple(String courseName)  {
+		this(courseName, false, false);
+	}
+
+	public CourseInfoSimple(String courseName, boolean starred, boolean notify) {
+		this.courseName = courseName;
+		this.starred = starred;
+		this.notify = notify;
+	}
+
 	private String courseName;
 
 	@Override
