@@ -1,6 +1,7 @@
 package com.teamblobby.studybeacon;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import android.app.ListActivity;
@@ -27,10 +28,11 @@ public class SBCourseResourceListActivity extends ListActivity {
 	    ((TextView) this.findViewById(R.id.coursesTitleText)).setText("MIT Course List");
 	    
 	    String[] currentCourses = Global.getCourses();
-	    final List<String> availableCourses = new ArrayList<String> ();
+	    final ArrayList<HashMap<String, Object>> availableCourses = 
+	    		new ArrayList<HashMap<String,Object>>();
 	    
-		final ArrayAdapter<String> courseListAdapter = 
-				new ArrayAdapter<String>(SBCourseResourceListActivity.this, 
+		final ArrayAdapter<HashMap<String, Object>> courseListAdapter = 
+				new ArrayAdapter<HashMap<String, Object>>(SBCourseResourceListActivity.this, 
 										 R.layout.mycoursesrow, 
 										 R.id.mcrCourseNameTextView, 
 										 availableCourses);
