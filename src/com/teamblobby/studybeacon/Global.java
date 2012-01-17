@@ -1,10 +1,15 @@
 package com.teamblobby.studybeacon;
 
+import java.util.ArrayList;
+
 import android.app.Application;
+
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
 import android.util.Log;
+
+import com.teamblobby.studybeacon.datastructures.*;
 
 public class Global extends Application {
 
@@ -45,6 +50,21 @@ public class Global extends Application {
     	String delim = res.getString(R.string.coursedelim);
     	String courseList = Global.prefs.getString(COURSES_STR, "6.570"+delim+"8.901");
     	return courseList.split(delim);
+	}
+	
+	/**
+	 * This is a placeholer function. Eventually it will query the local sqlite database for courses, and return course infos which
+	 * point at that database. Changes to those courseinfos (from, for instance, mycoursesactivity) will then be reflected in the database.
+	 * 
+	 */
+	public static CourseInfo[] getCourseInfos() {
+		String [] courseNames = Global.getCourses();
+		ArrayList<CourseInfo> courseInfos = new ArrayList<CourseInfo>();
+		for (String courseName : courseNames) {
+			CourseInfoSimple info = new CourseInfoSimple(courseName);
+			courseInfos.add(info);
+		}
+		return courseInfos.toArray(new CourseInfo[]{});
 	}
 	
 }
