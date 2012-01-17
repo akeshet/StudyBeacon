@@ -9,5 +9,6 @@
     <string name="coursedelim">:</string>
     <string name="coursesTitleText">My Courses</string>
     <string name="beaconTitleText">Beacon</string>
+    <string name="coursesEmpty">Loading…</string>
     
 </resources>
