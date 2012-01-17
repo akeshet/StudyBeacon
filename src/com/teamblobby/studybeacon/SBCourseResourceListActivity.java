@@ -103,7 +103,6 @@ public class SBCourseResourceListActivity extends ListActivity {
 			// TODO load the resources from MIT somehow
 			try {
 				Thread.sleep(3000); //simulate load time
-				
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
