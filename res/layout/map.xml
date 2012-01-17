@@ -58,7 +58,7 @@
         android:layout_above="@+id/mapsFooter"
         android:layout_below="@+id/mapsBanner"
         android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
+		    android:layout_height="fill_parent"
         android:apiKey="@string/GoogleMapsAPIKey"
         android:clickable="true" />
 
