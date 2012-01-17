@@ -18,6 +18,13 @@ public class SBCourseResourceListActivity extends ListActivity {
 
 	private static final String TAG = "SBCourseResourceListActivity";
 	
+	private ArrayAdapter<String> courseListAdapter;
+	
+	private coursePickerTask picker; 
+	
+	private List<String> availableCourses;
+	private String[] currentCourses;
+	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -27,7 +34,7 @@ public class SBCourseResourceListActivity extends ListActivity {
 	    // set the title text
 	    ((TextView) this.findViewById(R.id.coursesTitleText)).setText("MIT Course List");
 	    
-	    String[] currentCourses = Global.getCourses();
+	    currentCourses = Global.getCourses();
 	    final ArrayList<HashMap<String, Object>> availableCourses = 
 	    		new ArrayList<HashMap<String,Object>>();
 	    
@@ -37,43 +44,23 @@ public class SBCourseResourceListActivity extends ListActivity {
 										 R.id.mcrCourseNameTextView, 
 										 availableCourses);
     	
-    	this.setListAdapter(courseListAdapter);
+    	setListAdapter(courseListAdapter);
 	    
 	    // initiate call to load courses
-	    (new AsyncTask<Void, Void, Void>() {
-	    	@Override
-	    	protected void onPreExecute() {
-	    		Toast.makeText(SBCourseResourceListActivity.this, "Loading Courses", Toast.LENGTH_SHORT).show();    
-	    	}
-	    	
-			@Override
-			protected Void doInBackground(Void... params) {
-				Log.v(TAG, "Loading Course Resources");
-				// TODO load the resources from MIT somehow
-				try {
-					Thread.sleep(3000); //simulate load time
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				Log.v(TAG,"load finished");
-				return null;
-				
-			}
-			
-			@Override
-			protected void onPostExecute(Void v) {
-				Log.v(TAG, "Post Load Action");
-				// update list contents
-				availableCourses.add("1.334");
-				availableCourses.add("2.217");
-				availableCourses.add("6.570");
-				availableCourses.add("8.101");
-				availableCourses.add("8.901");
-				courseListAdapter.notifyDataSetChanged();
-		    }
-	    }).execute(); // executes the anonymous class implementing AsyncTask
+	    picker = new coursePickerTask(this);
+    	
+    	
+    	picker.execute(); // executes the anonymous class implementing AsyncTask
 	    
 	    
+	}
+	
+	public void addCourse(String s) {
+		availableCourses.add(s);
+	}
+	
+	public void notifyDataSetChanged() {
+		courseListAdapter.notifyDataSetChanged();
 	}
 	
     public void starCheckClicked(View view) {
@@ -94,4 +81,49 @@ public class SBCourseResourceListActivity extends ListActivity {
     	String text = (String) textView.getText();
 		return text;
 	}
+    
+    
+    public class coursePickerTask extends AsyncTask<Void, Boolean, Boolean> {
+    	
+    	private SBCourseResourceListActivity a;
+    	
+    	private String[] courseList;
+    	
+    	
+    	public coursePickerTask(SBCourseResourceListActivity ctrA) {
+    		a = ctrA;
+    	}
+    	
+    	@Override
+    	protected void onPreExecute() {
+    		Toast.makeText(a, "Loading Courses", Toast.LENGTH_SHORT).show();    
+    	}
+    	
+		@Override
+		protected Boolean doInBackground(Void... arg0) {
+			Log.v(TAG, "Loading Course Resources");
+			// TODO load the resources from MIT somehow
+			try {
+				Thread.sleep(3000); //simulate load time
+				courseList = new String[]{"1.334","2.217","6.570","8.101","8.901"};
+				// update list contents
+				for (String course : courseList)
+					a.addCourse(course);
+				
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			Log.v(TAG,"load finished");
+			return true;
+			
+		}
+		
+		@Override
+		protected void onPostExecute(Boolean result) {
+			Log.v(TAG, "Post Load Action");
+			
+			a.notifyDataSetChanged();
+	    }
+		
+    }
 }
