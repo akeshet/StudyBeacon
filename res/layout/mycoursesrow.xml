@@ -31,7 +31,7 @@
         android:id="@+id/mcrNewBeaconButton"
         android:layout_width="@dimen/iconSize"
         android:layout_height="@dimen/iconSize"
-        android:src="@android:drawable/ic_menu_add"
+        android:src="@drawable/newbeaconbutton"
         android:layout_gravity="right|fill_vertical"/>
 
 </LinearLayout>
