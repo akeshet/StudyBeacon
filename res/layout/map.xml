@@ -46,8 +46,8 @@
 
         <ImageButton
             android:id="@+id/newBeaconButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/iconSize"
+            android:layout_height="@dimen/iconSize"
             android:src="@android:drawable/ic_menu_add" 
             android:onClick="newBeaconClicked"/>
     </LinearLayout>
