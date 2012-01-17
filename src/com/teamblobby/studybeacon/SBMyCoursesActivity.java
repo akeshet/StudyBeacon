@@ -34,10 +34,13 @@ public class SBMyCoursesActivity extends ListActivity {
     	ArrayAdapter<CourseInfo> ara = new ArrayAdapter<CourseInfo>(this, R.layout.mycoursesrow, R.id.mcrCourseNameTextView, courseInfos) {
     		public View getView(int position, View convertView, ViewGroup parent) {
     			View ans = super.getView(position, convertView, parent);
+    			
     			final CourseInfo courseInfo = this.getItem(position);
     			
     			CheckBox notifyCheckBox = (CheckBox) ans.findViewById(R.id.mcrNotificationButton);
-    			notifyCheckBox.setOnCheckedChangeListener(null);
+    			notifyCheckBox.setOnCheckedChangeListener(null); // This is necessary in case we are recycling a previous "convertView"
+    															// so that its event hander gets un-hooked BEFORE we change the checked state
+    															// of the button (on the next line)
     			notifyCheckBox.setChecked(courseInfo.getNotify());
     			notifyCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 					
