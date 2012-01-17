@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 public class SBMyCoursesActivity extends ListActivity {
 	
+	private static final String TAG = "SBMyCoursesActivity";
 	ListView myListView;
 	
     @Override
@@ -43,7 +44,7 @@ public class SBMyCoursesActivity extends ListActivity {
     }
     
     public void starCheckClicked(View view) {
-    	Log.d("SBMyCoursesActivity", "starCheckClicked");
+    	Log.d(TAG, "starCheckClicked");
     	
     	CheckBox me = (CheckBox) view;
     	String text = getCourseNameFromClickedView(view);
@@ -55,7 +56,7 @@ public class SBMyCoursesActivity extends ListActivity {
     }
     
     public void notifyCheckClicked(View view) {
-    	Log.d("SBMyCoursesActivity", "notifyCheckClicked");
+    	Log.d(TAG, "notifyCheckClicked");
     	
     	CheckBox me = (CheckBox) view;
     	String text = getCourseNameFromClickedView(view);
