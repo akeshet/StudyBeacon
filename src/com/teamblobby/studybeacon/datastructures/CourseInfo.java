@@ -19,4 +19,8 @@ public abstract class CourseInfo {
 	public abstract boolean getNotify();
 	public abstract void setNotify(boolean notify);
 	
+	@Override
+	public String toString() {
+		return this.getCourseName();
+	}
 }
