@@ -1,5 +1,11 @@
 package com.teamblobby.studybeacon.datastructures;
 
+/**
+ * 
+ * Implementation of {@link CourseInfo} which stores course related data
+ * locally within this object.
+ *
+ */
 public class CourseInfoSimple extends CourseInfo {
 
 	public CourseInfoSimple(String courseName)  {
