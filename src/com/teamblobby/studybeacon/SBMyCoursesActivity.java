@@ -31,13 +31,13 @@ public class SBMyCoursesActivity extends ListActivity {
     	
      	CourseInfo [] courseInfos = (CourseInfo[]) Global.getCourseInfos();
     	
-    	ArrayAdapter<CourseInfo> ara = new ArrayAdapter<CourseInfo>(this, R.layout.mycoursesrow, R.id.mcrCourseNameTextView, courseInfos) {
+    	ArrayAdapter<CourseInfo> courseAdapter = new ArrayAdapter<CourseInfo>(this, R.layout.mycoursesrow, R.id.mcrCourseNameTextView, courseInfos) {
     		public View getView(int position, View convertView, ViewGroup parent) {
-    			View ans = super.getView(position, convertView, parent);
+    			View viewToReturn = super.getView(position, convertView, parent);
     			
     			final CourseInfo courseInfo = this.getItem(position);
     			
-    			CheckBox notifyCheckBox = (CheckBox) ans.findViewById(R.id.mcrNotificationButton);
+    			CheckBox notifyCheckBox = (CheckBox) viewToReturn.findViewById(R.id.mcrNotificationButton);
     			notifyCheckBox.setOnCheckedChangeListener(null); // This is necessary in case we are recycling a previous "convertView"
     															// so that its event hander gets un-hooked BEFORE we change the checked state
     															// of the button (on the next line)
@@ -49,7 +49,7 @@ public class SBMyCoursesActivity extends ListActivity {
 					}
 				});
     			
-    			CheckBox starCheckBox = (CheckBox) ans.findViewById(R.id.mcrStarButton);
+    			CheckBox starCheckBox = (CheckBox) viewToReturn.findViewById(R.id.mcrStarButton);
     			starCheckBox.setOnCheckedChangeListener(null);
     			starCheckBox.setChecked(courseInfo.getStarred());
     			starCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -59,7 +59,7 @@ public class SBMyCoursesActivity extends ListActivity {
 					}
 				});
     			
-    			ImageButton newBeaconButton = (ImageButton) ans.findViewById(R.id.mcrNewBeaconButton);
+    			ImageButton newBeaconButton = (ImageButton) viewToReturn.findViewById(R.id.mcrNewBeaconButton);
     			newBeaconButton.setOnClickListener(new OnClickListener() {
 					
 					public void onClick(View v) {
@@ -68,12 +68,12 @@ public class SBMyCoursesActivity extends ListActivity {
 					}
 				});
     			
-    			return ans;
+    			return viewToReturn;
     			
     		};
     	};
     	
-    	myListView.setAdapter(ara);
+    	myListView.setAdapter(courseAdapter);
     	
     	
     	
