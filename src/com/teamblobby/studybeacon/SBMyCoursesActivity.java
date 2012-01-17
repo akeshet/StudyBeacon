@@ -6,15 +6,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Layout;
 import android.util.Log;
-import android.view.View;
+import android.view.*;
 import android.view.View.OnClickListener;
-import android.view.ViewParent;
-import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.ListView;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+
+import com.teamblobby.studybeacon.datastructures.*;
 
 public class SBMyCoursesActivity extends ListActivity {
 	
@@ -29,16 +26,54 @@ public class SBMyCoursesActivity extends ListActivity {
     	// add footer button
     	Button footerButton = new Button(this.getApplicationContext());
     	footerButton.setText("Add New Class");
-    	footerButton.setOnClickListener(new addCourseClickListener());
+    	//footerButton.setOnClickListener(new addCourseClickListener());
     	
     	myListView = this.getListView();
     	myListView.addFooterView(footerButton);
     	
-    	// Load the courses list and add them one by one
-    	String[] courses = Global.getCourses();
-    	ArrayAdapter<String> aa = new ArrayAdapter<String>(this, R.layout.mycoursesrow, R.id.mcrCourseNameTextView, courses);
+     	CourseInfo [] courseInfos = (CourseInfo[]) Global.getCourseInfos();
     	
-    	setListAdapter(aa);
+    	ArrayAdapter<CourseInfo> ara = new ArrayAdapter<CourseInfo>(this, R.layout.mycoursesrow, R.id.mcrCourseNameTextView, courseInfos) {
+    		public View getView(int position, View convertView, ViewGroup parent) {
+    			View ans = super.getView(position, convertView, parent);
+    			final CourseInfo courseInfo = this.getItem(position);
+    			
+    			CheckBox notifyCheckBox = (CheckBox) ans.findViewById(R.id.mcrNotificationButton);
+    			notifyCheckBox.setOnCheckedChangeListener(null);
+    			notifyCheckBox.setChecked(courseInfo.getNotify());
+    			notifyCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+					
+					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+						courseInfo.setNotify(isChecked);
+					}
+				});
+    			
+    			CheckBox starCheckBox = (CheckBox) ans.findViewById(R.id.mcrStarButton);
+    			starCheckBox.setOnCheckedChangeListener(null);
+    			starCheckBox.setChecked(courseInfo.getStarred());
+    			starCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+					
+					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+						courseInfo.setStarred(isChecked);
+					}
+				});
+    			
+    			ImageButton newBeaconButton = (ImageButton) ans.findViewById(R.id.mcrNewBeaconButton);
+    			newBeaconButton.setOnClickListener(new OnClickListener() {
+					
+					public void onClick(View v) {
+						Intent i = new Intent(SBMyCoursesActivity.this, SBBeaconEditActivity.class);
+						SBMyCoursesActivity.this.startActivity(i);
+					}
+				});
+    			
+    			return ans;
+    			
+    		};
+    	};
+    	
+    	myListView.setAdapter(ara);
+    	
     	
     	
     }
