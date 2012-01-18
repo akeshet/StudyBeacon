@@ -23,4 +23,12 @@ public abstract class CourseInfo {
 	public String toString() {
 		return this.getCourseName();
 	}
+	
+	public static String[] getCourseNames(CourseInfo[] inArray){
+		String[] outArray = new String[inArray.length];
+		for(int j=0; j<inArray.length; j++){
+			outArray[j]=inArray[j].getCourseName();
+		}
+		return outArray;
+	}
 }

@@ -2,8 +2,6 @@ package com.teamblobby.studybeacon;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 
 import com.teamblobby.studybeacon.datastructures.*;
 
@@ -11,20 +9,14 @@ import android.app.ListActivity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 
 public class SBCourseResourceListActivity extends ListActivity {
 
 	private static final String TAG = "SBCourseResourceListActivity";
 	
-	private ArrayAdapter<String> courseListAdapter;
-	
 	private ArrayList<CourseInfo> availableCourses;
-	private List<String> currentCourses;
+	private CourseInfo[] currentCourses;
 	private ArrayAdapter<CourseInfo> arrayAdapter;
 	
 	/** Called when the activity is first created. */
@@ -37,7 +29,7 @@ public class SBCourseResourceListActivity extends ListActivity {
 	    ((TextView) this.findViewById(R.id.coursesTitleText))
 	    	.setText(Global.res.getString(R.string.courseResourceTitleText));
 	    
-	    currentCourses = Arrays.asList(Global.getCourses());
+	    currentCourses = Global.getCourseInfos();
 	    availableCourses =  new ArrayList<CourseInfo>();
 	    
 		this.arrayAdapter = new ArrayAdapter<CourseInfo>(SBCourseResourceListActivity.this, 
@@ -49,23 +41,18 @@ public class SBCourseResourceListActivity extends ListActivity {
 	    // initiate call to load courses
 	    (new coursePickerTask(this)).execute(); // executes AsyncTask
 	    
-	    
 	}
 	
 	public void addCourse(String s) {
-		boolean isCourseInCurrentList = this.currentCourses.contains(s);
+		boolean isCourseInCurrentList = // highly optimized :)
+				Arrays.asList(
+						CourseInfo.getCourseNames(
+								this.currentCourses)).contains(s);
+		
 		CourseInfo courseInfo = new CourseInfoSimple(s, isCourseInCurrentList);
 		
 		availableCourses.add(courseInfo);
 	}
-    
-    private String getCourseNameFromClickedView(View view) {
-		View parent = (View) view.getParent();
-    	TextView textView = (TextView) parent.findViewById(R.id.mcrCourseNameTextView);
-    	String text = (String) textView.getText();
-		return text;
-	}
-    
     
     public class coursePickerTask extends AsyncTask<Void, Boolean, String[]> {
     	
