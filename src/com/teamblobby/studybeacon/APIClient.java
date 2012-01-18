@@ -105,7 +105,7 @@ public class APIClient {
 				
 				catch (Exception e) {
 					// TODO do something here??
-					Log.d(TAG,e.getMessage());
+					Log.e(TAG,e.getMessage());
 				}
 				
 			}
