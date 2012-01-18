@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.android.maps.*;
-import com.teamblobby.studybeacon.datastructures.Beacon;
+import com.teamblobby.studybeacon.datastructures.*;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -121,11 +121,12 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 	}
     
     protected void loadCourses() {
-    	ArrayAdapter<CharSequence> courseSpinnerAdapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item);
+    	ArrayAdapter<CharSequence> courseSpinnerAdapter =
+    			new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item);
 
     	courseSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     	
-    	courses = Global.getCourses();
+    	courses = CourseInfo.getCourseNames(Global.getCourseInfos());
     	
     	courseSpinnerAdapter.add(getString(R.string.allCourses));
     	for( String course : courses){
