@@ -56,9 +56,7 @@ public class APIClient {
 	
 	
 	public static void query(int LatE6Min, int LatE6Max, int LonE6Min, int LonE6Max, String courses[],
-			final SBAPIHandler handler)
-	//throws JSONException
-	{
+			final SBAPIHandler handler) {
 		RequestParams params = new RequestParams();
 		
 		params.put(LAT_MIN_STR,Integer.toString(LatE6Min));
