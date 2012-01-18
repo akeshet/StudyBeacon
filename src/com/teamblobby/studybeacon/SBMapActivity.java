@@ -28,8 +28,9 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 	private MapView mapView;
 	private MapController mapViewController;
 	
-	private MyLocationOverlay myLocOverlay;
 	private List<Overlay> overlays;
+	private MyLocationOverlay myLocOverlay;
+	private BeaconItemizedOverlay beacItemOverlay;
 
 	private String courses[];
 	
@@ -99,9 +100,11 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 	private void setUpBeacons() {
 		// add overlays for beacons
 	    Drawable beaconD = Global.res.getDrawable(R.drawable.beacon);
-	    BeaconItemizedOverlay beacItemOverlay = new BeaconItemizedOverlay(beaconD);
+	    beacItemOverlay = new BeaconItemizedOverlay(beaconD,this);
 	    
-	    //overlays.add(beacItemOverlay);
+	    beacItemOverlay.addOverlay(new OverlayItem(mapView.getMapCenter(), "test", "123"));
+	    
+	    overlays.add(beacItemOverlay);
 	    
 	    startQuery();
 	}
