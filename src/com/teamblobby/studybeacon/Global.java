@@ -7,6 +7,7 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
+import android.provider.Settings.Secure;
 import android.util.Log;
 
 import com.teamblobby.studybeacon.datastructures.*;
@@ -23,7 +24,7 @@ public class Global extends Application {
 	// Shared Data
 	public static SharedPreferences prefs;
 	public static Resources res;
-
+	
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -53,7 +54,7 @@ public class Global extends Application {
 	}
 	
 	/**
-	 * This is a placeholer function. Eventually it will query the local sqlite database for courses, and return course infos which
+	 * This is a placeholder function. Eventually it will query the local sqlite database for courses, and return course infos which
 	 * point at that database. Changes to those courseinfos (from, for instance, mycoursesactivity) will then be reflected in the database.
 	 * 
 	 */
@@ -65,6 +66,10 @@ public class Global extends Application {
 			courseInfos.add(info);
 		}
 		return courseInfos.toArray(new CourseInfo[]{});
+	}
+	
+	public String myIdString() {
+		return Secure.getString(getContentResolver(), Secure.ANDROID_ID);
 	}
 	
 }

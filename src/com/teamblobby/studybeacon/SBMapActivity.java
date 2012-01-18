@@ -1,17 +1,24 @@
 package com.teamblobby.studybeacon;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.android.maps.*;
+import com.teamblobby.studybeacon.datastructures.Beacon;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
-public class SBMapActivity extends MapActivity {
+public class SBMapActivity extends MapActivity implements SBAPIHandler
+{
+
+	public final static String TAG = "SBMapActivity";
 	
 	protected Spinner courseSpinner;
 	protected int courseSpinnerId;
@@ -24,21 +31,15 @@ public class SBMapActivity extends MapActivity {
 	private MyLocationOverlay myLocOverlay;
 	private List<Overlay> overlays;
 
+	private String courses[];
+	
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
         setContentView(R.layout.map);
-        
-        setUpMapView();
-	    
-	    // Find the spinner
-	    courseSpinnerId = R.id.mapCourseSpinner;
-	    courseSpinner = (Spinner) findViewById(courseSpinnerId);
-	    
-	    loadCourses();
-	    
+
 	    // set up an onClickListener handler for classesButton
 	    myClassesButton = (Button) findViewById(R.id.myClassesButton);
 	    myClassesButton.setOnClickListener(new View.OnClickListener() {
@@ -47,6 +48,16 @@ public class SBMapActivity extends MapActivity {
 	    		startActivity(i);
 	    	}
 	    });
+        
+        setUpMapView();
+	    
+	    // Find the spinner
+	    courseSpinnerId = R.id.mapCourseSpinner;
+	    courseSpinner = (Spinner) findViewById(courseSpinnerId);
+	    
+	    loadCourses();
+
+	    setUpBeacons();
 	    
     }
 
@@ -76,9 +87,37 @@ public class SBMapActivity extends MapActivity {
 	    overlays = mapView.getOverlays();
 	    // Add a MyLocationOverlay to it
 	    myLocOverlay = new MyLocationOverlay(this,mapView);
-	    // TODO possibly add a Runnable with myLocOverlay.runOnFirstFix(r)
-	    // which should re-center the map on user's location
+	    // re-center the map on user's location on first fix
+	    myLocOverlay.runOnFirstFix(new Runnable() {
+			public void run() {
+				mapViewController.animateTo(myLocOverlay.getMyLocation());
+			}});
 	    overlays.add(myLocOverlay);
+	    
+	}
+
+	private void setUpBeacons() {
+		// add overlays for beacons
+	    Drawable beaconD = Global.res.getDrawable(R.drawable.beacon);
+	    BeaconItemizedOverlay beacItemOverlay = new BeaconItemizedOverlay(beaconD);
+	    
+	    //overlays.add(beacItemOverlay);
+	    
+	    startQuery();
+	}
+
+	private void startQuery() {
+		// find the view bounds
+	    int deltaLat = mapView.getLatitudeSpan(), deltaLon = mapView.getLongitudeSpan();
+	    GeoPoint ctr = mapView.getMapCenter();
+	    int LatE6Min, LatE6Max, LonE6Min, LonE6Max;
+	    LatE6Min = ctr.getLatitudeE6() - deltaLat/2;
+	    LatE6Max = ctr.getLatitudeE6() + deltaLat/2;
+	    LonE6Min = ctr.getLongitudeE6() - deltaLon/2;
+	    LonE6Max = ctr.getLongitudeE6() + deltaLon/2;
+	    
+	    // Try to populate the beacons asynchronously
+	    APIClient.query(LatE6Min, LatE6Max, LonE6Min, LonE6Max, courses, this);
 	}
     
     protected void loadCourses() {
@@ -86,7 +125,7 @@ public class SBMapActivity extends MapActivity {
 
     	courseSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     	
-    	String courses[] = Global.getCourses();
+    	courses = Global.getCourses();
     	
     	courseSpinnerAdapter.add(getString(R.string.allCourses));
     	for( String course : courses){
@@ -107,4 +146,10 @@ public class SBMapActivity extends MapActivity {
 		Intent i = new Intent(this, SBBeaconEditActivity.class);
 		startActivity(i);
 	}
+
+	public void onQuery(ArrayList<Beacon> beacons) {
+		// TODO Put the beacons on the map
+		Log.d(TAG,"onQuery");
+	}
+
 }
