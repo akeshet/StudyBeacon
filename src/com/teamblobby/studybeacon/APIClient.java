@@ -66,6 +66,7 @@ public class APIClient {
 		params.put(LON_MIN_STR,Integer.toString(LonE6Min));
 		params.put(LON_MAX_STR,Integer.toString(LonE6Max));
 		
+		// TODO This does not make multiple entries for multiple courses!
 		for (String course : courses)
 			params.put(COURSE_STR, course);
 		
