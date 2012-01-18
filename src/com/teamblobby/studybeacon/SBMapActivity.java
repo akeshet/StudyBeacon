@@ -49,15 +49,15 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 	    	}
 	    });
         
-        setUpMapView();
+        this.setUpMapView();
 	    
 	    // Find the spinner
 	    courseSpinnerId = R.id.mapCourseSpinner;
 	    courseSpinner = (Spinner) findViewById(courseSpinnerId);
 	    
-	    loadCourses();
+	    this.loadCourses();
 
-	    setUpBeacons();
+	    this.setUpBeacons();
 	    
     }
 
