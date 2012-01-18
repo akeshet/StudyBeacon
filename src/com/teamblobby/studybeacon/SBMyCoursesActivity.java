@@ -79,43 +79,7 @@ public class SBMyCoursesActivity extends ListActivity {
     	
     }
     
-    public void starCheckClicked(View view) {
-    	Log.d(TAG, "starCheckClicked");
-    	
-    	CheckBox me = (CheckBox) view;
-    	String text = getCourseNameFromClickedView(view);
-    	
-    	String temp = "checked";
-    	if (!me.isChecked())
-    		temp = "unchecked";
-    	Toast.makeText(this, "You " + temp + " the star for course " + text, Toast.LENGTH_SHORT).show();    	
-    }
     
-    public void notifyCheckClicked(View view) {
-    	Log.d(TAG, "notifyCheckClicked");
-    	
-    	CheckBox me = (CheckBox) view;
-    	String text = getCourseNameFromClickedView(view);
-    	
-    	String temp = "checked";
-    	if (!me.isChecked())
-    		temp = "unchecked";
-    	Toast.makeText(this, "You " + temp + " the notification button for course " + text, Toast.LENGTH_SHORT).show();    	
-    }
-    
-    public void newBeaconClicked(View view) {
-    	// for now, just start the new beacon activity directly
-    	// with empty data so we can play with the interface
-    	Intent i = new Intent(this, SBBeaconEditActivity.class);
-    	startActivity(i);
-    }
-
-	private String getCourseNameFromClickedView(View view) {
-		View parent = (View) view.getParent();
-    	TextView textView = (TextView) parent.findViewById(R.id.mcrCourseNameTextView);
-    	String text = (String) textView.getText();
-		return text;
-	}
     
 	private class addCourseClickListener implements OnClickListener {
 		public void onClick(View view){
