@@ -62,7 +62,7 @@ public class Global extends Application {
 		String [] courseNames = Global.getCourses();
 		ArrayList<CourseInfo> courseInfos = new ArrayList<CourseInfo>();
 		for (String courseName : courseNames) {
-			CourseInfoSimple info = new CourseInfoSimple(courseName);
+			CourseInfoSimple info = new CourseInfoSimple(courseName,true);
 			courseInfos.add(info);
 		}
 		return courseInfos.toArray(new CourseInfo[]{});
