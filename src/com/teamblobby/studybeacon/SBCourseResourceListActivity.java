@@ -30,16 +30,23 @@ public class SBCourseResourceListActivity extends ListActivity {
 	    	.setText(Global.res.getString(R.string.courseResourceTitleText));
 	    
 	    currentCourses = Global.getCourseInfos();
-	    availableCourses =  new ArrayList<CourseInfo>();
+	    
+	    // This is where we load the courses, otherwise get from savedBundle
+	    if (savedInstanceState != null)
+	    	this.availableCourses =
+	    	    savedInstanceState.getParcelableArrayList("availableCourses");
+	    
+	    if (this.availableCourses == null) {
+	    	// create empty list and call to load courses
+	    	this.availableCourses = new ArrayList<CourseInfo>();
+	    	(new coursePickerTask(this)).execute(); // executes AsyncTask
+	    }
 	    
 		this.arrayAdapter = new ArrayAdapter<CourseInfo>(SBCourseResourceListActivity.this, 
 										 R.layout.mycoursesrow, 
 										 R.id.mcrCourseNameTextView, 
 										 availableCourses);
 		this.setListAdapter(this.arrayAdapter);
-	    
-	    // initiate call to load courses
-	    (new coursePickerTask(this)).execute(); // executes AsyncTask
 	    
 	}
 	
@@ -52,6 +59,13 @@ public class SBCourseResourceListActivity extends ListActivity {
 		CourseInfo courseInfo = new CourseInfoSimple(s, isCourseInCurrentList);
 		
 		availableCourses.add(courseInfo);
+	}
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		outState.putParcelableArrayList("availableCourses",
+				                        this.availableCourses);
+		super.onSaveInstanceState(outState);
 	}
     
     public class coursePickerTask extends AsyncTask<Void, Boolean, String[]> {
