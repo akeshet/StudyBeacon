@@ -25,6 +25,9 @@ public class Global extends Application {
 	public static SharedPreferences prefs;
 	public static Resources res;
 	
+	// Singleton reference to the application
+	public static Application application;
+	
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -39,6 +42,8 @@ public class Global extends Application {
 		}
 		
 		res = this.getResources();
+		
+		Global.application = this;
 		
 		//Handler uiHandler = new Handler();
 
