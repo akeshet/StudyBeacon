@@ -51,6 +51,7 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 	    });
         
         this.setUpMapView();
+        // Nic is so smart! -Leo
         if (savedInstanceState == null) this.setMapPosition(); 
 	    
 	    // Find the spinner
@@ -87,7 +88,6 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 	    this.overlays = mapView.getOverlays();
 	    // Add a MyLocationOverlay to it
 	    this.myLocOverlay = new MyLocationOverlay(this,mapView);
-	    // re-center the map on user's location on first fix
 	    
 	    overlays.add(myLocOverlay);
 	    
