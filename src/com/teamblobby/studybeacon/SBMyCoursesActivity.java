@@ -75,8 +75,6 @@ public class SBMyCoursesActivity extends ListActivity {
     	
     	myListView.setAdapter(courseAdapter);
     	
-    	
-    	
     }
     
     
