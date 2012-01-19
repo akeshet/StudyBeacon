@@ -39,7 +39,7 @@ public class SBCourseResourceListActivity extends ListActivity {
 	    if (this.availableCourses == null) {
 	    	// create empty list and call to load courses
 	    	this.availableCourses = new ArrayList<CourseInfo>();
-	    	(new coursePickerTask(this)).execute(); // executes AsyncTask
+	    	(new CourseLoadTask(this)).execute(); // executes AsyncTask
 	    }
 	    
 		this.arrayAdapter = new ArrayAdapter<CourseInfo>(SBCourseResourceListActivity.this, 
@@ -50,7 +50,7 @@ public class SBCourseResourceListActivity extends ListActivity {
 	    
 	}
 	
-	public void addCourse(String s) {
+	private void addCourse(String s) {
 		boolean isCourseInCurrentList = // highly optimized :)
 				Arrays.asList(
 						CourseInfo.getCourseNames(
@@ -68,11 +68,11 @@ public class SBCourseResourceListActivity extends ListActivity {
 		super.onSaveInstanceState(outState);
 	}
     
-    public class coursePickerTask extends AsyncTask<Void, Boolean, String[]> {
+    public class CourseLoadTask extends AsyncTask<Void, Boolean, String[]> {
     	
     	private SBCourseResourceListActivity callingActivity;
     	
-    	public coursePickerTask(SBCourseResourceListActivity ctrA) {
+    	public CourseLoadTask(SBCourseResourceListActivity ctrA) {
     		this.callingActivity = ctrA;
     	}
     	
