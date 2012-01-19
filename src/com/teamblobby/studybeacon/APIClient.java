@@ -47,6 +47,7 @@ public class APIClient {
 	public final static String LON_MAX_STR = "LonE6Max";
 	
 	// These strings are for the format of the response
+	public final static String BEACID_STR = "BeaconId";
 	public final static String LAT_STR = "LatE6";
 	public final static String LON_STR = "LonE6";
 	public final static String DETAILS_STR = "Details";
@@ -86,12 +87,13 @@ public class APIClient {
 					JSONObject bObj = response.getJSONObject(i);
 					
 					GeoPoint point = new GeoPoint(bObj.getInt(LAT_STR), bObj.getInt(LON_STR));
-					// TODO Check that this parsing works
+					
 					SimpleDateFormat df = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
 					Date created = df.parse(bObj.getString(CREATED_STR));
 					Date expires = df.parse(bObj.getString(EXPIRES_STR));
 					
-					beacons.add(new Beacon(bObj.getString(COURSE_STR), point, bObj.getInt(COUNT_STR),
+					beacons.add(new Beacon(bObj.getInt(BEACID_STR), bObj.getString(COURSE_STR),
+							point, bObj.getInt(COUNT_STR),
 							bObj.getString(DETAILS_STR), bObj.getString(CONTACT_STR),
 							created, expires));
 					
