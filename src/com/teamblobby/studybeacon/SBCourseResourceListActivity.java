@@ -104,6 +104,7 @@ public class SBCourseResourceListActivity extends ListActivity {
 		@Override
 		protected void onPostExecute(String[] pulledCourseList) {
 			Log.v(TAG, "Post Load Action");
+			this.callingActivity.availableCourses.clear();
 			for (String course : pulledCourseList)
 				this.callingActivity.addCourse(course);
 			
