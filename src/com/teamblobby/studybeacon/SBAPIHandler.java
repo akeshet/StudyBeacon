@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 
-import com.teamblobby.studybeacon.datastructures.Beacon;
+import com.teamblobby.studybeacon.datastructures.*;
 
 public interface SBAPIHandler {
-	public void onQuery(ArrayList<Beacon> beacons);
+	public void onQuery(ArrayList<BeaconInfo> beacons);
 	public Activity getActivity();
 }

@@ -9,7 +9,7 @@ import android.util.Log;
 
 import com.google.android.maps.GeoPoint;
 import com.loopj.android.http.*;
-import com.teamblobby.studybeacon.datastructures.Beacon;
+import com.teamblobby.studybeacon.datastructures.*;
 
 import org.json.*;
 
@@ -78,7 +78,7 @@ public class APIClient {
 
 				// the response should be an array of objects
 				
-				final ArrayList<Beacon> beacons = new ArrayList<Beacon>();
+				final ArrayList<BeaconInfo> beacons = new ArrayList<BeaconInfo>();
 				
 				try {
 				
@@ -92,7 +92,7 @@ public class APIClient {
 					Date created = df.parse(bObj.getString(CREATED_STR));
 					Date expires = df.parse(bObj.getString(EXPIRES_STR));
 					
-					beacons.add(new Beacon(bObj.getInt(BEACID_STR), bObj.getString(COURSE_STR),
+					beacons.add(new BeaconInfoSimple(bObj.getInt(BEACID_STR), bObj.getString(COURSE_STR),
 							point, bObj.getInt(COUNT_STR),
 							bObj.getString(DETAILS_STR), bObj.getString(CONTACT_STR),
 							created, expires));

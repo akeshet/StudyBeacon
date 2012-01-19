@@ -161,13 +161,13 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 		startActivity(i);
 	}
 
-	public void onQuery(ArrayList<Beacon> beacons) {
+	public void onQuery(ArrayList<BeaconInfo> beacons) {
 		// TODO Put the beacons on the map
 		Log.d(TAG,"onQuery");
 		// TODO I know this is wrong; too bad for now!
-		for (Beacon beacon : beacons) {
-			String snippet = Integer.toString(beacon.visitors) + " visitors";
-			OverlayItem item = new OverlayItem(beacon.loc, beacon.course, snippet);
+		for (BeaconInfo beacon : beacons) {
+			String snippet = Integer.toString(beacon.getVisitors()) + " visitors";
+			OverlayItem item = new OverlayItem(beacon.getLoc(), beacon.getCourseName(), snippet);
 			beacItemOverlay.addOverlay(item);
 		}
 			
