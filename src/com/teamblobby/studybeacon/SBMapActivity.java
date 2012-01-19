@@ -51,6 +51,7 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 	    });
         
         this.setUpMapView();
+        if (savedInstanceState == null) this.setMapPosition(); 
 	    
 	    // Find the spinner
 	    courseSpinnerId = R.id.mapCourseSpinner;
@@ -76,25 +77,31 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
     
 	protected void setUpMapView() {
 		// add zoom
-	    mapView = (MapView) findViewById(R.id.mapView);
+	    this.mapView = (MapView) findViewById(R.id.mapView);
 	    mapView.setBuiltInZoomControls(true);
 	    
 	    // get the mapview controller, set the default map location on MIT campus
-	    mapViewController = mapView.getController();
-	    mapViewController.setCenter(new GeoPoint( Global.res.getInteger(R.integer.mapDefaultLatE6),Global.res.getInteger(R.integer.mapDefaultLongE6)));
-	    mapViewController.setZoom(Global.res.getInteger(R.integer.mapDefaultZoom));
+	    this.mapViewController = mapView.getController();
 	    
 	    // get the overlays
-	    overlays = mapView.getOverlays();
+	    this.overlays = mapView.getOverlays();
 	    // Add a MyLocationOverlay to it
-	    myLocOverlay = new MyLocationOverlay(this,mapView);
+	    this.myLocOverlay = new MyLocationOverlay(this,mapView);
 	    // re-center the map on user's location on first fix
+	    
+	    overlays.add(myLocOverlay);
+	    
+	}
+	
+	protected void setMapPosition() {
+		// begin at MIT
+	    mapViewController.setCenter(new GeoPoint( Global.res.getInteger(R.integer.mapDefaultLatE6),Global.res.getInteger(R.integer.mapDefaultLongE6)));
+	    mapViewController.setZoom(Global.res.getInteger(R.integer.mapDefaultZoom));
+	    // show user's position
 	    myLocOverlay.runOnFirstFix(new Runnable() {
 			public void run() {
 				mapViewController.animateTo(myLocOverlay.getMyLocation());
 			}});
-	    overlays.add(myLocOverlay);
-	    
 	}
 
 	private void setUpBeacons() {
