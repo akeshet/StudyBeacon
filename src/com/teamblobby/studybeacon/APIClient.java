@@ -1,6 +1,7 @@
 package com.teamblobby.studybeacon;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -39,7 +40,7 @@ public class APIClient {
 	public final static String QUERY_URL = "query.py";
 	
 	// These strings are for the format of the query
-	public final static String COURSE_STR = "course";
+	public final static String COURSE_STR = "Course";
 	public final static String LAT_MIN_STR = "LatE6Min";
 	public final static String LAT_MAX_STR = "LatE6Max";
 	public final static String LON_MIN_STR = "LonE6Min";
@@ -50,7 +51,7 @@ public class APIClient {
 	public final static String LON_STR = "LonE6";
 	public final static String DETAILS_STR = "Details";
 	public final static String CONTACT_STR = "Contact";
-	public final static String COUNT_STR = "count";
+	public final static String COUNT_STR = "Count";
 	public final static String CREATED_STR = "Created";
 	public final static String EXPIRES_STR = "Expires";
 	
@@ -86,7 +87,7 @@ public class APIClient {
 					
 					GeoPoint point = new GeoPoint(bObj.getInt(LAT_STR), bObj.getInt(LON_STR));
 					// TODO Check that this parsing works
-					DateFormat df = DateFormat.getDateInstance();
+					SimpleDateFormat df = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
 					Date created = df.parse(bObj.getString(CREATED_STR));
 					Date expires = df.parse(bObj.getString(EXPIRES_STR));
 					

@@ -128,6 +128,8 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 	    LonE6Max = ctr.getLongitudeE6() + deltaLon/2;
 	    
 	    // Try to populate the beacons asynchronously
+	    // TODO don't use courses, but rather the selection from the spinner.
+	    // If the selection is All, then use courses.
 	    APIClient.query(LatE6Min, LatE6Max, LonE6Min, LonE6Max, courses, this);
 	}
     
@@ -162,6 +164,13 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 	public void onQuery(ArrayList<Beacon> beacons) {
 		// TODO Put the beacons on the map
 		Log.d(TAG,"onQuery");
+		// TODO I know this is wrong; too bad for now!
+		for (Beacon beacon : beacons) {
+			String snippet = Integer.toString(beacon.visitors) + " visitors";
+			OverlayItem item = new OverlayItem(beacon.loc, beacon.course, snippet);
+			beacItemOverlay.addOverlay(item);
+		}
+			
 	}
 
 	public Activity getActivity() {
