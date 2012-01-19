@@ -100,7 +100,7 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 	private void setUpBeacons() {
 		// add overlays for beacons
 	    Drawable beaconD = Global.res.getDrawable(R.drawable.beacon);
-	    beacItemOverlay = new BeaconItemizedOverlay(beaconD,this);
+	    beacItemOverlay = new BeaconItemizedOverlay(beaconD,this,mapView);
 	    
 	    beacItemOverlay.addOverlay(new OverlayItem(mapView.getMapCenter(), "test", "123"));
 	    
