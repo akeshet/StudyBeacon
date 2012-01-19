@@ -24,7 +24,7 @@ public class SBMyCoursesActivity extends ListActivity {
     	// add footer button
     	Button footerButton = new Button(this.getApplicationContext());
     	footerButton.setText(Global.res.getString(R.string.addclass));
-    	footerButton.setOnClickListener(new addCourseClickListener());
+    	footerButton.setOnClickListener(new CourseClickListener());
     	
     	myListView = this.getListView();
     	myListView.addFooterView(footerButton);
@@ -81,7 +81,7 @@ public class SBMyCoursesActivity extends ListActivity {
     
     
     
-	private class addCourseClickListener implements OnClickListener {
+	private class CourseClickListener implements OnClickListener {
 		public void onClick(View view){
 			// launch the course resource activity
 			Intent i = new Intent(SBMyCoursesActivity.this,SBCourseResourceListActivity.class);
