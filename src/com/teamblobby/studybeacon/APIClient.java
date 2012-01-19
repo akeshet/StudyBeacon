@@ -76,7 +76,7 @@ public class APIClient {
 
 				// the response should be an array of objects
 				
-				ArrayList<Beacon> beacons = new ArrayList<Beacon>();
+				final ArrayList<Beacon> beacons = new ArrayList<Beacon>();
 				
 				try {
 				
@@ -96,8 +96,14 @@ public class APIClient {
 					
 				}
 					
-				// Call the handler's function (This is not within the UI thread? is this bad?)
-				handler.onQuery(beacons);
+				// Call the handler's function
+				handler.getActivity().runOnUiThread(new Runnable() {
+
+					public void run() {
+						handler.onQuery(beacons);
+					}
+					
+				});
 				
 				}
 				

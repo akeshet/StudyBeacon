@@ -6,6 +6,7 @@ import java.util.List;
 import com.google.android.maps.*;
 import com.teamblobby.studybeacon.datastructures.*;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -161,6 +162,10 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 	public void onQuery(ArrayList<Beacon> beacons) {
 		// TODO Put the beacons on the map
 		Log.d(TAG,"onQuery");
+	}
+
+	public Activity getActivity() {
+		return this;
 	}
 
 }
