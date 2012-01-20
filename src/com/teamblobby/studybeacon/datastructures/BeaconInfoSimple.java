@@ -29,6 +29,22 @@ public class BeaconInfoSimple extends BeaconInfo {
 		setExpires(expires);
 	}
 
+	/**
+	 * Copy constructor. Fragile -- must be edited if we later introduce new fields.
+	 * Consider implementing by parcelling/unparcelling, at some point, maybe.
+	 * @param copyMe
+	 */
+	public BeaconInfoSimple(BeaconInfo copyMe) {
+		this(copyMe.getBeaconId(),
+				copyMe.getCourseName(),
+				copyMe.getLoc(),
+				copyMe.getVisitors(),
+				copyMe.getDetails(),
+				copyMe.getContact(),
+				copyMe.getCreated(),
+				copyMe.getExpires());
+	}
+
 	@Override
 	public int getBeaconId() {
 		return beaconId;
