@@ -38,7 +38,7 @@ public class CourseInfoSqlite extends CourseInfo {
 	private static final String COLUMN_NOTIFY = "courseNotify";
 	private static final String [] COLUMNS_ALLVALUES = {COLUMN_NAME, COLUMN_STAR, COLUMN_NOTIFY};
 
-	private static final String DBCreateColumns =  
+	private static final String DB_COLUMNS_DESCRIPTION =  
 			"(" + COLUMN_ID + " integer primary key, "
 					+ COLUMN_NAME + " text not null, "
 					+ COLUMN_STAR + " integer, "
@@ -58,7 +58,7 @@ public class CourseInfoSqlite extends CourseInfo {
 		if (database==null) {
 			DatabaseOpener opener = 
 					new DatabaseOpener(Global.application.getApplicationContext(), 
-							DB_NAME, null, DB_VERSION, DBCreateColumns, TABLE_NAMES);
+							DB_NAME, null, DB_VERSION, DB_COLUMNS_DESCRIPTION, TABLE_NAMES);
 
 			database = opener.getWritableDatabase();
 		}
