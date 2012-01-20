@@ -13,9 +13,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.*;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class SBCourseResourceActivity extends ListActivity {
 
@@ -52,11 +52,28 @@ public class SBCourseResourceActivity extends ListActivity {
 	    	(new CourseLoadTask(this)).execute(categoryName); // executes AsyncTask
 	    }
 	    
-		this.arrayAdapter = new CourseListAdapter(SBCourseResourceActivity.this, 
+		this.arrayAdapter = new CourseListAdapter(this, 
 										 R.layout.mycoursesrow, 
 										 R.id.mcrCourseNameTextView, 
 										 this.availableCourses);
 		this.setListAdapter(this.arrayAdapter);
+		
+		this.getListView().setOnItemClickListener(new OnItemClickListener() {
+
+			public void onItemClick(AdapterView<?> listView, View itemView, int position,
+					long rowId) {
+				// TODO Auto-generated method stub
+				CourseListable courseListItem = (CourseListable) listView.getAdapter().getItem(position);
+				
+				if ( courseListItem.listableType() == CourseListable.TYPE_CATEGORY ) { 
+					Intent i = new Intent(SBCourseResourceActivity.this,
+							              SBCourseResourceActivity.class);
+					i.putExtra("category", courseListItem.getName());
+					startActivity(i);
+				}
+			}
+		
+		});
 	    
 	}
 	
@@ -86,7 +103,6 @@ public class SBCourseResourceActivity extends ListActivity {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View viewToReturn =  super.getView(position, convertView, parent);
-			viewToReturn.setOnClickListener(null); // clear click listener if being recycled
 			
 			// remove notify and new beacon buttons
 			viewToReturn.findViewById(R.id.mcrNotificationButton).setVisibility(View.GONE);
@@ -97,6 +113,7 @@ public class SBCourseResourceActivity extends ListActivity {
 			
 			CheckBox notifyCheckBox = (CheckBox) viewToReturn.findViewById(R.id.mcrStarButton);
 			
+			notifyCheckBox.setVisibility(View.VISIBLE);
 			// here split depending on if it's a course or course category			
 			switch (courseInfo.listableType()) {
 				case CourseListable.TYPE_COURSE_STARRED:
@@ -106,16 +123,6 @@ public class SBCourseResourceActivity extends ListActivity {
 					break;
 				case CourseListable.TYPE_CATEGORY:
 					notifyCheckBox.setVisibility(View.INVISIBLE);
-					// TODO add onClick listener to view
-					viewToReturn.setOnClickListener(new OnClickListener() {
-						
-						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							Intent i = new Intent(SBCourseResourceActivity.this,SBCourseResourceActivity.class);
-							i.putExtra("category", courseInfo.getName());
-							startActivity(i);
-						}
-					});
 					break;
 			}
 			
@@ -165,8 +172,6 @@ public class SBCourseResourceActivity extends ListActivity {
 			}
 			
 			Log.v(TAG,"load finished");
-			
-			
 			
 			return courses;
 		}
