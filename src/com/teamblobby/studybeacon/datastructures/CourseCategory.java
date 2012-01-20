@@ -1,4 +1,4 @@
-package com.teamblobby.studybeacon;
+package com.teamblobby.studybeacon.datastructures;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -57,6 +57,10 @@ public class CourseCategory implements CourseListable, Parcelable {
 
 	public boolean getStarred() {
 		return false; //return false for course category
+	}
+
+	public int listableType() {
+		return CourseListable.TYPE_CATEGORY;
 	}
 
 }
