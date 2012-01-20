@@ -27,9 +27,11 @@ public abstract class BeaconInfo implements Parcelable {
 	public abstract String getDetails();
 	public abstract void setDetails(String details);
 
+	public abstract String getTelephone();
+	public abstract void setTelephone(String telephone);
 
-	public abstract String getContact();
-	public abstract void setContact(String contact);
+	public abstract String getEmail();
+	public abstract void setEmail(String email);
 
 	public abstract Date getCreated();
 	public abstract void setCreated(Date created);
@@ -51,7 +53,8 @@ public abstract class BeaconInfo implements Parcelable {
 		dest.writeInt(p.getLongitudeE6());
 		dest.writeInt(getVisitors());
 		dest.writeString(getDetails());
-		dest.writeString(getContact());
+		dest.writeString(getTelephone());
+		dest.writeString(getEmail());
 		dest.writeString(getCreated().toGMTString());
 		dest.writeString(getExpires().toGMTString());
 
@@ -68,7 +71,8 @@ public abstract class BeaconInfo implements Parcelable {
 			GeoPoint loc = new GeoPoint(source.readInt(), source.readInt());
 			int visitors = source.readInt();
 			String details = source.readString();
-			String contact = source.readString();
+			String telephone = source.readString();
+			String email = source.readString();
 			DateFormat df = new SimpleDateFormat();
 			Date created = new Date();
 			Date expires = new Date();
@@ -80,7 +84,7 @@ public abstract class BeaconInfo implements Parcelable {
 				e.printStackTrace();
 			}
 
-			return new BeaconInfoSimple(beaconId, courseName, loc, visitors, details, contact, created, expires);
+			return new BeaconInfoSimple(beaconId, courseName, loc, visitors, details, telephone, email, created, expires);
 
 		}
 

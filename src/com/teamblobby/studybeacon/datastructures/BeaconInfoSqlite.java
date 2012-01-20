@@ -29,7 +29,8 @@ public class BeaconInfoSqlite extends BeaconInfo {
 	private static final String COLUMN_LOC_LONG = "locLong";
 	private static final String COLUMN_VISITORS = "visitors";
 	private static final String COLUMN_DETAILS = "details";
-	private static final String COLUMN_CONTACT = "contact";
+	private static final String COLUMN_TELEPHONE = "telephone";
+	private static final String COLUMN_EMAIL = "email";
 	private static final String COLUMN_CREATED = "created";
 	private static final String COLUMN_EXPIRES = "expires";
 
@@ -41,7 +42,8 @@ public class BeaconInfoSqlite extends BeaconInfo {
 		COLUMN_LOC_LONG,
 		COLUMN_VISITORS,
 		COLUMN_DETAILS,
-		COLUMN_CONTACT,
+		COLUMN_TELEPHONE,
+		COLUMN_EMAIL,
 		COLUMN_CREATED ,
 		COLUMN_EXPIRES
 	};
@@ -54,7 +56,8 @@ public class BeaconInfoSqlite extends BeaconInfo {
 					COLUMN_LOC_LONG + " integer, "+
 					COLUMN_VISITORS + " integer , "+
 					COLUMN_DETAILS + " text " +
-					COLUMN_CONTACT + " text " +
+					COLUMN_TELEPHONE + " text " +
+					COLUMN_EMAIL + " text " +
 					COLUMN_CREATED + " text " +
 					COLUMN_EXPIRES + " text)";
 
@@ -127,7 +130,8 @@ public class BeaconInfoSqlite extends BeaconInfo {
 		cValues.put(COLUMN_LOC_LONG, loc.getLongitudeE6());
 		cValues.put(COLUMN_VISITORS, cachedInfo.getVisitors());
 		cValues.put(COLUMN_DETAILS, cachedInfo.getDetails());
-		cValues.put(COLUMN_CONTACT, cachedInfo.getContact());
+		cValues.put(COLUMN_TELEPHONE, cachedInfo.getTelephone());
+		cValues.put(COLUMN_EMAIL, cachedInfo.getEmail());
 		cValues.put(COLUMN_CREATED, cachedInfo.getCreated().toGMTString());
 		cValues.put(COLUMN_EXPIRES, cachedInfo.getExpires().toGMTString());
 
@@ -167,8 +171,9 @@ public class BeaconInfoSqlite extends BeaconInfo {
 				cursor.getInt(4),
 				cursor.getString(5),
 				cursor.getString(6),
-				new Date(cursor.getString(7)),
-				new Date(cursor.getString(8))
+				cursor.getString(7),
+				new Date(cursor.getString(8)),
+				new Date(cursor.getString(9))
 				);
 		cursor.close();
 	}
@@ -244,15 +249,29 @@ public class BeaconInfoSqlite extends BeaconInfo {
 		setRowValues(v);}
 
 	@Override
-	public String getContact() {
-		return cachedInfo.getContact();
+	public String getTelephone() {
+		return cachedInfo.getTelephone();
 	}
 
 	@Override
-	public void setContact(String contact) {
-		cachedInfo.setContact(contact);
+	public void setTelephone(String telephone) {
+		cachedInfo.setTelephone(telephone);
 		ContentValues v = new ContentValues();
-		v.put(COLUMN_CONTACT, contact);
+		v.put(COLUMN_TELEPHONE, telephone);
+		setRowValues(v);
+
+	}
+	
+	@Override
+	public String getEmail() {
+		return cachedInfo.getEmail();
+	}
+
+	@Override
+	public void setEmail(String email) {
+		cachedInfo.setEmail(email);
+		ContentValues v = new ContentValues();
+		v.put(COLUMN_EMAIL, email);
 		setRowValues(v);
 
 	}

@@ -1,7 +1,6 @@
 package com.teamblobby.studybeacon;
 
-import com.teamblobby.studybeacon.datastructures.CourseInfo;
-
+import com.teamblobby.studybeacon.datastructures.BeaconInfoSimple;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,16 +20,18 @@ public class SBBeaconEditActivity extends Activity {
 	
 	protected OperationMode mode;
 	
-	TextView beaconTitleTV;
-	Spinner courseSpinner;
-	TextView expiresTV;
-	Spinner expiresSpinner;
-	Spinner workingOnSpinner;
-	EditText phone;
-	EditText email;
-	EditText details;
-	Button actionButton;
+	protected TextView beaconTitleTV;
+	protected Spinner courseSpinner;
+	protected TextView expiresTV;
+	protected Spinner expiresSpinner;
+	protected Spinner workingOnSpinner;
+	protected EditText phone;
+	protected EditText email;
+	protected EditText details;
+	protected Button actionButton;
 	
+	// This represents the beacon we are making.
+	protected BeaconInfoSimple mBeacon;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
