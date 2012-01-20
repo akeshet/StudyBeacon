@@ -21,11 +21,14 @@ public class SBBeaconEditActivity extends Activity {
 	
 	protected OperationMode mode;
 	
+	TextView beaconTitleTV;
 	Spinner courseSpinner;
 	TextView expiresTV;
 	Spinner expiresSpinner;
 	Spinner workingOnSpinner;
-	EditText detailsEdit;
+	EditText phone;
+	EditText email;
+	EditText details;
 	Button actionButton;
 	
 	
@@ -65,11 +68,14 @@ public class SBBeaconEditActivity extends Activity {
 	}
 
 	private void loadUIEls() {
+		beaconTitleTV    = (TextView) findViewById(R.id.beaconTitleTV);
 		courseSpinner    = (Spinner)  findViewById(R.id.courseSpinner);
 		expiresTV        = (TextView) findViewById(R.id.expiresTV);
 		expiresSpinner   = (Spinner)  findViewById(R.id.expiresSpinner);
 		workingOnSpinner = (Spinner)  findViewById(R.id.workingOnSpinner);
-		detailsEdit      = (EditText) findViewById(R.id.detailsEdit);
+		phone            = (EditText) findViewById(R.id.phone);
+		email            = (EditText) findViewById(R.id.email);
+		details          = (EditText) findViewById(R.id.detailsEdit);
 		actionButton     = (Button)   findViewById(R.id.actionButton);
 		
 		// Set the spinners up
@@ -92,21 +98,37 @@ public class SBBeaconEditActivity extends Activity {
 	    workingOnSpinner.setAdapter(workingOnAdapter);
 	    // TODO add a listener for custom
 	    
-		
+		expiresSpinner.setSelection(Global.res.getInteger(R.integer.expiresDefaultIndex));
+	    
 	}
 
 	private void setUpForNew(Bundle savedInstanceState, Intent startingIntent) {
 		// TODO Auto-generated method stub
-		
+		// Set title text
+		beaconTitleTV.setText(R.string.newBeacon);
 	}
 
 	private void setUpForEdit(Bundle savedInstanceState, Intent startingIntent) {
 		// TODO Auto-generated method stub
-		
+		// Set title text
+		beaconTitleTV.setText(R.string.editBeacon);		
 	}
 
 	private void setUpForView(Bundle savedInstanceState, Intent startingIntent) {
 		// TODO Auto-generated method stub
+		// Set title text
+		beaconTitleTV.setText(R.string.beaconDetails);
+		// Disable the elements' editability
+		Spinner spinners[] = {courseSpinner, expiresSpinner, workingOnSpinner};
+		for (Spinner s : spinners)
+			s.setEnabled(false);
+		// Change the "expires" text
+		expiresTV.setText(R.string.expiresAt);
+		// TODO -- replace the expires in spinner with a text field that shows the expiration time
+		
+		EditText ets[] = {phone, email, details};
+		for (EditText e : ets)
+			e.setEnabled(false);
 		
 	}
 
