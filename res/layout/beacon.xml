@@ -27,7 +27,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/actionButton"
+        android:id="@+id/beaconActionButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -35,7 +35,7 @@
         android:text="@string/newBeacon"/>
     
     <ScrollView
-            android:layout_above="@+id/beaconAddButton"
+            android:layout_above="@+id/beaconActionButton"
             android:layout_below="@+id/beaconBanner"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">

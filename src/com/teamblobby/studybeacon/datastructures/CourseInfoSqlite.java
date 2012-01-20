@@ -5,9 +5,7 @@ import java.util.ArrayList;
 import com.teamblobby.studybeacon.*;
 import android.content.*;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.*;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.util.Log;
 
 /**
@@ -26,7 +24,7 @@ public class CourseInfoSqlite extends CourseInfo {
 
 	// ***** Database related code
 
-	private static final int DB_VERSION = 2;
+	private static final int DB_VERSION = 4;
 	public static final String TAG = "CourseInfoSqlite";
 
 	public static final String MYCOURSES_TABLE = "mycourses";
@@ -93,6 +91,16 @@ public class CourseInfoSqlite extends CourseInfo {
 		}
 
 		return returnList;
+	}
+	
+	/**
+	 * 
+	 * Removes un-starred CourseInfos from specified table.
+	 * @param tableName
+	 */
+	public static void flushUnstarred(String tableName) {
+		openIfNecessaryDB();
+		database.execSQL("delete from " + tableName + " where + " + COLUMN_STAR + " = 0");
 	}
 
 	// ***** Constructors 

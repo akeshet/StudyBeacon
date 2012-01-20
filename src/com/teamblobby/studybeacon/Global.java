@@ -62,17 +62,13 @@ public class Global extends Application {
 	
 	/**
 	 * This is a placeholder function. Eventually it will query the local sqlite database for courses, and return course infos which
-	 * point at that database. Changes to those courseinfos (from, for instance, mycoursesactivity) will then be reflected in the database.
+	 * point at that database. 
 	 * 
+	 * Before fetching this list from the table, old rows in the table which are no longer starred will be flushed from the table.
 	 */
-	public static CourseInfo[] getCourseInfos() {
-		// TODO Fix this
-		String [] courseNames = Global.getCourses();
-		for (String courseName : courseNames) {
-			//CourseInfoSimple info = new CourseInfoSimple(courseName,true);
-			CourseInfo info = new CourseInfoSqlite(CourseInfoSqlite.MYCOURSES_TABLE, courseName, true, false);
-		}
+	public static CourseInfo[] getMyCourseInfos() {
 		
+		CourseInfoSqlite.flushUnstarred(CourseInfoSqlite.MYCOURSES_TABLE);		
 		ArrayList<CourseInfoSqlite>  courseInfos= CourseInfoSqlite.fetchTable(CourseInfoSqlite.MYCOURSES_TABLE);
 		
 		return courseInfos.toArray(new CourseInfo[]{});

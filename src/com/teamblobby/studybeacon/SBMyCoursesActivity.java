@@ -29,7 +29,7 @@ public class SBMyCoursesActivity extends ListActivity {
     	myListView = this.getListView();
     	//myListView.addFooterView(footerButton);
     	
-     	CourseInfo [] courseInfos = (CourseInfo[]) Global.getCourseInfos();
+     	CourseInfo [] courseInfos = (CourseInfo[]) Global.getMyCourseInfos();
     	
     	myListView.setAdapter(new CourseAdapter(this,
     											R.layout.mycoursesrow,
