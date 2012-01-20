@@ -38,50 +38,16 @@ public class CourseInfoSqlite extends CourseInfo {
 	private static final String COLUMN_NOTIFY = "courseNotify";
 	private static final String [] COLUMNS_ALLVALUES = {COLUMN_NAME, COLUMN_STAR, COLUMN_NOTIFY};
 
+	private static final String DBCreateColumns =  
+			"(" + COLUMN_ID + " integer primary key, "
+					+ COLUMN_NAME + " text not null, "
+					+ COLUMN_STAR + " integer, "
+					+ COLUMN_NOTIFY + " integer)";
+
+	private static final String [] TABLE_NAMES = {MYCOURSES_TABLE, ALLCOURSES_TABLE};
+
 	private static SQLiteDatabase database;
 
-	private static class CourseInfoDBOpener extends SQLiteOpenHelper {
-
-		public static final String DBCreateColumns =  
-				"(" + COLUMN_ID + " integer primary key, "
-						+ COLUMN_NAME + " text not null, "
-						+ COLUMN_STAR + " integer, "
-						+ COLUMN_NOTIFY + " integer)";
-
-		public CourseInfoDBOpener(Context context, String name,
-				CursorFactory factory, int version) {
-			super(context, name, factory, DB_VERSION);
-		}
-
-		@Override
-		public void onCreate(SQLiteDatabase db) {
-			Log.d(TAG, "Creating CourseInfo database.");
-			db.execSQL("create table " + MYCOURSES_TABLE + DBCreateColumns);
-			db.execSQL("create table " + ALLCOURSES_TABLE + DBCreateColumns);
-			Log.d(TAG, "CourseInfo database created.");
-		}
-
-		@Override
-		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			Log.d(TAG, "In onUpgrade. Not upgrading database, creating new one.");
-
-			try {
-				db.execSQL("drop table " + MYCOURSES_TABLE);
-			} catch (SQLException e) {
-				Log.d(TAG, "Exception when trying to drop mycourses table. Ignoring.");
-			}
-
-			try {
-				db.execSQL("drop table " + ALLCOURSES_TABLE);
-			} catch (SQLException e) {
-				Log.d(TAG, "Exception when trying to drop allcourses table. Ignoring.");
-			}
-
-			Log.d(TAG, "Dropped old tables. Now running onCreate.");
-			onCreate(db);
-		}
-
-	}
 
 	private String tableName;
 	private CourseInfoSimple cachedInfo;
@@ -90,9 +56,10 @@ public class CourseInfoSqlite extends CourseInfo {
 
 	private static void openIfNecessaryDB() {
 		if (database==null) {
-			CourseInfoDBOpener opener = 
-					new CourseInfoDBOpener(Global.application.getApplicationContext(), 
-							DB_NAME, null, DB_VERSION);
+			DatabaseOpener opener = 
+					new DatabaseOpener(Global.application.getApplicationContext(), 
+							DB_NAME, null, DB_VERSION, DBCreateColumns, TABLE_NAMES);
+
 			database = opener.getWritableDatabase();
 		}
 	}
