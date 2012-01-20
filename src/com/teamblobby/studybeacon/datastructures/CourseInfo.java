@@ -35,6 +35,10 @@ public abstract class CourseInfo implements Parcelable,CourseListable{
 		return outArray;
 	}
 	
+	public int listableType() {
+		return this.getStarred() ? 0 : 1;
+	}
+	
 	// Implementations of parcelable interface for android friendly serialization
 	
 	public int describeContents() {

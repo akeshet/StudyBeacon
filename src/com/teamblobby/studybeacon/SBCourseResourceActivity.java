@@ -46,7 +46,8 @@ public class SBCourseResourceActivity extends ListActivity {
 	    if (this.availableCourses == null) {
 	    	// create empty list and call to load courses
 	    	this.availableCourses = new ArrayList<CourseListable>(); // this is something else
-	    	(new CourseLoadTask(this)).execute(); // executes AsyncTask
+	    	String categoryName = CourseLoadTask.ROOT_CATEGORY;
+	    	(new CourseLoadTask(this)).execute(categoryName); // executes AsyncTask
 	    }
 	    
 		this.arrayAdapter = new CourseListAdapter(SBCourseResourceActivity.this, 
@@ -93,13 +94,17 @@ public class SBCourseResourceActivity extends ListActivity {
 			
 			CheckBox notifyCheckBox = (CheckBox) viewToReturn.findViewById(R.id.mcrStarButton);
 			
-			// here split depending on if it's a course or course category
-			if (CourseInfo.class.isInstance(courseInfo)) {
-				notifyCheckBox.setChecked(courseInfo.getStarred());
-			} else{
-				notifyCheckBox.setVisibility(View.GONE);
-				ImageView folderIcon = (ImageView) viewToReturn.findViewById(R.id.mcrFolderIcon);
-				folderIcon.setVisibility(View.VISIBLE);
+			// here split depending on if it's a course or course category			
+			switch (courseInfo.listableType()) {
+				case CourseListable.TYPE_COURSE_STARRED:
+				case CourseListable.TYPE_COURSE_UNSTARRED:
+					notifyCheckBox.setChecked(courseInfo.getStarred());
+					// TODO add onCheck listener to checkbox
+					break;
+				case CourseListable.TYPE_CATEGORY:
+					notifyCheckBox.setVisibility(View.INVISIBLE);
+					// TODO add onClick listener to view
+					break;
 			}
 				 
 			
@@ -108,13 +113,13 @@ public class SBCourseResourceActivity extends ListActivity {
 		}
 	}
     
-    private class CourseLoadTask extends AsyncTask<Void, Boolean, Bundle> {
+    private class CourseLoadTask extends AsyncTask<String, Void, List<CourseListable>> {
     	
-		private static final String COURSES = "courses";
+		private static final String ROOT_CATEGORY = "_root";
 		private SBCourseResourceActivity callingActivity;
     	
-    	public CourseLoadTask(SBCourseResourceActivity ctrA) {
-    		this.callingActivity = ctrA;
+    	public CourseLoadTask(SBCourseResourceActivity activity) {
+    		this.callingActivity = activity;
     	}
     	
     	@Override
@@ -125,7 +130,7 @@ public class SBCourseResourceActivity extends ListActivity {
     	}
     	
 		@Override
-		protected Bundle doInBackground(Void... arg0) {
+		protected List<CourseListable> doInBackground(String... category) {
 			Log.v(TAG, "Loading Course Resources");
 			final String[] pulledCourseList;
 			// TODO load the resources from MIT somehow
@@ -135,33 +140,31 @@ public class SBCourseResourceActivity extends ListActivity {
 				e.printStackTrace();
 			}
 			
-			if (true){
+			List<CourseListable> courses = new ArrayList<CourseListable>();
+			if (category[0].equals(ROOT_CATEGORY)) {
 				pulledCourseList = new String[] {"1","2","3","4","5","6","7","8"};
+				for (String course : pulledCourseList) {
+					courses.add(new CourseCategory(course));
+					}
 			} else {
 				pulledCourseList = new String[] {"1.334","2.217","6.570","8.101","8.901"};
+				for (String course : pulledCourseList) {
+					courses.add(new CourseInfoSimple(course));
+				}
 			}
 			
 			Log.v(TAG,"load finished");
 			
-			List<CourseListable> courses = new ArrayList<CourseListable>();
 			
-			for (String course : pulledCourseList) {
-				courses.add(new CourseCategory(course));
-				//courses.add(new CourseInfoSimple(course));
-			}
-			Bundle courseBundle = new Bundle();
-			courseBundle.putParcelableArrayList(COURSES, (ArrayList<CourseListable>) courses);
-			return courseBundle;
+			
+			return courses;
 		}
 		
 		@Override
-		protected void onPostExecute(Bundle fetchedCourses) {
+		protected void onPostExecute(List<CourseListable> fetchedCourses) {
 			Log.v(TAG, "Post Load Action");
 			this.callingActivity.availableCourses.clear();
-			this.callingActivity.availableCourses.addAll(
-					(Collection<? extends CourseListable>) 
-					fetchedCourses.getParcelableArrayList(COURSES)
-				);
+			this.callingActivity.availableCourses.addAll(fetchedCourses);
 			Log.d(TAG,this.callingActivity.availableCourses.toString());
 			this.callingActivity.setStarredCourses();
 			this.callingActivity.arrayAdapter.notifyDataSetChanged();
