@@ -55,11 +55,11 @@
     <com.google.android.maps.MapView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/mapView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:layout_above="@+id/mapsFooter"
         android:layout_below="@+id/mapsBanner"
-        android:layout_width="fill_parent"
-		    android:layout_height="fill_parent"
         android:apiKey="@string/GoogleMapsAPIKey"
         android:clickable="true" />
 
-    </RelativeLayout>
+</RelativeLayout>
