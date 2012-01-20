@@ -22,6 +22,11 @@ public class CourseInfoSimple extends CourseInfo {
 		setNotify(notify);
 	}
 	
+	/**
+	 * Copy constructor. Fragile -- must be edited if we later introduce new fields.
+	 * Consider implementing by parcelling/unparcelling, at some point, maybe.
+	 * @param copyMe
+	 */
 	public CourseInfoSimple(CourseInfo copyMe) {
 		this(copyMe.getCourseName(), copyMe.getStarred(), copyMe.getNotify());
 	}
