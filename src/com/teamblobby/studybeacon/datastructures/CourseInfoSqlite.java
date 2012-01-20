@@ -24,6 +24,8 @@ import android.util.Log;
  */
 public class CourseInfoSqlite extends CourseInfo {
 
+	// ***** Database related code
+
 	private static final int DB_VERSION = 2;
 	public static final String TAG = "CourseInfoSqlite";
 
@@ -48,11 +50,12 @@ public class CourseInfoSqlite extends CourseInfo {
 
 	private static SQLiteDatabase database;
 
-
-	private String tableName;
-	private CourseInfoSimple cachedInfo;
 	private long id;
 	String where;
+	private String tableName;
+
+	private CourseInfoSimple cachedInfo;
+
 
 	private static void openIfNecessaryDB() {
 		if (database==null) {
@@ -63,6 +66,36 @@ public class CourseInfoSqlite extends CourseInfo {
 			database = opener.getWritableDatabase();
 		}
 	}
+
+	private void createWhereString() {
+		this.where = "id='" + this.id + "'";
+	}
+
+	private void setRowValues(ContentValues values) {
+		database.update(this.tableName, values, where, null);
+	}
+
+	/**
+	 * Returns an ArrayList of CourseInfoSqlite objects representing all
+	 * of the database entries in the specified * @param table
+	 * @return
+	 */
+	public static ArrayList<CourseInfoSqlite> fetchTable(String tableName) {
+		openIfNecessaryDB();
+		Cursor cursor=database.query(tableName, new String [] {COLUMN_ID}, null, null, null, null, null);
+
+		ArrayList<CourseInfoSqlite> returnList = new ArrayList<CourseInfoSqlite>(cursor.getCount());
+
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			returnList.add(new CourseInfoSqlite(tableName, cursor.getLong(0)));
+			cursor.moveToNext();
+		}
+
+		return returnList;
+	}
+
+	// ***** Constructors 
 
 	/** 
 	 * Creates a new database in table @param tableName , using @param cachedInfo as 
@@ -81,9 +114,7 @@ public class CourseInfoSqlite extends CourseInfo {
 		createWhereString();
 	}
 
-	private void createWhereString() {
-		this.where = "id='" + this.id + "'";
-	}
+
 
 	/**
 	 * Creates a new database entry in given table, and with given course info parameters.
@@ -125,30 +156,8 @@ public class CourseInfoSqlite extends CourseInfo {
 	}
 
 
-	private void setRowValues(ContentValues values) {
-		database.update(this.tableName, values, where, null);
-	}
 
-	/**
-	 * Returns an ArrayList of CourseInfoSqlite objects representing all
-	 * of the database entries in the specified * @param table
-	 * @return
-	 */
-	public static ArrayList<CourseInfoSqlite> fetchTable(String tableName) {
-		openIfNecessaryDB();
-		Cursor cursor=database.query(tableName, new String [] {COLUMN_ID}, null, null, null, null, null);
-
-		ArrayList<CourseInfoSqlite> returnList = new ArrayList<CourseInfoSqlite>(cursor.getCount());
-
-		cursor.moveToFirst();
-		while (!cursor.isAfterLast()) {
-			returnList.add(new CourseInfoSqlite(tableName, cursor.getLong(0)));
-			cursor.moveToNext();
-		}
-
-		return returnList;
-	}
-
+	// ***** Gettors / settors
 
 	@Override
 	public String getCourseName() {
