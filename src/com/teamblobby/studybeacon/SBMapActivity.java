@@ -161,6 +161,8 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
     	}
     	courseSpinnerAdapter.add(getString(R.string.editCourses));
     	
+    	// TODO Add a handler for detecting "All" and "Edit"
+    	
     	courseSpinner.setAdapter(courseSpinnerAdapter);
     }
 
