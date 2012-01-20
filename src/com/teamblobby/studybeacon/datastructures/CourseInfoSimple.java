@@ -17,7 +17,7 @@ public class CourseInfoSimple extends CourseInfo {
 	}
 
 	public CourseInfoSimple(String courseName, boolean starred, boolean notify) {
-		setCourseName(courseName);
+		setName(courseName);
 		setStarred(starred);
 		setNotify(notify);
 	}
@@ -28,18 +28,18 @@ public class CourseInfoSimple extends CourseInfo {
 	 * @param copyMe
 	 */
 	public CourseInfoSimple(CourseInfo copyMe) {
-		this(copyMe.getCourseName(), copyMe.getStarred(), copyMe.getNotify());
+		this(copyMe.getName(), copyMe.getStarred(), copyMe.getNotify());
 	}
 
 	private String courseName;
 
 	@Override
-	public String getCourseName() {
+	public String getName() {
 		return this.courseName;
 	}
 
 	@Override
-	public void setCourseName(String courseName) {
+	public void setName(String courseName) {
 		this.courseName = courseName;
 	}
 

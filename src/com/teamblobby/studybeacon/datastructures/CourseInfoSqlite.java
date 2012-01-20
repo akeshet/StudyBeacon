@@ -107,7 +107,7 @@ public class CourseInfoSqlite extends CourseInfo {
 
 		openIfNecessaryDB();
 		ContentValues cValues = new ContentValues();
-		cValues.put(COLUMN_NAME, cachedInfo.getCourseName());
+		cValues.put(COLUMN_NAME, cachedInfo.getName());
 		cValues.put(COLUMN_STAR, cachedInfo.getStarred());
 		cValues.put(COLUMN_NOTIFY, cachedInfo.getNotify());
 		this.id = database.insert(tableName, null, cValues);
@@ -160,13 +160,13 @@ public class CourseInfoSqlite extends CourseInfo {
 	// ***** Gettors / settors
 
 	@Override
-	public String getCourseName() {
-		return cachedInfo.getCourseName();
+	public String getName() {
+		return cachedInfo.getName();
 	}
 
 	@Override
-	public void setCourseName(String courseName) {
-		cachedInfo.setCourseName(courseName);
+	public void setName(String courseName) {
+		cachedInfo.setName(courseName);
 		ContentValues values = new ContentValues();
 		values.put(COLUMN_NAME, courseName);
 		setRowValues(values);

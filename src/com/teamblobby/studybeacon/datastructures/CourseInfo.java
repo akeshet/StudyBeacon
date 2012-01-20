@@ -13,8 +13,8 @@ import android.os.Parcelable;
  */
 public abstract class CourseInfo implements Parcelable,CourseListable{
 	
-	public abstract String getCourseName();
-	public abstract void setCourseName(String courseName);
+	public abstract String getName();
+	public abstract void setName(String courseName);
 		
 	public abstract boolean getStarred();
 	public abstract void setStarred(boolean starred);
@@ -24,13 +24,13 @@ public abstract class CourseInfo implements Parcelable,CourseListable{
 	
 	@Override
 	public String toString() {
-		return this.getCourseName();
+		return this.getName();
 	}
 	
 	public static String[] getCourseNames(CourseInfo[] inArray){
 		String[] outArray = new String[inArray.length];
 		for(int j=0; j<inArray.length; j++){
-			outArray[j]=inArray[j].getCourseName();
+			outArray[j]=inArray[j].getName();
 		}
 		return outArray;
 	}
@@ -47,7 +47,7 @@ public abstract class CourseInfo implements Parcelable,CourseListable{
 	}
 	
 	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeString(this.getCourseName()); // first write course name
+		dest.writeString(this.getName()); // first write course name
 		dest.writeBooleanArray(new boolean[] {this.getStarred(),this.getNotify()}); //then write array of starred/notify
 	}
 	

@@ -12,5 +12,7 @@ public interface CourseListable extends Parcelable{
 
 	public boolean getStarred();
 	
+	public String getName();
+	
 	public int listableType();
 }
