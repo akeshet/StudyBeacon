@@ -25,6 +25,9 @@ public class Global extends Application {
 	public static SharedPreferences prefs;
 	public static Resources res;
 	
+	// Singleton reference to the application
+	public static Application application;
+	
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -40,6 +43,8 @@ public class Global extends Application {
 		
 		res = this.getResources();
 		
+		Global.application = this;
+		
 		//Handler uiHandler = new Handler();
 
 		//Global.getVersionInfo(mContext, uiHandler);
@@ -50,6 +55,7 @@ public class Global extends Application {
 	public static String[] getCourses() {
     	String delim = res.getString(R.string.coursedelim);
     	String courseList = Global.prefs.getString(COURSES_STR, "6.570"+delim+"8.901");
+    	
     	return courseList.split(delim);
 	}
 	
@@ -60,11 +66,13 @@ public class Global extends Application {
 	 */
 	public static CourseInfo[] getCourseInfos() {
 		String [] courseNames = Global.getCourses();
-		ArrayList<CourseInfo> courseInfos = new ArrayList<CourseInfo>();
 		for (String courseName : courseNames) {
-			CourseInfoSimple info = new CourseInfoSimple(courseName,true);
-			courseInfos.add(info);
+			//CourseInfoSimple info = new CourseInfoSimple(courseName,true);
+			CourseInfo info = new CourseInfoSqlite(CourseInfoSqlite.MYCOURSES_TABLE, courseName, true, false);
 		}
+		
+		ArrayList<CourseInfoSqlite>  courseInfos= CourseInfoSqlite.fetchTable(CourseInfoSqlite.MYCOURSES_TABLE);
+		
 		return courseInfos.toArray(new CourseInfo[]{});
 	}
 	

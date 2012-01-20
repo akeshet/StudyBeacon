@@ -1,6 +1,7 @@
 package com.teamblobby.studybeacon;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.google.android.maps.*;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 public class SBMapActivity extends MapActivity implements SBAPIHandler
 {
@@ -29,10 +31,15 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 	private MapView mapView;
 	private MapController mapViewController;
 	
+	protected HashMap<Integer, BeaconInfo> mBeacons;
+	
 	private List<Overlay> overlays;
 	private MyLocationOverlay myLocOverlay;
-	private BeaconItemizedOverlay beacItemOverlay;
+	/** Hash from course string to itemized overlays */
+	private HashMap<String,BeaconItemizedOverlay> beacItemOverlays; 
 
+	private Drawable beaconD = Global.res.getDrawable(R.drawable.beacon);
+	
 	private String courses[];
 	
 	/** Called when the activity is first created. */
@@ -51,33 +58,34 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 	    	}
 	    });
         
-        this.setUpMapView();
-        // Nic is so smart! -Leo
-        if (savedInstanceState == null) this.setMapPosition(); 
+        this.setUpMapView(savedInstanceState);
 	    
 	    // Find the spinner
 	    courseSpinnerId = R.id.mapCourseSpinner;
 	    courseSpinner = (Spinner) findViewById(courseSpinnerId);
 	    
-	    this.loadCourses();
+	    this.loadCourses(savedInstanceState);
 
-	    this.setUpBeacons();
+	    this.setUpBeacons(savedInstanceState);
 	    
     }
 
     @Override
     public void onResume() {
     	super.onResume();
+    	Log.d(TAG,"onResume()");
     	myLocOverlay.enableMyLocation();
     }
     
     @Override
     public void onPause() {
     	super.onPause();
+    	Log.d(TAG,"onPause()");
     	myLocOverlay.disableMyLocation();
     }
     
-	protected void setUpMapView() {
+	protected void setUpMapView(Bundle savedInstanceState) {
+    	// TODO use savedInstanceState if possible
 		// add zoom
 	    this.mapView = (MapView) findViewById(R.id.mapView);
 	    mapView.setBuiltInZoomControls(true);
@@ -92,6 +100,9 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 	    
 	    overlays.add(myLocOverlay);
 	    
+	    // Nic is so smart! -Leo
+        if (savedInstanceState == null) this.setMapPosition(); 
+	    
 	}
 	
 	protected void setMapPosition() {
@@ -105,14 +116,15 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 			}});
 	}
 
-	private void setUpBeacons() {
-		// add overlays for beacons
-	    Drawable beaconD = Global.res.getDrawable(R.drawable.beacon);
-	    beacItemOverlay = new BeaconItemizedOverlay(beaconD,this,mapView);
+	private void setUpBeacons(Bundle savedInstanceState) {
+		// TODO use savedInstanceState
+		mBeacons = new HashMap<Integer, BeaconInfo>();
+		
+	    beacItemOverlays = new HashMap<String,BeaconItemizedOverlay>();
 	    
-	    beacItemOverlay.addOverlay(new OverlayItem(mapView.getMapCenter(), "test", "123"));
+//	    beacItemOverlay.addOverlay(new BeaconOverlayItem(mapView.getMapCenter(), "test", "123",null));
 	    
-	    overlays.add(beacItemOverlay);
+//	    overlays.add(beacItemOverlay);
 	    
 	    startQuery();
 	}
@@ -133,7 +145,9 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 	    APIClient.query(LatE6Min, LatE6Max, LonE6Min, LonE6Max, courses, this);
 	}
     
-    protected void loadCourses() {
+    protected void loadCourses(Bundle savedInstanceState) {
+    	// TODO use savedInstanceState if possible
+    	
     	ArrayAdapter<CharSequence> courseSpinnerAdapter =
     			new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item);
 
@@ -161,16 +175,62 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 		startActivity(i);
 	}
 
-	public void onQuery(ArrayList<BeaconInfo> beacons) {
+	/**
+	 *  This function is responsible for taking the data from
+	 *  the query and inserting it into the data structures.
+	 */
+	public void onQuerySuccess(ArrayList<BeaconInfo> beacons) {
 		// TODO Put the beacons on the map
-		Log.d(TAG,"onQuery");
-		// TODO I know this is wrong; too bad for now!
+		Log.d(TAG,"onQuery()");
 		for (BeaconInfo beacon : beacons) {
-			String snippet = Integer.toString(beacon.getVisitors()) + " visitors";
-			OverlayItem item = new OverlayItem(beacon.getLoc(), beacon.getCourseName(), snippet);
-			beacItemOverlay.addOverlay(item);
+
+			Boolean addOverlay = false;
+			
+			String courseName = beacon.getCourseName();
+			
+			BeaconInfo old = this.mBeacons.put(beacon.getBeaconId(), beacon);
+			
+			BeaconItemizedOverlay courseOverlay;
+			
+			if (old != null) {
+				// this is updated info about a beacon we already knew about
+				// remove from the overlay that has it
+				// Since they have the same ID, courseName is the same
+				this.beacItemOverlays.get(courseName).removeByBeaconId(old.getBeaconId());
+				
+			}
+			
+			// Check if there is an overlay for this beacon's course
+			if ( this.beacItemOverlays.containsKey(courseName)) {
+				// One already exists
+				courseOverlay = this.beacItemOverlays.get(courseName);
+			} else {
+				// Need to create one
+				courseOverlay = new BeaconItemizedOverlay(beaconD, this, this.mapView);
+				this.beacItemOverlays.put(courseName, courseOverlay);
+				// Make sure to add it later
+				addOverlay = true;
+			} 
+			
+			// Add a beacon to the itemized.
+			BeaconOverlayItem item = new BeaconOverlayItem(beacon);
+			
+			courseOverlay.addOverlay(item);
+			
+			if (addOverlay) {
+				this.overlays.add(courseOverlay);
+			}
+			
+			//			String snippet = Integer.toString(beacon.getVisitors()) + " visitors";
+//			OverlayItem item = new OverlayItem(beacon.getLoc(), beacon.getCourseName(), snippet);
+//			beacItemOverlay.addOverlay(item);
 		}
 			
+	}
+
+	public void onQueryFailure() {
+		// TODO Complain about failure
+		Toast.makeText(this, "Failed to load beacons from server", Toast.LENGTH_SHORT).show();
 	}
 
 	public Activity getActivity() {

@@ -17,9 +17,13 @@ public class CourseInfoSimple extends CourseInfo {
 	}
 
 	public CourseInfoSimple(String courseName, boolean starred, boolean notify) {
-		this.courseName = courseName;
-		this.starred = starred;
-		this.notify = notify;
+		setCourseName(courseName);
+		setStarred(starred);
+		setNotify(notify);
+	}
+	
+	public CourseInfoSimple(CourseInfo copyMe) {
+		this(copyMe.getCourseName(), copyMe.getStarred(), copyMe.getNotify());
 	}
 
 	private String courseName;
