@@ -22,12 +22,12 @@ public class SBMyCoursesActivity extends ListActivity {
     	setContentView(R.layout.mycourses);
     	
     	// add footer button
-    	Button footerButton = new Button(this.getApplicationContext());
-    	footerButton.setText(Global.res.getString(R.string.addclass));
+    	Button footerButton = (Button) this.findViewById(R.id.addClassesButton);
+    	//footerButton.setText(Global.res.getString(R.string.addclass));
     	footerButton.setOnClickListener(new CourseClickListener());
     	
     	myListView = this.getListView();
-    	myListView.addFooterView(footerButton);
+    	//myListView.addFooterView(footerButton);
     	
      	CourseInfo [] courseInfos = (CourseInfo[]) Global.getCourseInfos();
     	
