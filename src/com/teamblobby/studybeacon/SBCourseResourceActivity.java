@@ -2,19 +2,18 @@ package com.teamblobby.studybeacon;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import com.teamblobby.studybeacon.datastructures.*;
 
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.*;
 
@@ -46,7 +45,10 @@ public class SBCourseResourceActivity extends ListActivity {
 	    if (this.availableCourses == null) {
 	    	// create empty list and call to load courses
 	    	this.availableCourses = new ArrayList<CourseListable>(); // this is something else
-	    	String categoryName = CourseLoadTask.ROOT_CATEGORY;
+	    	String categoryName = null;
+	    	if ( this.getIntent().getExtras() != null )
+	    		categoryName = this.getIntent().getExtras().getString("category");
+	    	if ( categoryName == null ) categoryName = CourseLoadTask.ROOT_CATEGORY;
 	    	(new CourseLoadTask(this)).execute(categoryName); // executes AsyncTask
 	    }
 	    
@@ -62,7 +64,7 @@ public class SBCourseResourceActivity extends ListActivity {
 		
 		for (CourseListable course : this.availableCourses){
 				course.setStarred(Arrays.asList(CourseInfo.getCourseNames(
-									this.currentCourses)).contains(course.toString()));
+									this.currentCourses)).contains(course.getName()));
 		}
 		
 	}
@@ -84,6 +86,7 @@ public class SBCourseResourceActivity extends ListActivity {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View viewToReturn =  super.getView(position, convertView, parent);
+			viewToReturn.setOnClickListener(null); // clear click listener if being recycled
 			
 			// remove notify and new beacon buttons
 			viewToReturn.findViewById(R.id.mcrNotificationButton).setVisibility(View.GONE);
@@ -104,11 +107,19 @@ public class SBCourseResourceActivity extends ListActivity {
 				case CourseListable.TYPE_CATEGORY:
 					notifyCheckBox.setVisibility(View.INVISIBLE);
 					// TODO add onClick listener to view
+					viewToReturn.setOnClickListener(new OnClickListener() {
+						
+						public void onClick(View v) {
+							// TODO Auto-generated method stub
+							Intent i = new Intent(SBCourseResourceActivity.this,SBCourseResourceActivity.class);
+							i.putExtra("category", courseInfo.getName());
+							startActivity(i);
+						}
+					});
 					break;
 			}
-				 
 			
-			Log.d(TAG,"getting course View for "+courseInfo.toString());
+			Log.d(TAG,"getting course View for "+courseInfo.getName());
 			return viewToReturn;
 		}
 	}
