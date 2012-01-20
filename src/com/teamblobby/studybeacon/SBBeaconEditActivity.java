@@ -3,7 +3,10 @@ package com.teamblobby.studybeacon;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 public class SBBeaconEditActivity extends Activity {
 	
@@ -15,7 +18,11 @@ public class SBBeaconEditActivity extends Activity {
 	
 	protected OperationMode mode;
 	
-	Spinner sv;
+	Spinner courseSpinner;
+	Spinner expiresSpinner;
+	Spinner workingOnSpinner;
+	EditText detailsEdit;
+	Button actionButton;
 	
 	
 	@Override
@@ -23,7 +30,7 @@ public class SBBeaconEditActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.beacon);
 		
-		
+		loadUIEls();
 		
 		// This is the intent that started us
 		Intent startingIntent = getIntent();
@@ -51,6 +58,14 @@ public class SBBeaconEditActivity extends Activity {
 			break;
 		}
 		
+	}
+
+	private void loadUIEls() {
+		courseSpinner    = (Spinner)  findViewById(R.id.courseSpinner);
+		expiresSpinner   = (Spinner)  findViewById(R.id.expiresSpinner);
+		workingOnSpinner = (Spinner)  findViewById(R.id.workingOnSpinner);
+		detailsEdit      = (EditText) findViewById(R.id.detailsEdit);
+		actionButton     = (Button)   findViewById(R.id.actionButton);
 	}
 
 	private void setUpForNew(Bundle savedInstanceState, Intent startingIntent) {
