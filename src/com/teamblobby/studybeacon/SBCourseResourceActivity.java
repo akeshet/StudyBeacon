@@ -35,6 +35,12 @@ public class SBCourseResourceActivity extends ListActivity {
 	    ((TextView) this.findViewById(R.id.coursesTitleText))
 	    	.setText(Global.res.getString(R.string.courseResourceTitleText));
 	    
+	    ((TextView) this.findViewById(android.R.id.empty))
+    	.setText(Global.res.getString(R.string.courseResourseLoadText));
+	    
+	    // remove the footer button
+	    this.findViewById(R.id.coursesFooter).setVisibility(View.GONE);
+	    
 	    currentCourses = Global.getMyCourseInfos();
 	    
 	    // This is where we load the courses, otherwise get from savedBundle
