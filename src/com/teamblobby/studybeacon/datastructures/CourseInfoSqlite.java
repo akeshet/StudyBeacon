@@ -92,7 +92,7 @@ public class CourseInfoSqlite extends CourseInfo {
 
 		return returnList;
 	}
-	
+
 	/**
 	 * 
 	 * Removes un-starred CourseInfos from specified table.
@@ -110,16 +110,25 @@ public class CourseInfoSqlite extends CourseInfo {
 	 * the cached value and as the initial value of database row.
 	 */
 	private CourseInfoSqlite(String tableName, CourseInfoSimple cachedInfo) {
+		createNewEntry(tableName, cachedInfo);
+	}
+
+	private void createNewEntry(String tableName, CourseInfoSimple cachedInfo) {
 		this.tableName = tableName;
 		this.cachedInfo = cachedInfo;
 
 		openIfNecessaryDB();
-		ContentValues cValues = new ContentValues();
-		cValues.put(COLUMN_NAME, cachedInfo.getName());
-		cValues.put(COLUMN_STAR, cachedInfo.getStarred());
-		cValues.put(COLUMN_NOTIFY, cachedInfo.getNotify());
+		ContentValues cValues = makeCValues(cachedInfo);
 		this.id = database.insert(tableName, null, cValues);
 		createWhereString();
+	}
+
+	private ContentValues makeCValues(CourseInfo courseInfo) {
+		ContentValues cValues = new ContentValues();
+		cValues.put(COLUMN_NAME, courseInfo.getName());
+		cValues.put(COLUMN_STAR, courseInfo.getStarred());
+		cValues.put(COLUMN_NOTIFY, courseInfo.getNotify());
+		return cValues;
 	}
 
 
@@ -135,13 +144,36 @@ public class CourseInfoSqlite extends CourseInfo {
 		this(tableName, new CourseInfoSimple(courseName, starred, notify));
 	}
 
-	/** Creates a new database entry in the given table, with copy of course info from 
+	/** If no courseInfo exists in the table with the given course name, then creates 
+	 * a new database entry in the given table, with copy of course info from 
 	 * copyMe.
+	 * 
+	 * Otherwise, initialized a database backed courseInfo which hooks into the existing
+	 * row, and updates the row's values to match the passed CourseInfo.
 	 * @param tableName
 	 * @param copyMe
 	 */
 	public CourseInfoSqlite(String tableName, CourseInfo copyMe) {
-		this(tableName, new CourseInfoSimple(copyMe));
+		openIfNecessaryDB();
+		// Query for existing rows with matching coursename
+		Cursor cursor = database.query(tableName, new String[] {COLUMN_ID}, 
+				COLUMN_NAME+"=?", 
+				new String [] {copyMe.getName()}, null, null, null);
+
+		if (cursor.getCount()==0) {
+			// If not in database, create new database entry
+			createNewEntry(tableName, new CourseInfoSimple(copyMe));
+		}
+		else {
+			cursor.moveToFirst();
+			this.id = cursor.getLong(0);
+			this.cachedInfo = new CourseInfoSimple(copyMe);
+			this.tableName = tableName;
+			this.createWhereString();
+			ContentValues values = this.makeCValues(cachedInfo);
+			database.update(tableName, values, where, null);
+		}
+		cursor.close();
 	}
 
 	/**

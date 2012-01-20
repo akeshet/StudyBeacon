@@ -10,10 +10,9 @@
     <string name="coursesTitleText">My Courses</string>
     <string name="addclass">Add New Course</string>
     <string name="courseResourceTitleText">MIT Course List</string>
-    <string name="coursesEmpty">Loading…</string>
+    <string name="coursesEmpty">No Starred Courses</string>
     <string name="loadingcoursestoast">Loading Courses</string>
-    
-    
+    <string name="courseResourseLoadText">Loading Courses...</string>
     <string name="newBeacon">New Beacon</string>
     <string name="editBeacon">Edit Beacon</string>
     <string name="beaconDetails">Beacon Details</string>
