@@ -53,6 +53,7 @@ public class Global extends Application {
 	}
 	
 	public static String[] getCourses() {
+		// TODO Fix this
     	String delim = res.getString(R.string.coursedelim);
     	String courseList = Global.prefs.getString(COURSES_STR, "6.570"+delim+"8.901");
     	
@@ -67,8 +68,7 @@ public class Global extends Application {
 	 */
 	public static CourseInfo[] getMyCourseInfos() {
 		
-		CourseInfoSqlite.flushUnstarred(CourseInfoSqlite.MYCOURSES_TABLE);
-		
+		CourseInfoSqlite.flushUnstarred(CourseInfoSqlite.MYCOURSES_TABLE);		
 		ArrayList<CourseInfoSqlite>  courseInfos= CourseInfoSqlite.fetchTable(CourseInfoSqlite.MYCOURSES_TABLE);
 		
 		return courseInfos.toArray(new CourseInfo[]{});

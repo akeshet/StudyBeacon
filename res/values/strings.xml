@@ -18,10 +18,31 @@
     <string name="editBeacon">Edit Beacon</string>
     <string name="beaconDetails">Beacon Details</string>
     <string name="course">Course</string>
-    <string name="expires">Expires after</string>
+    <string name="expiresIn">Expires in</string>
+    <string name="expiresAt">Expires at</string>
+    <string-array name="expiresTimes">
+        <item>1 hour</item>
+        <item>2 hours</item>
+        <item>3 hours</item>
+        <item>4 hours</item>
+        <item>6 hours</item>
+        <item>12 hours</item>
+        </string-array>
+    <integer name="expiresDefaultIndex">2</integer>
+    
     <string name="workingOn">Working on</string>
+    <string-array name="workingOnList">
+        <item>Pset</item>
+        <item>Exam studying</item>
+        <item>Custom…</item>
+        </string-array>
+    
+    <string name="contact">Contact</string>
     <string name="details">Details</string>
     <string name="portrait">Self portrait</string>
     <string name="takePicture">Take picture</string>
+    <string name="detailHint">Room: …</string>
+    <string name="phoneHint">(555)-555-1212</string>
+    <string name="emailHint">tbeaver@mit.edu</string>
     
 </resources>

@@ -94,7 +94,9 @@ public class APIClient {
 					
 					beacons.add(new BeaconInfoSimple(bObj.getInt(BEACID_STR), bObj.getString(COURSE_STR),
 							point, bObj.getInt(COUNT_STR),
-							bObj.getString(DETAILS_STR), bObj.getString(CONTACT_STR),
+							bObj.getString(DETAILS_STR),
+							// TODO FIX THIS; USE BOTH TEL AND EMAIL
+							bObj.getString(CONTACT_STR),bObj.getString(CONTACT_STR),
 							created, expires));
 					
 				}

@@ -16,7 +16,7 @@
             android:id="@+id/coursesIcon"
             android:layout_width="@dimen/iconSize"
             android:layout_height="@dimen/iconSize"
-            android:src="@drawable/ic_launcher" />
+            android:src="@drawable/newbeaconicon" />
 
         <TextView
             android:id="@+id/beaconTitleTV"
@@ -62,7 +62,7 @@
                 android:id="@+id/expiresTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/expires" />
+                android:text="@string/expiresIn" />
 
             <Spinner
                 android:id="@+id/expiresSpinner"
@@ -80,6 +80,26 @@
                 android:layout_height="wrap_content" />
 
             <TextView
+                android:id="@+id/contactTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/contact" />
+
+            <EditText
+                android:id="@+id/phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/phoneHint"
+                android:inputType="phone" />
+
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/emailHint"
+                android:inputType="textEmailAddress" />
+            
+            <TextView
                 android:id="@+id/detailsTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -89,6 +109,7 @@
                 android:id="@+id/detailsEdit"
                 android:layout_width="match_parent"
                 android:layout_height="88dp"
+                android:hint="@string/detailHint"
                 android:inputType="textMultiLine" />
 
             <TextView
