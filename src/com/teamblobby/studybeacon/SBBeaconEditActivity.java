@@ -28,7 +28,7 @@ public class SBBeaconEditActivity extends Activity {
 	protected EditText phone;
 	protected EditText email;
 	protected EditText details;
-	protected Button actionButton;
+	protected Button beaconActionButton;
 	
 	// This represents the beacon we are making.
 	protected BeaconInfoSimple mBeacon;
@@ -77,7 +77,7 @@ public class SBBeaconEditActivity extends Activity {
 		phone            = (EditText) findViewById(R.id.phone);
 		email            = (EditText) findViewById(R.id.email);
 		details          = (EditText) findViewById(R.id.detailsEdit);
-		actionButton     = (Button)   findViewById(R.id.actionButton);
+		beaconActionButton     = (Button)   findViewById(R.id.beaconActionButton);
 		
 		// Set the spinners up
 		ArrayAdapter<String> courseAdapter =
