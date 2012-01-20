@@ -35,7 +35,7 @@ public class SBCourseResourceActivity extends ListActivity {
 	    ((TextView) this.findViewById(R.id.coursesTitleText))
 	    	.setText(Global.res.getString(R.string.courseResourceTitleText));
 	    
-	    currentCourses = Global.getCourseInfos();
+	    currentCourses = Global.getMyCourseInfos();
 	    
 	    // This is where we load the courses, otherwise get from savedBundle
 	    if (savedInstanceState != null)

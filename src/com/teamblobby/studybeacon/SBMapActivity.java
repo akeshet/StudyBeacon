@@ -153,7 +153,7 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 
     	courseSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     	
-    	courses = CourseInfo.getCourseNames(Global.getCourseInfos());
+    	courses = CourseInfo.getCourseNames(Global.getMyCourseInfos());
     	
     	courseSpinnerAdapter.add(getString(R.string.allCourses));
     	for( String course : courses){
