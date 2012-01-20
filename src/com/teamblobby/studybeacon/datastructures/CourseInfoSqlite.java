@@ -5,9 +5,7 @@ import java.util.ArrayList;
 import com.teamblobby.studybeacon.*;
 import android.content.*;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.*;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.util.Log;
 
 /**
