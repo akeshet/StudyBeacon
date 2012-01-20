@@ -1,8 +1,11 @@
 package com.teamblobby.studybeacon;
 
+import com.teamblobby.studybeacon.datastructures.CourseInfo;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -19,6 +22,7 @@ public class SBBeaconEditActivity extends Activity {
 	protected OperationMode mode;
 	
 	Spinner courseSpinner;
+	TextView expiresTV;
 	Spinner expiresSpinner;
 	Spinner workingOnSpinner;
 	EditText detailsEdit;
@@ -62,10 +66,33 @@ public class SBBeaconEditActivity extends Activity {
 
 	private void loadUIEls() {
 		courseSpinner    = (Spinner)  findViewById(R.id.courseSpinner);
+		expiresTV        = (TextView) findViewById(R.id.expiresTV);
 		expiresSpinner   = (Spinner)  findViewById(R.id.expiresSpinner);
 		workingOnSpinner = (Spinner)  findViewById(R.id.workingOnSpinner);
 		detailsEdit      = (EditText) findViewById(R.id.detailsEdit);
 		actionButton     = (Button)   findViewById(R.id.actionButton);
+		
+		// Set the spinners up
+		ArrayAdapter<String> courseAdapter =
+				new ArrayAdapter<String>(this,
+						android.R.layout.simple_spinner_item,
+						Global.getCourses());
+			
+	    courseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+	    courseSpinner.setAdapter(courseAdapter);
+		
+		ArrayAdapter<CharSequence> expiresAdapter = ArrayAdapter.createFromResource(
+	            this, R.array.expiresTimes, android.R.layout.simple_spinner_item);
+	    expiresAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+	    expiresSpinner.setAdapter(expiresAdapter);
+	    
+	    ArrayAdapter<CharSequence> workingOnAdapter = ArrayAdapter.createFromResource(
+	            this, R.array.workingOnList, android.R.layout.simple_spinner_item);
+	    workingOnAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+	    workingOnSpinner.setAdapter(workingOnAdapter);
+	    // TODO add a listener for custom
+	    
+		
 	}
 
 	private void setUpForNew(Bundle savedInstanceState, Intent startingIntent) {

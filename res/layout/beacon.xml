@@ -62,7 +62,7 @@
                 android:id="@+id/expiresTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/expires" />
+                android:text="@string/expiresIn" />
 
             <Spinner
                 android:id="@+id/expiresSpinner"
