@@ -17,8 +17,16 @@ public class BeaconInfoSimple extends BeaconInfo {
 
 	public BeaconInfoSimple(int beaconId, String courseName, GeoPoint loc,
 			int visitors, String details, String contact, Date created,
-			Date expires) {
-		super(beaconId, courseName, loc, visitors, details, contact, created, expires);
+			Date expires) {		
+
+		setBeaconId(beaconId);
+		setCourseName(courseName);
+		setLoc(loc);
+		setVisitors(visitors);
+		setDetails(details);
+		setContact(contact);
+		setCreated(created);
+		setExpires(expires);
 	}
 
 	@Override
