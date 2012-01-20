@@ -10,7 +10,14 @@
         android:layout_height="@dimen/iconSize"
         android:button="@android:drawable/btn_star"
         android:checked="true"/>
-
+    
+    <ImageView
+        android:id="@+id/mcrFolderIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_dialog_info"
+        android:visibility="gone" />
+    
     <TextView
         android:id="@+id/mcrCourseNameTextView"
         android:layout_width="fill_parent"

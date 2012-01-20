@@ -11,7 +11,7 @@ import android.os.Parcelable;
  * MIT Stellar API (not yet implemented).
  *
  */
-public abstract class CourseInfo implements Parcelable {
+public abstract class CourseInfo implements Parcelable,CourseListable{
 	
 	public abstract String getCourseName();
 	public abstract void setCourseName(String courseName);

@@ -1,6 +1,7 @@
 package com.teamblobby.studybeacon;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -20,7 +21,7 @@ import com.google.android.maps.MapView.LayoutParams;
 public class BeaconItemizedOverlay extends ItemizedOverlay {
 
 	private static final String TAG = "BeaconItemizedOverlay";
-	protected ArrayList<OverlayItem> mOverlays = new ArrayList<OverlayItem>();
+	protected ArrayList<BeaconOverlayItem> mOverlays = new ArrayList<BeaconOverlayItem>();
 	protected Context mContext;
 	protected MapView mapView;
 	protected MapController mc;
@@ -33,14 +34,35 @@ public class BeaconItemizedOverlay extends ItemizedOverlay {
 		this.mc = mv.getController();
 	}
 
-	public void addOverlay(OverlayItem overlay) {
+	public void addOverlay(BeaconOverlayItem overlay) {
 	    mOverlays.add(overlay);
-	    this.addBalloon(overlay);
+	    // this.addBalloon(overlay);
 	    populate();
 	}
 	
+	public void removeOverlay(BeaconOverlayItem overlay) {
+		mOverlays.remove(overlay);
+		// TODO Do I need to do this?
+		populate();
+	}
+	
+	public void removeByBeaconId(int BeaconId) {
+		removeOverlay(getByBeaconId(BeaconId));
+	}
+	
+	public BeaconOverlayItem getByBeaconId(int BeaconId) {
+		Iterator<BeaconOverlayItem> iter = mOverlays.iterator();
+		while (iter.hasNext()) {
+			BeaconOverlayItem item = iter.next();
+			if (BeaconId == item.getBeacon().getBeaconId())
+				return item;
+		}
+		// Failure?
+		return null;
+	}
+	
 	@Override
-	protected OverlayItem createItem(int i) {
+	protected BeaconOverlayItem createItem(int i) {
 		return mOverlays.get(i);
 	}
 
@@ -69,7 +91,7 @@ public class BeaconItemizedOverlay extends ItemizedOverlay {
 	 * 
 	 * 
 	 */
-	protected void addBalloon(final OverlayItem p) {
+	protected void addBalloon(final BeaconOverlayItem p) {
 		 
 		if (p == null)
 			return;

@@ -89,7 +89,7 @@ public class SBMyCoursesActivity extends ListActivity {
 	private class CourseClickListener implements OnClickListener {
 		public void onClick(View view){
 			// launch the course resource activity
-			Intent i = new Intent(SBMyCoursesActivity.this,SBCourseResourceListActivity.class);
+			Intent i = new Intent(SBMyCoursesActivity.this,SBCourseResourceActivity.class);
 			startActivity(i);
 		}
 	}

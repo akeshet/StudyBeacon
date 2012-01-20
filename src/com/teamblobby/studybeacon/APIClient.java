@@ -103,7 +103,7 @@ public class APIClient {
 				handler.getActivity().runOnUiThread(new Runnable() {
 
 					public void run() {
-						handler.onQuery(beacons);
+						handler.onQuerySuccess(beacons);
 					}
 					
 				});
@@ -115,6 +115,18 @@ public class APIClient {
 					Log.e(TAG,e.getMessage());
 				}
 				
+			}
+
+			@Override
+			public void onFailure(Throwable arg0) {
+				// TODO Do we do this first or last?
+				super.onFailure(arg0);
+				handler.getActivity().runOnUiThread(new Runnable() {
+					
+					public void run() {
+						handler.onQueryFailure();
+					}
+				});
 			}
 		});
 		
