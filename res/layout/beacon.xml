@@ -14,15 +14,16 @@
 
         <ImageView
             android:id="@+id/coursesIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/iconSize"
+            android:layout_height="@dimen/iconSize"
             android:src="@drawable/ic_launcher" />
 
         <TextView
-            android:id="@+id/beaconTitleText"
+            android:id="@+id/beaconTitleTV"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:text="@string/beaconTitleText" />
+            android:text="@string/newBeacon" 
+            android:gravity="center_vertical|left"/>
     </LinearLayout>
 
     <Button
@@ -31,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:text="Add Beacon"/>
+        android:text="@string/newBeacon"/>
     
     <ScrollView
             android:layout_above="@+id/beaconAddButton"
@@ -47,64 +48,60 @@
             android:orientation="vertical" >
 
             <TextView
+                android:id="@+id/courseTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="*Class:"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:text="@string/course"/>
 
             <Spinner
-                android:id="@+id/spinner1"
+                android:id="@+id/courseSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/expiresTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="*Expires after:"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:text="@string/expires" />
 
             <Spinner
-                android:id="@+id/spinner2"
+                android:id="@+id/expiresSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Working on:"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:text="@string/workingOn" />
 
             <Spinner
-                android:id="@+id/spinner3"
+                android:id="@+id/workingOnSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/detailsTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Details:"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:text="@string/details" />
 
             <EditText
-                android:id="@+id/editText1"
+                android:id="@+id/detailsEdit"
                 android:layout_width="match_parent"
                 android:layout_height="88dp"
                 android:inputType="textMultiLine" />
 
             <TextView
-                android:id="@+id/textView1"
+                android:id="@+id/portraitTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Self Portrait:"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:text="@string/portrait" />
 
             <Button
-                android:id="@+id/button1"
+                android:id="@+id/portraitButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Take picture" />
+                android:text="@string/takePicture" />
 
         </LinearLayout>
     </ScrollView>

@@ -8,10 +8,20 @@
     <string name="editCourses">Edit…</string>
     <string name="coursedelim">:</string>
     <string name="coursesTitleText">My Courses</string>
-    <string name="beaconTitleText">Beacon</string>
-    <string name="addclass">Add New Class</string>
+    <string name="addclass">Add New Course</string>
     <string name="courseResourceTitleText">MIT Course List</string>
     <string name="coursesEmpty">Loading…</string>
     <string name="loadingcoursestoast">Loading Courses</string>
+    
+    
+    <string name="newBeacon">New Beacon</string>
+    <string name="editBeacon">Edit Beacon</string>
+    <string name="beaconDetails">Beacon Details</string>
+    <string name="course">Course</string>
+    <string name="expires">Expires after</string>
+    <string name="workingOn">Working on</string>
+    <string name="details">Details</string>
+    <string name="portrait">Self portrait</string>
+    <string name="takePicture">Take picture</string>
     
 </resources>
