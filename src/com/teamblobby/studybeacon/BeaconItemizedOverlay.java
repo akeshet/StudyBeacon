@@ -71,6 +71,9 @@ public class BeaconItemizedOverlay extends ItemizedOverlay {
 	 */
 	protected void addBalloon(final OverlayItem p) {
 		 
+		if (p == null)
+			return;
+		
 		 GeoPoint gp = p.getPoint();
 		 
 		 //mapView.removeView(balloonView);
