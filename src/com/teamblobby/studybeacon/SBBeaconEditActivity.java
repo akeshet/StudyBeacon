@@ -12,7 +12,11 @@ import android.widget.TextView;
 
 public class SBBeaconEditActivity extends Activity {
 	
-	public enum OperationMode {
+	// Here is the interface for intents to use
+	public static final String COURSE_STR = "Course";
+	
+	
+	protected enum OperationMode {
 		MODE_NEW,
 		MODE_EDIT,
 		MODE_VIEW
@@ -32,6 +36,10 @@ public class SBBeaconEditActivity extends Activity {
 	
 	// This represents the beacon we are making.
 	protected BeaconInfoSimple mBeacon;
+
+	private ArrayAdapter<String> courseAdapter;
+	private ArrayAdapter<CharSequence> expiresAdapter;
+	private ArrayAdapter<CharSequence> workingOnAdapter;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -77,10 +85,10 @@ public class SBBeaconEditActivity extends Activity {
 		phone            = (EditText) findViewById(R.id.phone);
 		email            = (EditText) findViewById(R.id.email);
 		details          = (EditText) findViewById(R.id.detailsEdit);
-		beaconActionButton     = (Button)   findViewById(R.id.beaconActionButton);
+		beaconActionButton = (Button) findViewById(R.id.beaconActionButton);
 		
 		// Set the spinners up
-		ArrayAdapter<String> courseAdapter =
+		courseAdapter =
 				new ArrayAdapter<String>(this,
 						android.R.layout.simple_spinner_item,
 						Global.getCourses());
@@ -88,12 +96,12 @@ public class SBBeaconEditActivity extends Activity {
 	    courseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    courseSpinner.setAdapter(courseAdapter);
 		
-		ArrayAdapter<CharSequence> expiresAdapter = ArrayAdapter.createFromResource(
+		expiresAdapter = ArrayAdapter.createFromResource(
 	            this, R.array.expiresTimes, android.R.layout.simple_spinner_item);
 	    expiresAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    expiresSpinner.setAdapter(expiresAdapter);
 	    
-	    ArrayAdapter<CharSequence> workingOnAdapter = ArrayAdapter.createFromResource(
+	    workingOnAdapter = ArrayAdapter.createFromResource(
 	            this, R.array.workingOnList, android.R.layout.simple_spinner_item);
 	    workingOnAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    workingOnSpinner.setAdapter(workingOnAdapter);
@@ -107,6 +115,16 @@ public class SBBeaconEditActivity extends Activity {
 		// TODO Auto-generated method stub
 		// Set title text
 		beaconTitleTV.setText(R.string.newBeacon);
+		
+		// Check if a course has been selected in the intent
+		String course = startingIntent.getStringExtra(COURSE_STR);
+		if (course != null) {
+			// Set the course spinner's selected element
+			// TODO -- does this work?
+			int courseIndex = courseAdapter.getPosition(course);
+			courseSpinner.setSelection(courseIndex);
+		}
+		
 	}
 
 	private void setUpForEdit(Bundle savedInstanceState, Intent startingIntent) {
