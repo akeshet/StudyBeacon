@@ -51,7 +51,8 @@ public class APIClient {
 	public final static String LAT_STR = "LatE6";
 	public final static String LON_STR = "LonE6";
 	public final static String DETAILS_STR = "Details";
-	public final static String CONTACT_STR = "Contact";
+	public final static String TELEPHONE_STR = "Telephone";
+	public final static String EMAIL_STR = "Email";
 	public final static String COUNT_STR = "Count";
 	public final static String CREATED_STR = "Created";
 	public final static String EXPIRES_STR = "Expires";
@@ -96,7 +97,7 @@ public class APIClient {
 							point, bObj.getInt(COUNT_STR),
 							bObj.getString(DETAILS_STR),
 							// TODO FIX THIS; USE BOTH TEL AND EMAIL
-							bObj.getString(CONTACT_STR),bObj.getString(CONTACT_STR),
+							bObj.getString(TELEPHONE_STR),bObj.getString(EMAIL_STR),
 							created, expires));
 					
 				}
