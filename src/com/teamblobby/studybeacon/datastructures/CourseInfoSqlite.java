@@ -24,6 +24,8 @@ import android.util.Log;
  */
 public class CourseInfoSqlite extends CourseInfo {
 
+	// ***** Database related code
+
 	private static final int DB_VERSION = 2;
 	public static final String TAG = "CourseInfoSqlite";
 
@@ -38,64 +40,62 @@ public class CourseInfoSqlite extends CourseInfo {
 	private static final String COLUMN_NOTIFY = "courseNotify";
 	private static final String [] COLUMNS_ALLVALUES = {COLUMN_NAME, COLUMN_STAR, COLUMN_NOTIFY};
 
+	private static final String DB_COLUMNS_DESCRIPTION =  
+			"(" + COLUMN_ID + " integer primary key, "
+					+ COLUMN_NAME + " text not null, "
+					+ COLUMN_STAR + " integer, "
+					+ COLUMN_NOTIFY + " integer)";
+
+	private static final String [] TABLE_NAMES = {MYCOURSES_TABLE, ALLCOURSES_TABLE};
+
 	private static SQLiteDatabase database;
 
-	private static class CourseInfoDBOpener extends SQLiteOpenHelper {
-
-		public static final String DBCreateColumns =  
-				"(" + COLUMN_ID + " integer primary key, "
-						+ COLUMN_NAME + " text not null, "
-						+ COLUMN_STAR + " integer, "
-						+ COLUMN_NOTIFY + " integer)";
-
-		public CourseInfoDBOpener(Context context, String name,
-				CursorFactory factory, int version) {
-			super(context, name, factory, DB_VERSION);
-		}
-
-		@Override
-		public void onCreate(SQLiteDatabase db) {
-			Log.d(TAG, "Creating CourseInfo database.");
-			db.execSQL("create table " + MYCOURSES_TABLE + DBCreateColumns);
-			db.execSQL("create table " + ALLCOURSES_TABLE + DBCreateColumns);
-			Log.d(TAG, "CourseInfo database created.");
-		}
-
-		@Override
-		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			Log.d(TAG, "In onUpgrade. Not upgrading database, creating new one.");
-
-			try {
-				db.execSQL("drop table " + MYCOURSES_TABLE);
-			} catch (SQLException e) {
-				Log.d(TAG, "Exception when trying to drop mycourses table. Ignoring.");
-			}
-
-			try {
-				db.execSQL("drop table " + ALLCOURSES_TABLE);
-			} catch (SQLException e) {
-				Log.d(TAG, "Exception when trying to drop allcourses table. Ignoring.");
-			}
-
-			Log.d(TAG, "Dropped old tables. Now running onCreate.");
-			onCreate(db);
-		}
-
-	}
-
-	private String tableName;
-	private CourseInfoSimple cachedInfo;
 	private long id;
 	String where;
+	private String tableName;
+
+	private CourseInfoSimple cachedInfo;
+
 
 	private static void openIfNecessaryDB() {
 		if (database==null) {
-			CourseInfoDBOpener opener = 
-					new CourseInfoDBOpener(Global.application.getApplicationContext(), 
-							DB_NAME, null, DB_VERSION);
+			DatabaseOpener opener = 
+					new DatabaseOpener(Global.application.getApplicationContext(), 
+							DB_NAME, null, DB_VERSION, DB_COLUMNS_DESCRIPTION, TABLE_NAMES);
+
 			database = opener.getWritableDatabase();
 		}
 	}
+
+	private void createWhereString() {
+		this.where = "id='" + this.id + "'";
+	}
+
+	private void setRowValues(ContentValues values) {
+		database.update(this.tableName, values, where, null);
+	}
+
+	/**
+	 * Returns an ArrayList of CourseInfoSqlite objects representing all
+	 * of the database entries in the specified * @param table
+	 * @return
+	 */
+	public static ArrayList<CourseInfoSqlite> fetchTable(String tableName) {
+		openIfNecessaryDB();
+		Cursor cursor=database.query(tableName, new String [] {COLUMN_ID}, null, null, null, null, null);
+
+		ArrayList<CourseInfoSqlite> returnList = new ArrayList<CourseInfoSqlite>(cursor.getCount());
+
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			returnList.add(new CourseInfoSqlite(tableName, cursor.getLong(0)));
+			cursor.moveToNext();
+		}
+
+		return returnList;
+	}
+
+	// ***** Constructors 
 
 	/** 
 	 * Creates a new database in table @param tableName , using @param cachedInfo as 
@@ -114,9 +114,7 @@ public class CourseInfoSqlite extends CourseInfo {
 		createWhereString();
 	}
 
-	private void createWhereString() {
-		this.where = "id='" + this.id + "'";
-	}
+
 
 	/**
 	 * Creates a new database entry in given table, and with given course info parameters.
@@ -158,30 +156,8 @@ public class CourseInfoSqlite extends CourseInfo {
 	}
 
 
-	private void setRowValues(ContentValues values) {
-		database.update(this.tableName, values, where, null);
-	}
 
-	/**
-	 * Returns an ArrayList of CourseInfoSqlite objects representing all
-	 * of the database entries in the specified * @param table
-	 * @return
-	 */
-	public static ArrayList<CourseInfoSqlite> fetchTable(String tableName) {
-		openIfNecessaryDB();
-		Cursor cursor=database.query(tableName, new String [] {COLUMN_ID}, null, null, null, null, null);
-
-		ArrayList<CourseInfoSqlite> returnList = new ArrayList<CourseInfoSqlite>(cursor.getCount());
-
-		cursor.moveToFirst();
-		while (!cursor.isAfterLast()) {
-			returnList.add(new CourseInfoSqlite(tableName, cursor.getLong(0)));
-			cursor.moveToNext();
-		}
-
-		return returnList;
-	}
-
+	// ***** Gettors / settors
 
 	@Override
 	public String getCourseName() {
