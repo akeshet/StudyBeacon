@@ -1,5 +1,7 @@
 package com.teamblobby.studybeacon;
 
+import java.util.List;
+
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -29,7 +31,7 @@ public class SBMyCoursesActivity extends ListActivity {
     	myListView = this.getListView();
     	//myListView.addFooterView(footerButton);
     	
-     	CourseInfo [] courseInfos = (CourseInfo[]) Global.getMyCourseInfos();
+     	List<CourseInfo> courseInfos = Global.getMyCourseInfos();
     	
     	myListView.setAdapter(new CourseAdapter(this,
     											R.layout.mycoursesrow,
@@ -41,7 +43,7 @@ public class SBMyCoursesActivity extends ListActivity {
     protected class CourseAdapter extends ArrayAdapter<CourseInfo>{
 
 		public CourseAdapter(Context context, int resource,
-				int textViewResourceId, CourseInfo[] courseInfos) {
+				int textViewResourceId, List<CourseInfo> courseInfos) {
 			super(context, resource, textViewResourceId, courseInfos);
 		}
     	

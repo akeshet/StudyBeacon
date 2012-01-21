@@ -23,7 +23,7 @@ public class SBCourseResourceActivity extends ListActivity {
 	private static final String TAG = "SBCourseResourceListActivity";
 	
 	private List<CourseListable> availableCourses;
-	private CourseInfo[] currentCourses;
+	private List<CourseInfo> currentCourses;
 	private ArrayAdapter<CourseListable> arrayAdapter;
 	
 	/** Called when the activity is first created. */
@@ -88,7 +88,7 @@ public class SBCourseResourceActivity extends ListActivity {
 		for ( int j = 0; j < this.availableCourses.size(); j++ ){
 				//course.setStarred(Arrays.asList(CourseInfo.getCourseNames(
 				//					this.currentCourses)).contains(course.getName()));
-			if ( Arrays.asList(CourseInfo.getCourseNames(this.currentCourses)).contains(this.availableCourses.get(j).getName()) ){
+			if ( CourseInfo.getCourseNames(this.currentCourses).contains(this.availableCourses.get(j).getName()) ){
 				this.availableCourses.get(j).setStarred(true);
 				
 				this.availableCourses.set(j, new CourseInfoSqlite(CourseInfoSqlite.MYCOURSES_TABLE, (CourseInfo) this.availableCourses.get(j)));

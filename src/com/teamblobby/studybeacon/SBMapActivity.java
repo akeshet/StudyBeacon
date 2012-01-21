@@ -28,7 +28,7 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 	private static final int REQUEST_NEW_BEACON = 0;
 	
 	protected Spinner courseSpinner;
-	private ArrayAdapter<CharSequence> courseSpinnerAdapter;
+	private ArrayAdapter<String> courseSpinnerAdapter;
 
 	protected int courseSpinnerId;
 
@@ -46,7 +46,7 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 
 	private Drawable beaconD = Global.res.getDrawable(R.drawable.beacon);
 
-	private String courses[];
+	private List<String> courses;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -157,28 +157,39 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 		// Try to populate the beacons asynchronously
 		// TODO don't use courses, but rather the selection from the spinner.
 		// If the selection is All, then use courses.
-		APIClient.query(LatE6Min, LatE6Max, LonE6Min, LonE6Max, courses, this);
+		
+		List<String> queryCourses;
+		String selected = (String)courseSpinner.getSelectedItem();
+		if (selected.equals(Global.res.getString(R.string.allCourses))) {
+			queryCourses = courses;
+		} else {
+			queryCourses = new ArrayList<String>();
+			queryCourses.add(selected);
+		}
+		
+		APIClient.query(LatE6Min, LatE6Max, LonE6Min, LonE6Max, queryCourses, this);
 	}
 
 	protected void loadCourses(Bundle savedInstanceState) {
-		// TODO use savedInstanceState if possible
+		// TODO use savedInstanceState if possible.
+		// Specifically, keep track of what the selection was in the spinner
+		// and automatically set that.
 
+		courses = Global.getCourses();
+		
 		courseSpinnerAdapter =
-				new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item);
-
+				new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
+						Global.getCourses());
+		
 		courseSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-		courses = CourseInfo.getCourseNames(Global.getMyCourseInfos());
-
-		courseSpinnerAdapter.add(getString(R.string.allCourses));
-		for( String course : courses){
-			courseSpinnerAdapter.add(course);
-		}
+		courseSpinnerAdapter.insert(getString(R.string.allCourses),0);
 		courseSpinnerAdapter.add(getString(R.string.editCourses));
 
 		// TODO Add a handler for detecting "All" and "Edit"
 
 		courseSpinner.setAdapter(courseSpinnerAdapter);
+		
 	}
 
 	@Override

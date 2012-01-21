@@ -1,6 +1,7 @@
 package com.teamblobby.studybeacon;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Application;
 
@@ -52,7 +53,7 @@ public class Global extends Application {
 		//Global.updateData(mContext, uiHandler);
 	}
 	
-	public static String[] getCourses() {
+	public static List<String> getCourses() {
 		
     	return CourseInfo.getCourseNames(getMyCourseInfos());
 	}
@@ -63,12 +64,12 @@ public class Global extends Application {
 	 * 
 	 * Before fetching this list from the table, old rows in the table which are no longer starred will be flushed from the table.
 	 */
-	public static CourseInfo[] getMyCourseInfos() {
+	public static List<CourseInfo> getMyCourseInfos() {
 		
 		CourseInfoSqlite.flushUnstarred(CourseInfoSqlite.MYCOURSES_TABLE);		
-		ArrayList<CourseInfoSqlite>  courseInfos= CourseInfoSqlite.fetchTable(CourseInfoSqlite.MYCOURSES_TABLE);
+		List<CourseInfo>  courseInfos= CourseInfoSqlite.fetchTable(CourseInfoSqlite.MYCOURSES_TABLE);
 		
-		return courseInfos.toArray(new CourseInfo[]{});
+		return courseInfos;
 	}
 	
 	public String myIdString() {

@@ -3,8 +3,6 @@ package com.teamblobby.studybeacon.datastructures;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.teamblobby.studybeacon.datastructures.*;
-
 public class CourseCategory implements CourseListable, Parcelable {
 	
 	public CourseCategory(String nameIn) {

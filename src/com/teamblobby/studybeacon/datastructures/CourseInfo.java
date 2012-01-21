@@ -1,5 +1,8 @@
 package com.teamblobby.studybeacon.datastructures;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -27,12 +30,13 @@ public abstract class CourseInfo implements Parcelable,CourseListable{
 		return this.getName();
 	}
 	
-	public static String[] getCourseNames(CourseInfo[] inArray){
-		String[] outArray = new String[inArray.length];
-		for(int j=0; j<inArray.length; j++){
-			outArray[j]=inArray[j].getName();
-		}
-		return outArray;
+	public static List<String> getCourseNames(List<CourseInfo> courses){
+		List<String> courseNames = new ArrayList<String>();
+
+		for(CourseInfo course : courses)
+			courseNames.add(course.getName());
+			
+		return courseNames;
 	}
 	
 	public int listableType() {

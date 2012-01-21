@@ -87,11 +87,11 @@ public class CourseInfoSqlite extends CourseInfo {
 	 * of the database entries in the specified @param table
 	 * @return
 	 */
-	public static ArrayList<CourseInfoSqlite> fetchTable(String tableName) {
+	public static ArrayList<CourseInfo> fetchTable(String tableName) {
 		openIfNecessaryDB();
-		Cursor cursor=database.query(tableName, new String [] {COLUMN_ID}, null, null, null, null, null);
+		Cursor cursor=database.query(tableName, new String [] {COLUMN_ID}, null, null, null, null, COLUMN_NAME);
 
-		ArrayList<CourseInfoSqlite> returnList = new ArrayList<CourseInfoSqlite>(cursor.getCount());
+		ArrayList<CourseInfo> returnList = new ArrayList<CourseInfo>(cursor.getCount());
 
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {

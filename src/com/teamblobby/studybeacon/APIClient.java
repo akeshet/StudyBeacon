@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -60,7 +61,7 @@ public class APIClient {
 	public final static String EXPIRES_STR = "Expires";
 	
 	// TODO Maybe change this to a list or array of CourseInfo instead of course names
-	public static void query(int LatE6Min, int LatE6Max, int LonE6Min, int LonE6Max, String courses[],
+	public static void query(int LatE6Min, int LatE6Max, int LonE6Min, int LonE6Max, List<String> queryCourses,
 			final SBAPIHandler handler) {
 		RequestParams params = new RequestParams();
 		
@@ -69,7 +70,10 @@ public class APIClient {
 		params.put(LON_MIN_STR,Integer.toString(LonE6Min));
 		params.put(LON_MAX_STR,Integer.toString(LonE6Max));
 		
-		String courseList = TextUtils.join(COURSE_DELIM_STR, courses); 
+		if (queryCourses == null)
+			return;
+		
+		String courseList = TextUtils.join(COURSE_DELIM_STR, queryCourses); 
 		
 		params.put(COURSE_STR, courseList);
 				
