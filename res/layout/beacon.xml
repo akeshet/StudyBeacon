@@ -1,30 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/beaconBanner"
+    <com.teamblobby.studybeacon.TitleBar
+        android:id="@+id/titleBar"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:orientation="horizontal" >
-
-        <ImageView
-            android:id="@+id/coursesIcon"
-            android:layout_width="@dimen/iconSize"
-            android:layout_height="@dimen/iconSize"
-            android:src="@drawable/newbeaconicon" />
-
-        <TextView
-            android:id="@+id/beaconTitleTV"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:text="@string/newBeacon" 
-            android:gravity="center_vertical|left"/>
-    </LinearLayout>
+        android:text="@string/newBeacon" />
 
     <Button
         android:id="@+id/beaconActionButton"
@@ -35,16 +19,15 @@
         android:text="@string/newBeacon"/>
     
     <ScrollView
-            android:layout_above="@+id/beaconActionButton"
-            android:layout_below="@+id/beaconBanner"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+        android:layout_above="@+id/beaconActionButton"
+        android:layout_below="@+id/titleBar"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
         
         <LinearLayout
             android:id="@+id/linearLayout1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-
             android:orientation="vertical" >
 
             <TextView
@@ -73,7 +56,7 @@
                 android:id="@+id/expiresTimeTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" 
-                android:visibility="invisible"/>
+                android:visibility="gone"/>
 
             <TextView
                 android:layout_width="wrap_content"

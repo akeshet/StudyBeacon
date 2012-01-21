@@ -39,7 +39,7 @@ public class SBCourseResourceActivity extends ListActivity {
 	    
 	    this.setContentView(R.layout.mycourses);
 	    // set the title text
-	    ((TextView) this.findViewById(R.id.coursesTitleText))
+	    ((TextView) this.findViewById(R.id.titleText))
 	    	.setText(Global.res.getString(R.string.courseResourceTitleText));
 	    
 	    ((TextView) this.findViewById(android.R.id.empty))

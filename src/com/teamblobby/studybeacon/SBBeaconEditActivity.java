@@ -87,7 +87,7 @@ public class SBBeaconEditActivity extends Activity {
 	}
 
 	private void loadUIEls() {
-		beaconTitleTV    = (TextView) findViewById(R.id.beaconTitleTV);
+		beaconTitleTV    = (TextView) findViewById(R.id.titleText);
 		courseSpinner    = (Spinner)  findViewById(R.id.courseSpinner);
 		expiresTV        = (TextView) findViewById(R.id.expiresTV);
 		expiresSpinner   = (Spinner)  findViewById(R.id.expiresSpinner);
@@ -161,7 +161,7 @@ public class SBBeaconEditActivity extends Activity {
 		
 		// Change the "expires" text
 		expiresTV.setText(R.string.expiresAt);
-		expiresSpinner.setVisibility(View.INVISIBLE);
+		expiresSpinner.setVisibility(View.GONE);
 		
 		EditText ets[] = {phone, email, details};
 		for (EditText e : ets)
@@ -170,7 +170,7 @@ public class SBBeaconEditActivity extends Activity {
 		
 		loadBeaconData(startingIntent);
 		
-		beaconActionButton.setVisibility(View.INVISIBLE);
+		beaconActionButton.setVisibility(View.GONE);
 		
 	}
 

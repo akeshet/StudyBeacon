@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:background="@color/titleBackground" >
 
         <ImageView
             android:id="@+id/mapIcon"
@@ -22,7 +23,7 @@
         <Spinner
             android:id="@+id/mapCourseSpinner"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="@dimen/iconSize"
             android:prompt="@string/courseSpinnerPrompt" />
     </LinearLayout>
 
@@ -32,13 +33,14 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:gravity="center_vertical"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true" >
 
         <Button
             android:id="@+id/myClassesButton"
             android:layout_width="0dip"
-            android:layout_height="fill_parent"
+            android:layout_height="@dimen/iconSize"
             android:layout_weight="1"
             android:drawableLeft="@android:drawable/btn_star_big_on"
             android:gravity="left|fill_vertical"
