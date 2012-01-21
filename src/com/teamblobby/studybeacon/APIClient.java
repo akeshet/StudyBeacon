@@ -41,6 +41,7 @@ public class APIClient {
 	
 	// These strings are for the format of the query
 	public final static String COURSE_STR = "Course";
+	public final static String COURSE_DELIM_STR = ":";
 	public final static String LAT_MIN_STR = "LatE6Min";
 	public final static String LAT_MAX_STR = "LatE6Max";
 	public final static String LON_MIN_STR = "LonE6Min";
@@ -57,7 +58,7 @@ public class APIClient {
 	public final static String CREATED_STR = "Created";
 	public final static String EXPIRES_STR = "Expires";
 	
-	
+	// TODO Maybe change this to a list or array of CourseInfo instead of course names
 	public static void query(int LatE6Min, int LatE6Max, int LonE6Min, int LonE6Max, String courses[],
 			final SBAPIHandler handler) {
 		RequestParams params = new RequestParams();
@@ -67,9 +68,19 @@ public class APIClient {
 		params.put(LON_MIN_STR,Integer.toString(LonE6Min));
 		params.put(LON_MAX_STR,Integer.toString(LonE6Max));
 		
-		// TODO This does not make multiple entries for multiple courses!
-		for (String course : courses)
-			params.put(COURSE_STR, course);
+		String courseList = "";
+		if ( (courses != null) && (courses.length >= 0) ) {
+			courseList = courses[0];
+			
+			for (int i=1; i<courses.length; i++) {
+				courseList += COURSE_DELIM_STR + courses[i];
+			}
+			
+		}
+		
+		params.put(COURSE_STR, courseList);
+		
+		
 		
 		Log.d(TAG,"Query string " + params.toString());
 		
