@@ -205,7 +205,7 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 		// TODO
 		String selected = (String)courseSpinner.getSelectedItem();
 		if (! selected.equals(Global.res.getString(R.string.allCourses))) {
-			intent.putExtra(SBBeaconEditActivity.COURSE_STR, selected);
+			intent.putExtra(SBBeaconEditActivity.EXTRA_COURSE, selected);
 		}
 		startActivityForResult(intent, REQUEST_NEW_BEACON);
 	}

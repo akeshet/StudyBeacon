@@ -1,11 +1,7 @@
 package com.teamblobby.studybeacon;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
 import com.teamblobby.studybeacon.datastructures.BeaconInfoSimple;
-import com.teamblobby.studybeacon.datastructures.CourseInfo;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,14 +15,13 @@ import android.widget.TextView;
 public class SBBeaconEditActivity extends Activity {
 	
 	// Here is the interface for intents to use
-	public static final String COURSE_STR = "Course";
-	private static final String BEACON_STR = "beacon";
+	public static final String EXTRA_COURSE = "Course";
+	public static final String EXTRA_BEACON = "beacon";
 
-	public static final String ACTION_NEW = "com.blobby.studybeacon.BeaconEditActivity.new";
+	public static final String ACTION_NEW  = "com.blobby.studybeacon.BeaconEditActivity.new";
 	public static final String ACTION_EDIT = "com.blobby.studybeacon.BeaconEditActivity.edit";
 	public static final String ACTION_VIEW = "com.blobby.studybeacon.BeaconEditActivity.view";
-	
-	
+
 	protected enum OperationMode {
 		MODE_NEW,
 		MODE_EDIT,
@@ -128,19 +123,17 @@ public class SBBeaconEditActivity extends Activity {
 	}
 
 	private void setUpForNew(Bundle savedInstanceState, Intent startingIntent) {
-		// TODO Auto-generated method stub
 		// Set title text
 		beaconTitleTV.setText(R.string.newBeacon);
-		
+
 		// If a course has been selected in the intent, try to set the spinner
-		setCourseSpinnerItem(startingIntent.getStringExtra(COURSE_STR));
-		
+		setCourseSpinnerItem(startingIntent.getStringExtra(EXTRA_COURSE));
+
 	}
 
 	protected void setCourseSpinnerItem(String course) {
 		if (course != null) {
 			// Set the course spinner's selected element
-			// TODO -- does this work?
 			int courseIndex = courseAdapter.getPosition(course);
 			courseSpinner.setSelection(courseIndex);
 		}
@@ -185,7 +178,7 @@ public class SBBeaconEditActivity extends Activity {
 		// TODO Auto-generated method stub
 		
 		// TODO What do we do if somebody did not call this properly?
-		mBeacon = startingIntent.getParcelableExtra(BEACON_STR);
+		mBeacon = startingIntent.getParcelableExtra(EXTRA_BEACON);
 		
 		if (mBeacon == null) // FAILURE
 			return;
