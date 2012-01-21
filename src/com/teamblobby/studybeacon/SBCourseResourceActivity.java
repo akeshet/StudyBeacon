@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.teamblobby.studybeacon.datastructures.*;
 
+import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -25,12 +26,17 @@ public class SBCourseResourceActivity extends ListActivity {
 	private List<CourseListable> availableCourses;
 	private CourseInfo[] currentCourses;
 	private ArrayAdapter<CourseListable> arrayAdapter;
+	private int DATA_CHANGED_REQUEST_CODE = 0;
 	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	
+	    // initial value of setresult is CANCELED (no data changed occured)
+	    this.setResult(Activity.RESULT_CANCELED);
+	    Log.d(TAG,"result defaulted to canceled");
+	    
 	    this.setContentView(R.layout.mycourses);
 	    // set the title text
 	    ((TextView) this.findViewById(R.id.coursesTitleText))
@@ -75,7 +81,7 @@ public class SBCourseResourceActivity extends ListActivity {
 					Intent i = new Intent(SBCourseResourceActivity.this,
 							              SBCourseResourceActivity.class);
 					i.putExtra("category", courseListItem.getName());
-					startActivity(i);
+					startActivityForResult(i, DATA_CHANGED_REQUEST_CODE);
 				}
 			}
 		
@@ -142,7 +148,7 @@ public class SBCourseResourceActivity extends ListActivity {
 					break;
 			}
 			
-			Log.d(TAG,"getting course View for "+courseInfo.getName());
+			//Log.d(TAG,"getting course View for "+courseInfo.getName());
 			return viewToReturn;
 		}
 	}
@@ -164,6 +170,8 @@ public class SBCourseResourceActivity extends ListActivity {
 				activity.availableCourses.set(this.position, new CourseInfoSqlite(CourseInfoSqlite.MYCOURSES_TABLE, this.courseInfo));
 			}
 			activity.arrayAdapter.notifyDataSetChanged();
+			activity.setResult(Activity.RESULT_OK);
+			Log.d(TAG,"data changed, result set to OK");
 		}
 	}
     
@@ -223,4 +231,16 @@ public class SBCourseResourceActivity extends ListActivity {
 		}
 		
     }
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// if we requested data change, and got OK, then set our result to OK
+		if (requestCode == DATA_CHANGED_REQUEST_CODE){
+			this.setResult(resultCode);
+			Log.d(TAG,"due to returned result, this result set to "+resultCode);
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+    
+    
 }
