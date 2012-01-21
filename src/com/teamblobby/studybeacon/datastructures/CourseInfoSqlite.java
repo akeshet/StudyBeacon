@@ -54,7 +54,9 @@ public class CourseInfoSqlite extends CourseInfo {
 
 	private CourseInfoSimple cachedInfo;
 
-
+	/**
+	 * open the shared static database reference, if it is not already open.
+	 */
 	private static void openIfNecessaryDB() {
 		if (database==null) {
 			DatabaseOpener opener = 
@@ -65,17 +67,24 @@ public class CourseInfoSqlite extends CourseInfo {
 		}
 	}
 
+	/**
+	 * create the this.where string, which is used in a number is sql
+	 * queries as the selector for this database item
+	 */
 	private void createWhereString() {
 		this.where = "id='" + this.id + "'";
 	}
 
+	/**
+	 * Updates the database row for this element, with values in parameter @param values
+	 */
 	private void setRowValues(ContentValues values) {
 		database.update(this.tableName, values, where, null);
 	}
 
 	/**
 	 * Returns an ArrayList of CourseInfoSqlite objects representing all
-	 * of the database entries in the specified * @param table
+	 * of the database entries in the specified @param table
 	 * @return
 	 */
 	public static ArrayList<CourseInfoSqlite> fetchTable(String tableName) {
@@ -106,13 +115,19 @@ public class CourseInfoSqlite extends CourseInfo {
 	// ***** Constructors 
 
 	/** 
-	 * Creates a new database in table @param tableName , using @param cachedInfo as 
-	 * the cached value and as the initial value of database row.
+	 * Creates a new database row in table @param tableName , using @param cachedInfo as 
+	 * the internally cached value (NOT a copy of it) and as the initial value of database row.
 	 */
 	private CourseInfoSqlite(String tableName, CourseInfoSimple cachedInfo) {
 		createNewEntry(tableName, cachedInfo);
 	}
 
+	/**
+	 * Helper function used by both the above constructor, and also conditionally by a different constructor.
+	 * Folded into its own method so that it could appear as not the first statement of the constructor that calls it.
+	 * @param tableName
+	 * @param cachedInfo
+	 */
 	private void createNewEntry(String tableName, CourseInfoSimple cachedInfo) {
 		this.tableName = tableName;
 		this.cachedInfo = cachedInfo;
@@ -123,6 +138,12 @@ public class CourseInfoSqlite extends CourseInfo {
 		createWhereString();
 	}
 
+	/**
+	 * Helper method used to convert a courseInto into a
+	 * ContentValues map that can be inserted into a database.
+	 * @param courseInfo
+	 * @return
+	 */
 	private ContentValues makeCValues(CourseInfo courseInfo) {
 		ContentValues cValues = new ContentValues();
 		cValues.put(COLUMN_NAME, courseInfo.getName());
