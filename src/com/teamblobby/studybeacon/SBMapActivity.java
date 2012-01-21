@@ -22,6 +22,8 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 {
 
 	public final static String TAG = "SBMapActivity";
+
+	private static final int REQUEST_NEW_BEACON = 0;
 	
 	protected Spinner courseSpinner;
 	protected int courseSpinnerId;
@@ -173,8 +175,9 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 	}
 	
 	public void newBeaconClicked(View view) {
-		Intent i = new Intent(this, SBBeaconEditActivity.class);
-		startActivity(i);
+		Intent intent = new Intent(this, SBBeaconEditActivity.class);
+		intent.setAction(SBBeaconEditActivity.ACTION_NEW);
+		startActivityForResult(intent, REQUEST_NEW_BEACON);
 	}
 
 	/**
@@ -228,6 +231,8 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 //			beacItemOverlay.addOverlay(item);
 		}
 			
+		mapView.invalidate();
+		
 	}
 
 	public void onQueryFailure() {
