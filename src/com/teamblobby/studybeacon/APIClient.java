@@ -23,6 +23,10 @@ public class APIClient {
 	
     private static AsyncHttpClient client = new AsyncHttpClient();
 	
+    
+    private static SimpleDateFormat df = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
+	
+    
     public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         client.get(getAbsoluteUrl(url), params, responseHandler);
 	}
@@ -95,7 +99,6 @@ public class APIClient {
 					
 					GeoPoint point = new GeoPoint(bObj.getInt(LAT_STR), bObj.getInt(LON_STR));
 					
-					SimpleDateFormat df = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
 					Date created = df.parse(bObj.getString(CREATED_STR));
 					Date expires = df.parse(bObj.getString(EXPIRES_STR));
 					

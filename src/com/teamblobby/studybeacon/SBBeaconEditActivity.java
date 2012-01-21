@@ -1,5 +1,8 @@
 package com.teamblobby.studybeacon;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 import com.teamblobby.studybeacon.datastructures.BeaconInfoSimple;
 import com.teamblobby.studybeacon.datastructures.CourseInfo;
 
@@ -36,6 +39,7 @@ public class SBBeaconEditActivity extends Activity {
 	protected Spinner courseSpinner;
 	protected TextView expiresTV;
 	protected Spinner expiresSpinner;
+	protected TextView expiresTimeTV;
 	protected Spinner workingOnSpinner;
 	protected EditText phone;
 	protected EditText email;
@@ -48,6 +52,9 @@ public class SBBeaconEditActivity extends Activity {
 	private ArrayAdapter<String> courseAdapter;
 	private ArrayAdapter<CharSequence> expiresAdapter;
 	private ArrayAdapter<CharSequence> workingOnAdapter;
+	
+	
+	private DateFormat df = DateFormat.getTimeInstance(DateFormat.SHORT);
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -89,6 +96,7 @@ public class SBBeaconEditActivity extends Activity {
 		courseSpinner    = (Spinner)  findViewById(R.id.courseSpinner);
 		expiresTV        = (TextView) findViewById(R.id.expiresTV);
 		expiresSpinner   = (Spinner)  findViewById(R.id.expiresSpinner);
+		expiresTimeTV    = (TextView)  findViewById(R.id.expiresTimeTV);
 		workingOnSpinner = (Spinner)  findViewById(R.id.workingOnSpinner);
 		phone            = (EditText) findViewById(R.id.phone);
 		email            = (EditText) findViewById(R.id.email);
@@ -150,16 +158,17 @@ public class SBBeaconEditActivity extends Activity {
 	}
 
 	private void setUpForView(Bundle savedInstanceState, Intent startingIntent) {
-		// TODO Auto-generated method stub
 		// Set title text
 		beaconTitleTV.setText(R.string.beaconDetails);
+		
 		// Disable the elements' editability
 		Spinner spinners[] = {courseSpinner, expiresSpinner, workingOnSpinner};
 		for (Spinner s : spinners)
 			s.setEnabled(false);
+		
 		// Change the "expires" text
 		expiresTV.setText(R.string.expiresAt);
-		// TODO -- replace the expires in spinner with a text field that shows the expiration time
+		expiresSpinner.setVisibility(View.INVISIBLE);
 		
 		EditText ets[] = {phone, email, details};
 		for (EditText e : ets)
@@ -186,6 +195,8 @@ public class SBBeaconEditActivity extends Activity {
 		phone.setText(mBeacon.getTelephone());
 		email.setText(mBeacon.getEmail());
 		details.setText(mBeacon.getDetails());
+		expiresTimeTV.setText(df.format(mBeacon.getExpires()));
+		
 		
 	}
 

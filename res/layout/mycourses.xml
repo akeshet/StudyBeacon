@@ -12,14 +12,15 @@
 
         <ImageView
             android:id="@+id/coursesIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/iconSize"
+            android:layout_height="@dimen/iconSize"
             android:src="@drawable/ic_launcher" />
 
         <TextView
             android:id="@+id/coursesTitleText"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:gravity="left|center_vertical"
             android:text="@string/coursesTitleText"
             />
         
