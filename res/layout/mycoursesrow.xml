@@ -2,7 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal" >
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:background="@color/rowBackground" >
 
     <CheckBox
         android:id="@+id/mcrStarButton"
@@ -13,18 +15,17 @@
     
     <TextView
         android:id="@+id/mcrCourseNameTextView"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:text="TextView"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/iconSize"
         android:gravity="center_vertical"
-        android:layout_gravity="center|fill_vertical"
+        android:layout_gravity="center|center_vertical"
         android:layout_weight="1"/>
     
      <CheckBox
          android:id="@+id/mcrNotificationButton"
          android:layout_width="@dimen/iconSize"
          android:layout_height="@dimen/iconSize"
-         android:layout_gravity="right|fill_vertical"
+         android:layout_gravity="right|center_vertical"
          android:button="@drawable/notifytoggle"/>     
          
     <ImageButton
@@ -32,6 +33,6 @@
         android:layout_width="@dimen/iconSize"
         android:layout_height="@dimen/iconSize"
         android:src="@drawable/newbeaconbutton"
-        android:layout_gravity="right|fill_vertical"/>
+        android:layout_gravity="right|center_vertical"/>
 
 </LinearLayout>

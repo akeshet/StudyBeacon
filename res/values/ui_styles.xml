@@ -6,8 +6,9 @@
 	<dimen name="dividerHeight">1px</dimen>
 
 
-
-	<color name="rowBackground">#FFFFFF</color>
+  <color name="rowBackground">#666666</color>
+  <color name="background">#666666</color>
+  <color name="titleBackground">#444444</color>
 	<dimen name="horizontalPadding">10dip</dimen>
 	<dimen name="verticalPadding">6dip</dimen>
 	<dimen name="interlinePadding">2dip</dimen>

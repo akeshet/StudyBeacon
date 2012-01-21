@@ -3,37 +3,20 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-    
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <com.teamblobby.studybeacon.TitleBar
+        android:id="@+id/titleBar"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" 
-        android:id="@+id/coursesHeader">
-
-        <ImageView
-            android:id="@+id/coursesIcon"
-            android:layout_width="@dimen/iconSize"
-            android:layout_height="@dimen/iconSize"
-            android:src="@drawable/ic_launcher" />
-
-        <TextView
-            android:id="@+id/coursesTitleText"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:gravity="left|center_vertical"
-            android:text="@string/coursesTitleText"
-            />
-        
-    </LinearLayout>
-
+        android:text="@string/coursesTitleText" />
     
     <!--  NOTE the following id MUST be "@android:id/list" in order for the ListActivity to work -->
     <ListView
         android:id="@android:id/list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_above="@+id/coursesFooter"
-        android:layout_below="@+id/coursesHeader">
+        android:layout_below="@+id/titleBar">
     </ListView>
 
     <!--  NOTE the following id MUST be "@android:id/empty" in order for the ListActivity to work -->
@@ -41,7 +24,7 @@
            android:layout_width="match_parent"
            android:layout_height="match_parent"
            android:text="@string/coursesEmpty"
-           android:layout_below="@+id/coursesHeader"/>
+           android:layout_below="@+id/titleBar"/>
     
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"

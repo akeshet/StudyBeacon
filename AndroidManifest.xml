@@ -19,8 +19,7 @@
 
         <activity
             android:name=".SBMapActivity"
-            android:label="@string/app_name"
-            android:theme="@android:style/Theme.NoTitleBar" >
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,18 +28,15 @@
         </activity>
         <activity
             android:name=".SBMyCoursesActivity"
-            android:label="@string/app_name"
-            android:theme="@android:style/Theme.NoTitleBar" >
+            android:label="@string/app_name" >
         </activity>
         <activity
             android:name=".SBBeaconEditActivity"
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity android:name=".SBCourseResourceActivity"
-            android:label="@string/app_name"
-            android:theme="@android:style/Theme.NoTitleBar" >
+            android:label="@string/app_name" >
         </activity>
     </application>
 
