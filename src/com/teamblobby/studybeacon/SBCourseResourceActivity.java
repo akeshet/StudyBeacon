@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public class SBCourseResourceActivity extends ListActivity {
 
@@ -68,7 +69,6 @@ public class SBCourseResourceActivity extends ListActivity {
 
 			public void onItemClick(AdapterView<?> listView, View itemView, int position,
 					long rowId) {
-				// TODO Auto-generated method stub
 				CourseListable courseListItem = (CourseListable) listView.getAdapter().getItem(position);
 				
 				if ( courseListItem.listableType() == CourseListable.TYPE_CATEGORY ) { 
@@ -85,9 +85,15 @@ public class SBCourseResourceActivity extends ListActivity {
 	
 	private void setStarredCourses() {
 		
-		for (CourseListable course : this.availableCourses){
-				course.setStarred(Arrays.asList(CourseInfo.getCourseNames(
-									this.currentCourses)).contains(course.getName()));
+		for ( int j = 0; j < this.availableCourses.size(); j++ ){
+				//course.setStarred(Arrays.asList(CourseInfo.getCourseNames(
+				//					this.currentCourses)).contains(course.getName()));
+			if ( Arrays.asList(CourseInfo.getCourseNames(this.currentCourses)).contains(this.availableCourses.get(j).getName()) ){
+				this.availableCourses.get(j).setStarred(true);
+				
+				this.availableCourses.set(j, new CourseInfoSqlite(CourseInfoSqlite.MYCOURSES_TABLE, (CourseInfo) this.availableCourses.get(j)));
+				Log.d(TAG,"added object "+this.availableCourses.get(j)+" as "+this.availableCourses.get(j).getClass());
+			}
 		}
 		
 	}
@@ -109,6 +115,11 @@ public class SBCourseResourceActivity extends ListActivity {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View viewToReturn =  super.getView(position, convertView, parent);
+
+			CheckBox notifyCheckBox = (CheckBox) viewToReturn.findViewById(R.id.mcrStarButton);
+			notifyCheckBox.setOnCheckedChangeListener(null);
+			notifyCheckBox.setVisibility(View.VISIBLE);
+			
 			
 			// remove notify and new beacon buttons
 			viewToReturn.findViewById(R.id.mcrNotificationButton).setVisibility(View.GONE);
@@ -117,15 +128,14 @@ public class SBCourseResourceActivity extends ListActivity {
 			// set starred based on what's in the CourseInfo object
 			final CourseListable courseInfo = this.getItem(position);
 			
-			CheckBox notifyCheckBox = (CheckBox) viewToReturn.findViewById(R.id.mcrStarButton);
 			
-			notifyCheckBox.setVisibility(View.VISIBLE);
 			// here split depending on if it's a course or course category			
 			switch (courseInfo.listableType()) {
 				case CourseListable.TYPE_COURSE_STARRED:
 				case CourseListable.TYPE_COURSE_UNSTARRED:
 					notifyCheckBox.setChecked(courseInfo.getStarred());
 					// TODO add onCheck listener to checkbox
+					notifyCheckBox.setOnCheckedChangeListener(new CourseCheckedListener(position,(CourseInfo) courseInfo));
 					break;
 				case CourseListable.TYPE_CATEGORY:
 					notifyCheckBox.setVisibility(View.INVISIBLE);
@@ -134,6 +144,26 @@ public class SBCourseResourceActivity extends ListActivity {
 			
 			Log.d(TAG,"getting course View for "+courseInfo.getName());
 			return viewToReturn;
+		}
+	}
+	
+	private class CourseCheckedListener implements OnCheckedChangeListener{
+
+		private int position;
+		private CourseInfo courseInfo;
+		
+		public CourseCheckedListener(int positionIn, CourseInfo courseInfoIn){
+			this.position = positionIn;
+			this.courseInfo = courseInfoIn;
+		}
+		
+		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+			this.courseInfo.setStarred(isChecked);
+			SBCourseResourceActivity activity = SBCourseResourceActivity.this;
+			if ( isChecked ) {
+				activity.availableCourses.set(this.position, new CourseInfoSqlite(CourseInfoSqlite.MYCOURSES_TABLE, this.courseInfo));
+			}
+			activity.arrayAdapter.notifyDataSetChanged();
 		}
 	}
     
