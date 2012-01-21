@@ -4,6 +4,7 @@ import com.teamblobby.studybeacon.datastructures.BeaconInfoSimple;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +15,11 @@ public class SBBeaconEditActivity extends Activity {
 	
 	// Here is the interface for intents to use
 	public static final String COURSE_STR = "Course";
+	private static final String BEACON_STR = "beacon";
+
+	public static final String ACTION_NEW = "com.blobby.studybeacon.BeaconEditActivity.new";
+	public static final String ACTION_EDIT = "com.blobby.studybeacon.BeaconEditActivity.edit";
+	public static final String ACTION_VIEW = "com.blobby.studybeacon.BeaconEditActivity.view";
 	
 	
 	protected enum OperationMode {
@@ -53,9 +59,9 @@ public class SBBeaconEditActivity extends Activity {
 		String startingAction = startingIntent.getAction();
 		
 		// Figure out what to do
-		if (startingAction == Intent.ACTION_VIEW) {
+		if (startingAction == ACTION_VIEW) {
 			mode = OperationMode.MODE_VIEW;
-		} else if (startingAction == Intent.ACTION_EDIT) {
+		} else if (startingAction == ACTION_EDIT) {
 			mode = OperationMode.MODE_EDIT;
 		} else { // By default, create a new beacon
 			mode = OperationMode.MODE_NEW;
@@ -116,21 +122,29 @@ public class SBBeaconEditActivity extends Activity {
 		// Set title text
 		beaconTitleTV.setText(R.string.newBeacon);
 		
-		// Check if a course has been selected in the intent
-		String course = startingIntent.getStringExtra(COURSE_STR);
+		// If a course has been selected in the intent, try to set the spinner
+		setCourseSpinnerItem(startingIntent.getStringExtra(COURSE_STR));
+		
+	}
+
+	protected void setCourseSpinnerItem(String course) {
 		if (course != null) {
 			// Set the course spinner's selected element
 			// TODO -- does this work?
 			int courseIndex = courseAdapter.getPosition(course);
 			courseSpinner.setSelection(courseIndex);
 		}
-		
 	}
 
 	private void setUpForEdit(Bundle savedInstanceState, Intent startingIntent) {
 		// TODO Auto-generated method stub
 		// Set title text
 		beaconTitleTV.setText(R.string.editBeacon);		
+		
+		beaconActionButton.setText(R.string.editBeacon);
+		
+		loadBeaconData(startingIntent);
+		
 	}
 
 	private void setUpForView(Bundle savedInstanceState, Intent startingIntent) {
@@ -148,6 +162,28 @@ public class SBBeaconEditActivity extends Activity {
 		EditText ets[] = {phone, email, details};
 		for (EditText e : ets)
 			e.setEnabled(false);
+		
+		
+		loadBeaconData(startingIntent);
+		
+		beaconActionButton.setVisibility(View.INVISIBLE);
+		
+	}
+
+	private void loadBeaconData(Intent startingIntent) {
+		// TODO Auto-generated method stub
+		
+		// TODO What do we do if somebody did not call this properly?
+		mBeacon = startingIntent.getParcelableExtra(BEACON_STR);
+		
+		if (mBeacon == null) // FAILURE
+			return;
+		
+		// Load the course name
+		setCourseSpinnerItem(mBeacon.getCourseName());
+		phone.setText(mBeacon.getTelephone());
+		email.setText(mBeacon.getEmail());
+		details.setText(mBeacon.getDetails());
 		
 	}
 
