@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.teamblobby.studybeacon.datastructures.*;
+import com.teamblobby.studybeacon.network.StellarQuery;
 
 import android.app.Activity;
 import android.app.ListActivity;
@@ -195,24 +196,13 @@ public class SBCourseResourceActivity extends ListActivity {
 		protected List<CourseListable> doInBackground(String... category) {
 			Log.v(TAG, "Loading Course Resources");
 			final String[] pulledCourseList;
-			// TODO load the resources from MIT somehow
-			try {
-				Thread.sleep(500); //simulate load time
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			
+						
 			List<CourseListable> courses = new ArrayList<CourseListable>();
-			if (category[0].equals(ROOT_CATEGORY)) {
-				pulledCourseList = new String[] {"1","2","3","4","5","6","7","8"};
-				for (String course : pulledCourseList) {
-					courses.add(new CourseCategory(course));
-					}
-			} else {
-				pulledCourseList = new String[] {"1.334","2.217","6.570","8.101","8.901"};
-				for (String course : pulledCourseList) {
-					courses.add(new CourseInfoSimple(course));
-				}
+			
+			pulledCourseList = StellarQuery.newQuery(category[0]).execute();
+			
+			for (String course : pulledCourseList) {
+				courses.add(category[0].equals(ROOT_CATEGORY) ? new CourseCategory(course) : new CourseInfoSimple(course));
 			}
 			
 			Log.v(TAG,"load finished");
