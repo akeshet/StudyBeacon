@@ -161,8 +161,7 @@ public class SBCourseResourceActivity extends ListActivity {
 			this.courseInfo.setStarred(isChecked);
 			SBCourseResourceActivity activity = SBCourseResourceActivity.this;
 			if ( isChecked ) {
-				this.courseInfo = new CourseInfoSqlite(CourseInfoSqlite.MYCOURSES_TABLE, this.courseInfo);
-				activity.availableCourses.set(this.position, this.courseInfo);
+				activity.availableCourses.set(this.position, new CourseInfoSqlite(CourseInfoSqlite.MYCOURSES_TABLE, this.courseInfo));
 			}
 			activity.arrayAdapter.notifyDataSetChanged();
 		}
