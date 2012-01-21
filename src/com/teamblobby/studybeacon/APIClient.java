@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.android.maps.GeoPoint;
@@ -68,20 +69,10 @@ public class APIClient {
 		params.put(LON_MIN_STR,Integer.toString(LonE6Min));
 		params.put(LON_MAX_STR,Integer.toString(LonE6Max));
 		
-		String courseList = "";
-		if ( (courses != null) && (courses.length >= 0) ) {
-			courseList = courses[0];
-			
-			for (int i=1; i<courses.length; i++) {
-				courseList += COURSE_DELIM_STR + courses[i];
-			}
-			
-		}
+		String courseList = TextUtils.join(COURSE_DELIM_STR, courses); 
 		
 		params.put(COURSE_STR, courseList);
-		
-		
-		
+				
 		Log.d(TAG,"Query string " + params.toString());
 		
 		get(QUERY_URL, params, new JsonHttpResponseHandler() {
