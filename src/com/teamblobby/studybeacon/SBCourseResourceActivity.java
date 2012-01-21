@@ -197,7 +197,7 @@ public class SBCourseResourceActivity extends ListActivity {
 			final String[] pulledCourseList;
 			// TODO load the resources from MIT somehow
 			try {
-				Thread.sleep(3000); //simulate load time
+				Thread.sleep(500); //simulate load time
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
