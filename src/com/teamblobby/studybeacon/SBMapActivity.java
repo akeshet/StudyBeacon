@@ -28,6 +28,8 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 	private static final int REQUEST_NEW_BEACON = 0;
 	
 	protected Spinner courseSpinner;
+	private ArrayAdapter<CharSequence> courseSpinnerAdapter;
+
 	protected int courseSpinnerId;
 
 	protected Button myClassesButton;
@@ -161,7 +163,7 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 	protected void loadCourses(Bundle savedInstanceState) {
 		// TODO use savedInstanceState if possible
 
-		ArrayAdapter<CharSequence> courseSpinnerAdapter =
+		courseSpinnerAdapter =
 				new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item);
 
 		courseSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -188,6 +190,8 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 	public void newBeaconClicked(View view) {
 		Intent intent = new Intent(this, SBBeaconEditActivity.class);
 		intent.setAction(SBBeaconEditActivity.ACTION_NEW);
+		// check what the spinner is set to
+		// TODO
 		startActivityForResult(intent, REQUEST_NEW_BEACON);
 	}
 

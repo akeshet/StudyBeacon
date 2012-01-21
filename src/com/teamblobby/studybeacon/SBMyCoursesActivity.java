@@ -86,6 +86,9 @@ public class SBMyCoursesActivity extends ListActivity {
 				
 				public void onClick(View v) {
 					Intent i = new Intent(SBMyCoursesActivity.this, SBBeaconEditActivity.class);
+					i.setAction(SBBeaconEditActivity.ACTION_NEW);
+					// Set the default class
+					i.putExtra(SBBeaconEditActivity.COURSE_STR, courseInfo.getName());
 					SBMyCoursesActivity.this.startActivity(i);
 				}
 			});
