@@ -53,11 +53,8 @@ public class Global extends Application {
 	}
 	
 	public static String[] getCourses() {
-		// TODO Fix this
-    	String delim = res.getString(R.string.coursedelim);
-    	String courseList = Global.prefs.getString(COURSES_STR, "6.570"+delim+"8.901");
-    	
-    	return courseList.split(delim);
+		
+    	return CourseInfo.getCourseNames(getMyCourseInfos());
 	}
 	
 	/**

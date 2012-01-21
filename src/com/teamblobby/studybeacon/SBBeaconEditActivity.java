@@ -1,6 +1,8 @@
 package com.teamblobby.studybeacon;
 
 import com.teamblobby.studybeacon.datastructures.BeaconInfoSimple;
+import com.teamblobby.studybeacon.datastructures.CourseInfo;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
