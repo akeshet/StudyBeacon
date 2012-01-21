@@ -1,11 +1,15 @@
 package com.teamblobby.studybeacon;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.*;
@@ -16,6 +20,9 @@ import com.teamblobby.studybeacon.datastructures.*;
 public class SBMyCoursesActivity extends ListActivity {
 	
 	private static final String TAG = "SBMyCoursesActivity";
+	static final int DATA_CHANGE_REQUEST_CODE = 0;
+	private CourseAdapter adapter;
+	private List<CourseInfo> courseInfos;
 	ListView myListView;
 	
     @Override
@@ -26,17 +33,17 @@ public class SBMyCoursesActivity extends ListActivity {
     	// add footer button
     	Button footerButton = (Button) this.findViewById(R.id.addClassesButton);
     	//footerButton.setText(Global.res.getString(R.string.addclass));
-    	footerButton.setOnClickListener(new CourseClickListener());
+    	footerButton.setOnClickListener(new AddCourseClickListener());
     	
     	myListView = this.getListView();
     	//myListView.addFooterView(footerButton);
+    	this.courseInfos = new ArrayList<CourseInfo>();
+     	this.courseInfos.addAll(Global.getMyCourseInfos());
     	
-     	List<CourseInfo> courseInfos = Global.getMyCourseInfos();
-    	
-    	myListView.setAdapter(new CourseAdapter(this,
-    											R.layout.mycoursesrow,
-    					                        R.id.mcrCourseNameTextView,
-    					                        courseInfos));
+     	this.adapter = new CourseAdapter(this,R.layout.mycoursesrow,R.id.mcrCourseNameTextView,
+     			this.courseInfos);
+     	
+    	myListView.setAdapter(this.adapter);
     	
     }
     
@@ -91,12 +98,26 @@ public class SBMyCoursesActivity extends ListActivity {
 		};
     }
     
-	private class CourseClickListener implements OnClickListener {
+	private class AddCourseClickListener implements OnClickListener {
 		public void onClick(View view){
 			// launch the course resource activity
 			Intent i = new Intent(SBMyCoursesActivity.this,SBCourseResourceActivity.class);
-			startActivity(i);
+			SBMyCoursesActivity.this.startActivityForResult(i, DATA_CHANGE_REQUEST_CODE);
 		}
 	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == SBMyCoursesActivity.DATA_CHANGE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+			// RESULT_OK means data has changed
+			this.courseInfos.clear();
+			this.courseInfos.addAll(Global.getMyCourseInfos());
+			this.adapter.notifyDataSetChanged();
+			Log.d(TAG, "data refreshed due to activity result");
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+	
+	
 	
 }
