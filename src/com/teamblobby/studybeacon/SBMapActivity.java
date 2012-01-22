@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -34,19 +35,19 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 
 	protected Button myClassesButton;
 
-	private MapView mapView;
-	private MapController mapViewController;
+	private SBMapView mapView;
 
 	protected HashMap<Integer, BeaconInfo> mBeacons;
 
 	private List<Overlay> overlays;
-	private MyLocationOverlay myLocOverlay;
 	/** Hash from course string to itemized overlays */
 	private HashMap<String,BeaconItemizedOverlay> beacItemOverlays; 
 
 	private Drawable beaconD = Global.res.getDrawable(R.drawable.beacon);
 
-	private List<String> courses;
+	private List<String> courses;	
+	
+	///////////////////////////////////////////////////////
 
 	/** Called when the activity is first created. */
 	@Override
@@ -55,6 +56,11 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 
 		setContentView(R.layout.map);
 
+		// Find the UI elements
+		// Find the spinner
+		courseSpinnerId = R.id.mapCourseSpinner;
+		courseSpinner = (Spinner) findViewById(courseSpinnerId);
+		
 		// set up an onClickListener handler for classesButton
 		myClassesButton = (Button) findViewById(R.id.myClassesButton);
 		myClassesButton.setOnClickListener(new View.OnClickListener() {
@@ -66,10 +72,6 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 
 		this.setUpMapView(savedInstanceState);
 
-		// Find the spinner
-		courseSpinnerId = R.id.mapCourseSpinner;
-		courseSpinner = (Spinner) findViewById(courseSpinnerId);
-
 		this.loadCourses(savedInstanceState);
 
 		this.setUpBeacons(savedInstanceState);
@@ -80,14 +82,14 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 	public void onResume() {
 		super.onResume();
 		Log.d(TAG,"onResume()");
-		myLocOverlay.enableMyLocation();
+		mapView.resume();
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
 		Log.d(TAG,"onPause()");
-		myLocOverlay.disableMyLocation();
+		mapView.pause();
 	}
 
 	@Override
@@ -102,33 +104,16 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 	protected void setUpMapView(Bundle savedInstanceState) {
 		// TODO use savedInstanceState if possible
 		// add zoom
-		this.mapView = (MapView) findViewById(R.id.mapView);
+		this.mapView = (SBMapView) findViewById(R.id.mapView);
 		mapView.setBuiltInZoomControls(true);
-
-		// get the mapview controller, set the default map location on MIT campus
-		this.mapViewController = mapView.getController();
 
 		// get the overlays
 		this.overlays = mapView.getOverlays();
 		// Add a MyLocationOverlay to it
-		this.myLocOverlay = new MyLocationOverlay(this,mapView);
-
-		overlays.add(myLocOverlay);
-
+		
 		// Nic is so smart! -Leo
-		if (savedInstanceState == null) this.setMapPosition(); 
+		if (savedInstanceState == null) mapView.setDefaultMapPosition();
 
-	}
-
-	protected void setMapPosition() {
-		// begin at MIT
-		mapViewController.setCenter(new GeoPoint( Global.res.getInteger(R.integer.mapDefaultLatE6),Global.res.getInteger(R.integer.mapDefaultLongE6)));
-		mapViewController.setZoom(Global.res.getInteger(R.integer.mapDefaultZoom));
-		// show user's position
-		myLocOverlay.runOnFirstFix(new Runnable() {
-			public void run() {
-				mapViewController.animateTo(myLocOverlay.getMyLocation());
-			}});
 	}
 
 	private void setUpBeacons(Bundle savedInstanceState) {
@@ -209,7 +194,7 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 		}
 		startActivityForResult(intent, REQUEST_NEW_BEACON);
 	}
-
+	
     ////////////////////////////////////////////////////////////////
 	// The following methods are for implementing SBAPIHandler
 
