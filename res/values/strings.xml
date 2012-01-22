@@ -6,6 +6,7 @@
     <string name="courseSpinnerPrompt">Show course(s)</string>
     <string name="allCourses">All</string>
     <string name="editCourses">Edit…</string>
+    <string name="defaultTitle">Study Beacon</string>
     <string name="coursesTitleText">My Courses</string>
     <string name="addclass">Add New Course</string>
     <string name="courseResourceTitleText">MIT Course List</string>

@@ -1,7 +1,6 @@
 package com.teamblobby.studybeacon;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.teamblobby.studybeacon.datastructures.*;

@@ -1,11 +1,10 @@
 package com.teamblobby.studybeacon;
 
-import java.lang.reflect.Field;
-
 import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,11 +14,11 @@ public class TitleBar extends LinearLayout {
 	private static final String XML_NAMESPACE = "http://schemas.android.com/apk/res/android";
 	
 	public static final String ATTR_TEXT = "text";
-	
+
 	protected ImageView titleIcon;
 	protected TextView titleText;
 	
-	public TitleBar(Context context, AttributeSet attrs) {
+	public TitleBar(final Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
 		
@@ -31,9 +30,24 @@ public class TitleBar extends LinearLayout {
 	
 		String initialText = attrs.getAttributeValue(XML_NAMESPACE, ATTR_TEXT);
 		if(initialText != null) {
-			setTitle(initialText);
+			if (initialText.charAt(0) == '@')
+				setTitle(Global.res.getString(
+						attrs.getAttributeResourceValue(XML_NAMESPACE, ATTR_TEXT,
+								R.string.defaultTitle)));
+			else
+				setTitle(initialText);
 		}
 		
+		// Clicking the icon will make you go home
+		titleIcon.setOnClickListener(new OnClickListener() {
+
+			public void onClick(View v) {
+				Intent i = new Intent(context, SBMapActivity.class);
+				i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				context.startActivity(i);
+			}
+		});
+
 	}
 
 	public void setTitle(String text) {
