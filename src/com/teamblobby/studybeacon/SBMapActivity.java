@@ -210,9 +210,17 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 		startActivityForResult(intent, REQUEST_NEW_BEACON);
 	}
 
+    ////////////////////////////////////////////////////////////////
+	// The following methods are for implementing SBAPIHandler
+
+	public Activity getActivity() {
+		return this;
+	}
+
 	/**
 	 *  This function is responsible for taking the data from
 	 *  the query and inserting it into the data structures.
+	 *  TODO: Rewrite this.
 	 */
 	public void onQuerySuccess(ArrayList<BeaconInfo> beacons) {
 		// TODO Put the beacons on the map
@@ -265,13 +273,19 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 		
 	}
 
-	public void onQueryFailure() {
+	public void onQueryFailure(Throwable t) {
 		// TODO Complain about failure
 		Toast.makeText(this, "Failed to load beacons from server", Toast.LENGTH_SHORT).show();
 	}
 
-	public Activity getActivity() {
-		return this;
+	public void onAddSuccess(BeaconInfo beacon) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void onAddFailure(Throwable arg0) {
+		// TODO Auto-generated method stub
+		// This should never be called
 	}
 
 }
