@@ -1,6 +1,5 @@
 package com.teamblobby.studybeacon;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -157,6 +156,7 @@ public class APIClient {
 	public final static String ADD_URL = "add.py";
 
 	public final static String DURATION_STR = "Duration";
+	public final static String DEVID_STR    = "DeviceId";
 
 	public static void add(BeaconInfo beacon, int duration, final SBAPIHandler handler) {
 		RequestParams params = new RequestParams();
@@ -164,11 +164,13 @@ public class APIClient {
 		params.put(COURSE_STR,    beacon.getCourseName());
 		params.put(LAT_STR,       Integer.toString(beacon.getLoc().getLatitudeE6()));
 		params.put(LON_STR,       Integer.toString(beacon.getLoc().getLongitudeE6()));
-		params.put(BEACID_STR,    Global.getMyIdString());
+		params.put(DEVID_STR,     Global.getMyIdString());
 		params.put(DURATION_STR,  Integer.toString(duration));
 		params.put(TELEPHONE_STR, beacon.getTelephone() );
 		params.put(EMAIL_STR,     beacon.getEmail() );
 		params.put(DETAILS_STR,   beacon.getDetails());
+
+		Log.d(TAG,"add string " + params.toString());
 
 		post(ADD_URL, params, new AddJsonHandler(handler));
 

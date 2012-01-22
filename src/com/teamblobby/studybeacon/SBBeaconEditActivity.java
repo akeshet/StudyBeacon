@@ -1,18 +1,28 @@
 package com.teamblobby.studybeacon;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
+import com.google.android.maps.GeoPoint;
+import com.google.android.maps.MyLocationOverlay;
+import com.teamblobby.studybeacon.datastructures.BeaconInfo;
 import com.teamblobby.studybeacon.datastructures.BeaconInfoSimple;
 import android.app.Activity;
 import android.content.Intent;
+import android.location.LocationProvider;
 import android.os.Bundle;
+import android.provider.ContactsContract.CommonDataKinds.Email;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class SBBeaconEditActivity extends Activity {
+public class SBBeaconEditActivity extends Activity implements SBAPIHandler {
 	
 	// Here is the interface for intents to use
 	public static final String EXTRA_COURSE = "Course";
@@ -122,15 +132,6 @@ public class SBBeaconEditActivity extends Activity {
 	    
 	}
 
-	private void setUpForNew(Bundle savedInstanceState, Intent startingIntent) {
-		// Set title text
-		beaconTitleTV.setText(R.string.newBeacon);
-
-		// If a course has been selected in the intent, try to set the spinner
-		setCourseSpinnerItem(startingIntent.getStringExtra(EXTRA_COURSE));
-
-	}
-
 	protected void setCourseSpinnerItem(String course) {
 		if (course != null) {
 			// Set the course spinner's selected element
@@ -139,15 +140,73 @@ public class SBBeaconEditActivity extends Activity {
 		}
 	}
 
-	private void setUpForEdit(Bundle savedInstanceState, Intent startingIntent) {
+	protected int durationFromField() {
+		// TODO This is a hack. Fix it.
+		String durationText = (String)expiresSpinner.getSelectedItem();
+		int spaceIndex = durationText.indexOf(" ");
+		// Convert to minutes
+		return 60*Integer.parseInt(durationText.substring(0, spaceIndex));
+	}
+
+	protected BeaconInfo beaconFromFields() {
 		// TODO Auto-generated method stub
+
+		String courseName = (String) courseSpinner.getSelectedItem();
+		// TODO -- find our present location
+		GeoPoint loc = new GeoPoint(Global.res.getInteger(R.integer.mapDefaultLatE6),
+				Global.res.getInteger(R.integer.mapDefaultLongE6));
+
+		return new BeaconInfoSimple(-1, // don't have a BeaconId yet
+				courseName,
+				loc,
+				-1, // don't have a # of visitors yet
+				details.getText().toString(),
+				phone.getText().toString(),
+				email.getText().toString(),
+				new Date(),
+				new Date() // TODO put this in the future
+		);
+	}
+
+	private void setUpForNew(Bundle savedInstanceState, Intent startingIntent) {
+		// TODO -- Add logic if already at a beacon
+
+		// Set title text
+		beaconTitleTV.setText(R.string.newBeacon);
+
+		// If a course has been selected in the intent, try to set the spinner
+		setCourseSpinnerItem(startingIntent.getStringExtra(EXTRA_COURSE));
+
+		// Add a listener for the action button
+		beaconActionButton.setOnClickListener(new NewBeaconClickListener(this));
+
+	}
+
+	protected static final class NewBeaconClickListener implements OnClickListener {
+
+		protected SBBeaconEditActivity mActivity;
+
+		public NewBeaconClickListener(SBBeaconEditActivity sbBeaconEditActivity) {
+			// TODO Auto-generated constructor stub
+			mActivity = sbBeaconEditActivity;
+		}
+
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			// TODO actually get this from the fields
+			APIClient.add(mActivity.beaconFromFields(), mActivity.durationFromField(), mActivity);
+		}
+	}
+
+	private void setUpForEdit(Bundle savedInstanceState, Intent startingIntent) {
+		// TODO Add logic if already at a beacon
 		// Set title text
 		beaconTitleTV.setText(R.string.editBeacon);		
-		
+
 		beaconActionButton.setText(R.string.editBeacon);
-		
+
 		loadBeaconData(startingIntent);
-		
+
 	}
 
 	private void setUpForView(Bundle savedInstanceState, Intent startingIntent) {
@@ -176,21 +235,49 @@ public class SBBeaconEditActivity extends Activity {
 
 	private void loadBeaconData(Intent startingIntent) {
 		// TODO Auto-generated method stub
-		
+
 		// TODO What do we do if somebody did not call this properly?
 		mBeacon = startingIntent.getParcelableExtra(EXTRA_BEACON);
-		
+
 		if (mBeacon == null) // FAILURE
 			return;
-		
+
 		// Load the course name
 		setCourseSpinnerItem(mBeacon.getCourseName());
 		phone.setText(mBeacon.getTelephone());
 		email.setText(mBeacon.getEmail());
 		details.setText(mBeacon.getDetails());
 		expiresTimeTV.setText(df.format(mBeacon.getExpires()));
+
+
+	}
+
+	////////////////////////////////////////////////////////////////
+	// The following are for implementing SBAPIHandler
+
+	public Activity getActivity() {
+		// TODO Auto-generated method stub
+		return this;
+	}
+
+	public void onQuerySuccess(ArrayList<BeaconInfo> beacons) {
+		// TODO Auto-generated method stub
 		
+	}
+
+	public void onQueryFailure(Throwable arg0) {
+		// TODO Auto-generated method stub
 		
+	}
+
+	public void onAddSuccess(BeaconInfo beacon) {
+		// TODO Auto-generated method stub
+		Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
+	}
+
+	public void onAddFailure(Throwable arg0) {
+		// TODO Auto-generated method stub
+		Toast.makeText(this, "Failure", Toast.LENGTH_SHORT).show();
 	}
 
 }
