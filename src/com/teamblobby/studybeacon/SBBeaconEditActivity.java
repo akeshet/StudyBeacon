@@ -283,12 +283,14 @@ public class SBBeaconEditActivity extends Activity implements SBAPIHandler {
 
 	public void onAddSuccess(BeaconInfo beacon) {
 		// TODO Auto-generated method stub
-		Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, "Beacon added successfully", Toast.LENGTH_SHORT).show();
+		// go back home
+		Global.goHome(this);
 	}
 
 	public void onAddFailure(Throwable arg0) {
 		// TODO Auto-generated method stub
-		Toast.makeText(this, "Failure", Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, "Failed to add beacon", Toast.LENGTH_SHORT).show();
 	}
 
 }

@@ -42,9 +42,7 @@ public class TitleBar extends LinearLayout {
 		titleIcon.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
-				Intent i = new Intent(context, SBMapActivity.class);
-				i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				context.startActivity(i);
+				Global.goHome(context);
 			}
 		});
 
