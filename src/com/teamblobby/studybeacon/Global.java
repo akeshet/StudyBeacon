@@ -1,6 +1,7 @@
 package com.teamblobby.studybeacon;
 
 import java.util.List;
+import java.util.Random;
 
 import android.app.Application;
 
@@ -71,8 +72,11 @@ public class Global extends Application {
 		return courseInfos;
 	}
 	
+	private static Random random = new Random();
+	
 	public static String getMyIdString() {
-		return Secure.getString(application.getContentResolver(), Secure.ANDROID_ID);
+		//return Secure.getString(application.getContentResolver(), Secure.ANDROID_ID);
+		return Long.toHexString(random.nextLong());
 	}
 	
 }
