@@ -9,5 +9,5 @@
 	<style name="PlainBackground" parent="@style/Main">
 		<item name="android:windowBackground">@color/plainBackground</item>
 	</style>
-	
+
 </resources>
