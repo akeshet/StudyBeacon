@@ -82,6 +82,8 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 		super.onResume();
 		Log.d(TAG,"onResume()");
 		mapView.resume();
+		// TODO -- Do we want to do this?
+		startQuery();
 	}
 
 	@Override
@@ -89,6 +91,14 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 		super.onPause();
 		Log.d(TAG,"onPause()");
 		mapView.pause();
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		// TODO Auto-generated method stub
+		super.onSaveInstanceState(outState);
+		// TODO Save the state of mBeacons
+
 	}
 
 	@Override
