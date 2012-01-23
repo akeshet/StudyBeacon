@@ -30,6 +30,8 @@ public class SBMapView extends MapView {
 
 	Context ctx;
 
+	protected SBMapActivity mActivity;
+
 	public SBMapView(Context context, String key) {
 		super(context, key);
 		ctx = context;
@@ -84,7 +86,15 @@ public class SBMapView extends MapView {
 	public void resume() {
 		myLocOverlay.enableMyLocation();
 	}
-	
+
+	public SBMapActivity getActivity() {
+		return mActivity;
+	}
+
+	public void setActivity(SBMapActivity activity) {
+		mActivity = activity;
+	}
+
 	public void setDefaultMapPosition() {
 		final MapController mapViewController = getController();
 		// begin at MIT
@@ -94,6 +104,8 @@ public class SBMapView extends MapView {
 		myLocOverlay.runOnFirstFix(new Runnable() {
 			public void run() {
 				mapViewController.animateTo(myLocOverlay.getMyLocation());
+				if (mActivity != null)
+					mActivity.startQuery();
 			}});
 	}
 	
@@ -122,6 +134,8 @@ public class SBMapView extends MapView {
             case MotionEvent.ACTION_UP:
             {	
             	touched = false;  // draw!
+            	if(mActivity != null)
+            		mActivity.startQuery();
             }
             case MotionEvent.ACTION_MOVE:
             {	
