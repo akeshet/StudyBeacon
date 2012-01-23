@@ -54,7 +54,7 @@
             android:onClick="newBeaconClicked"/>
     </LinearLayout>
 
-    <com.google.android.maps.MapView
+    <com.teamblobby.studybeacon.SBMapView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/mapView"
         android:layout_width="fill_parent"

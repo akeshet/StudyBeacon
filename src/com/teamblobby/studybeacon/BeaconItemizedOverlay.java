@@ -23,11 +23,18 @@ public class BeaconItemizedOverlay extends ItemizedOverlay {
 	private static final String TAG = "BeaconItemizedOverlay";
 	protected ArrayList<BeaconOverlayItem> mOverlays = new ArrayList<BeaconOverlayItem>();
 	protected Context mContext;
-	protected MapView mapView;
+	protected SBMapView mapView;
 	protected MapController mc;
-	private int BubbleOffset = 0;
 	
-	public BeaconItemizedOverlay(Drawable defaultMarker, Context context, MapView mv) {
+	// These things take care of the balloon
+	private int BubbleOffset = 0;
+	private BalloonOverlayView balloonView;
+	private int selectedIndex = -1;
+	private boolean balloonVisible = true;
+	public boolean balloonsEnabled = true;
+	
+	
+	public BeaconItemizedOverlay(Drawable defaultMarker, Context context, SBMapView mv) {
 		super(boundCenter(defaultMarker));
 		mContext = context;
 		this.mapView = mv;
@@ -72,18 +79,31 @@ public class BeaconItemizedOverlay extends ItemizedOverlay {
 	}
 	
 	@Override
-	protected boolean onTap(int index) {
-	  Log.d(TAG,"onTap()");
-	  OverlayItem item = mOverlays.get(index);
-	  mc.animateTo(item.getPoint());
-	  
-	  AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
-	  dialog.setTitle(item.getTitle());
-	  dialog.setMessage(item.getSnippet());
-	  dialog.show();
-	  
-	  return true;
-	}
+    protected boolean onTap(int index) {
+	 
+	 	if (!balloonsEnabled) return false;
+	 
+	 	mapView.tapped_overlay = true;
+	 
+	 	if (balloonView==null) balloonVisible = false;
+	 	else if (!balloonView.isShown()) balloonVisible = false;
+	 	
+	 	if (selectedIndex == index) {
+	        final BeaconOverlayItem item = (BeaconOverlayItem) mOverlays.get(index);
+	 		if (!balloonVisible) {
+	 			makeBalloon(item);
+	 		}
+	 		balloonVisible = true;
+	 	} else {
+ 			mapView.removeView(balloonView);
+	 		balloonVisible = false;
+	 	}
+	 
+	 	selectedIndex = index;
+
+        return true;
+        
+    }
 	
 	/*
 	 * 
@@ -91,14 +111,14 @@ public class BeaconItemizedOverlay extends ItemizedOverlay {
 	 * 
 	 * 
 	 */
-	protected void addBalloon(final BeaconOverlayItem p) {
+	protected void makeBalloon(final BeaconOverlayItem p) {
 		 
 		if (p == null)
 			return;
 		
 		 GeoPoint gp = p.getPoint();
 		 
-		 //mapView.removeView(balloonView);
+		 mapView.removeView(balloonView);
 		    
 		 BalloonOverlayView balloonView = new BalloonOverlayView(mContext, BubbleOffset );  
 		 
