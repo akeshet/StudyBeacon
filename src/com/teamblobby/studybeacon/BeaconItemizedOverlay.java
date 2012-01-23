@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -169,8 +170,15 @@ public class BeaconItemizedOverlay extends ItemizedOverlay {
 	 }
 
 
-	 protected void handleTap(OverlayItem p) {
-		 // TODO Figure out what to do here later
+	 protected void handleTap(BeaconOverlayItem p) {
+		 // TODO Check if this is the beacon where we currently are.
+		 // If so, do an EDIT instead of VIEW
+		 Intent intent = new Intent(mContext, SBBeaconEditActivity.class);
+		 intent.setAction(SBBeaconEditActivity.ACTION_VIEW);
+
+		 intent.putExtra(SBBeaconEditActivity.EXTRA_BEACON, p.getBeacon());
+		 mContext.startActivity(intent);
+
 	 }
 	
 }

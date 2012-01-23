@@ -14,12 +14,12 @@ public class BeaconOverlayItem extends OverlayItem {
 		mBeacon.setLoc(point);
 	}
 
-	private static String getShortTitle(BeaconInfo beacon) {
-		return beacon.getCourseName() + " | x" + Integer.toString(beacon.getVisitors());
+	public static String getShortTitle(BeaconInfo beacon) {
+		return beacon.getCourseName();
 	}
 
-	private static String getShortSnippet(BeaconInfo beacon) {
-		return  null;
+	public static String getShortSnippet(BeaconInfo beacon) {
+		return  "×" + Integer.toString(beacon.getVisitors()) + " here";
 	}
 
 	public BeaconOverlayItem(BeaconInfo beacon) {
