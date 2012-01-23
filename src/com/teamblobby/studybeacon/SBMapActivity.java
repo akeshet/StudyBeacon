@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -45,7 +44,7 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 
 	private Drawable beaconD = Global.res.getDrawable(R.drawable.beacon);
 
-	private List<String> courses;	
+	private List<String> courses;
 	
 	///////////////////////////////////////////////////////
 
@@ -161,11 +160,11 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 		// and automatically set that.
 
 		courses = Global.getCourses();
-		
+
 		courseSpinnerAdapter =
 				new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
 						Global.getCourses());
-		
+
 		courseSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 		courseSpinnerAdapter.insert(getString(R.string.allCourses),0);
@@ -174,7 +173,7 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 		// TODO Add a handler for detecting "All" and "Edit"
 
 		courseSpinner.setAdapter(courseSpinnerAdapter);
-		
+
 	}
 
 	@Override
@@ -209,7 +208,7 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 	 */
 	public void onQuerySuccess(ArrayList<BeaconInfo> beacons) {
 		// TODO Put the beacons on the map
-		Log.d(TAG,"onQuery()");
+		Log.d(TAG,"onQuerySuccess()");
 		for (BeaconInfo beacon : beacons) {
 
 			Boolean addOverlay = false;

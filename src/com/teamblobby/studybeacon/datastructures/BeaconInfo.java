@@ -7,10 +7,13 @@ import java.util.Date;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import com.google.android.maps.GeoPoint;
 
 public abstract class BeaconInfo implements Parcelable {
+
+	protected static final String TAG = "BeaconInfo";
 
 	public abstract int getBeaconId();
 	protected abstract void setBeaconId(int beaconId);
@@ -55,8 +58,9 @@ public abstract class BeaconInfo implements Parcelable {
 		dest.writeString(getDetails());
 		dest.writeString(getTelephone());
 		dest.writeString(getEmail());
-		dest.writeString(getCreated().toGMTString());
-		dest.writeString(getExpires().toGMTString());
+		DateFormat df = new SimpleDateFormat();
+		dest.writeString(df.format(getCreated()));
+		dest.writeString(df.format(getExpires()));
 
 	}
 

@@ -16,6 +16,8 @@ import com.google.android.maps.*;
 
 public class SBMapView extends MapView {
 
+	public final static String TAG ="SBMapView";
+
 	boolean touched = false;
 	boolean mPinchZoom = false;
 	int mLastZoomDrawn = -1;
@@ -25,7 +27,7 @@ public class SBMapView extends MapView {
 	private MyLocationOverlay myLocOverlay;
 
 	SimpleOnGestureListener mTapDetector;
-	
+
 	Context ctx;
 
 	public SBMapView(Context context, String key) {
@@ -64,7 +66,8 @@ public class SBMapView extends MapView {
 			}
 			
 		};
-		
+
+
 		// Initialize...
 		List<Overlay>  ovrlys = getOverlays();
 		
@@ -152,12 +155,11 @@ public class SBMapView extends MapView {
         	}
         	return consumedTouch;
         } catch (OutOfMemoryError memoryError) {
-        	Log.d("MapView", "Memory error in onTouch handler");
+        	Log.d(TAG, "Memory error in onTouch handler");
         	memoryError.printStackTrace();
         	System.gc();
         	return false;
         }
 	}
-	
 
 }

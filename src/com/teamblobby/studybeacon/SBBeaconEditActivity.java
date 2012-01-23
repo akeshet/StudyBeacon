@@ -76,9 +76,9 @@ public class SBBeaconEditActivity extends Activity implements SBAPIHandler {
 		String startingAction = startingIntent.getAction();
 		
 		// Figure out what to do
-		if (startingAction == ACTION_VIEW) {
+		if (startingAction.equals(ACTION_VIEW)) {
 			mode = OperationMode.MODE_VIEW;
-		} else if (startingAction == ACTION_EDIT) {
+		} else if (startingAction.equals(ACTION_EDIT)) {
 			mode = OperationMode.MODE_EDIT;
 		} else { // By default, create a new beacon
 			mode = OperationMode.MODE_NEW;
@@ -231,6 +231,7 @@ public class SBBeaconEditActivity extends Activity implements SBAPIHandler {
 		// Change the "expires" text
 		expiresTV.setText(R.string.expiresAt);
 		expiresSpinner.setVisibility(View.GONE);
+		expiresTimeTV.setVisibility(View.VISIBLE);
 		
 		EditText ets[] = {phone, email, details};
 		for (EditText e : ets)
