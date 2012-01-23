@@ -38,9 +38,10 @@
         <Button
             android:id="@+id/addClassesButton"
             android:layout_width="0dip"
-            android:layout_height="fill_parent"
+            android:layout_height="@dimen/iconSize"
             android:layout_weight="1"
-            android:gravity="center|fill_vertical"
+            android:gravity="left|fill_vertical"
+            android:drawableLeft="@drawable/book_add"
             android:text="@string/addclass" />
 
     </LinearLayout>

@@ -10,8 +10,8 @@
         android:id="@+id/mcrStarButton"
         android:layout_width="@dimen/iconSize"
         android:layout_height="@dimen/iconSize"
-        android:button="@android:drawable/btn_star"
-        android:checked="true"/>
+        android:button="@drawable/favoritetoggle"
+        android:checked="true" />
     
     <TextView
         android:id="@+id/mcrCourseNameTextView"
@@ -26,7 +26,8 @@
          android:layout_width="@dimen/iconSize"
          android:layout_height="@dimen/iconSize"
          android:layout_gravity="right|center_vertical"
-         android:button="@drawable/notifytoggle"/>     
+         android:button="@drawable/notifytoggle"
+         android:visibility="gone" />
          
     <ImageButton
         android:id="@+id/mcrNewBeaconButton"

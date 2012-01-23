@@ -69,9 +69,9 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 			}
 		});
 
-		this.setUpMapView(savedInstanceState);
-
 		this.loadCourses(savedInstanceState);
+
+		this.setUpMapView(savedInstanceState);
 
 		this.setUpBeacons(savedInstanceState);
 
@@ -104,6 +104,7 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 		// TODO use savedInstanceState if possible
 		// add zoom
 		this.mapView = (SBMapView) findViewById(R.id.mapView);
+		mapView.setActivity(this);
 		mapView.setBuiltInZoomControls(true);
 
 		// get the overlays
@@ -128,7 +129,7 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 		startQuery();
 	}
 
-	private void startQuery() {
+	void startQuery() {
 		// find the view bounds
 		int deltaLat = mapView.getLatitudeSpan(), deltaLon = mapView.getLongitudeSpan();
 		GeoPoint ctr = mapView.getMapCenter();
