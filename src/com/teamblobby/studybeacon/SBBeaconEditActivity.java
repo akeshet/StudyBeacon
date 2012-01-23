@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.location.LocationProvider;
 import android.os.Bundle;
 import android.provider.ContactsContract.CommonDataKinds.Email;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -31,6 +32,7 @@ public class SBBeaconEditActivity extends Activity implements SBAPIHandler {
 	public static final String ACTION_NEW  = "com.blobby.studybeacon.BeaconEditActivity.new";
 	public static final String ACTION_EDIT = "com.blobby.studybeacon.BeaconEditActivity.edit";
 	public static final String ACTION_VIEW = "com.blobby.studybeacon.BeaconEditActivity.view";
+	public static final String TAG = "SBBeaconEditActivity";
 
 	protected enum OperationMode {
 		MODE_NEW,
@@ -57,6 +59,7 @@ public class SBBeaconEditActivity extends Activity implements SBAPIHandler {
 	private ArrayAdapter<String> courseAdapter;
 	private ArrayAdapter<CharSequence> expiresAdapter;
 	private ArrayAdapter<CharSequence> workingOnAdapter;
+	private UserLocator userLocator;
 	
 	
 	private DateFormat df = DateFormat.getTimeInstance(DateFormat.SHORT);
@@ -152,9 +155,9 @@ public class SBBeaconEditActivity extends Activity implements SBAPIHandler {
 		// TODO Auto-generated method stub
 
 		String courseName = (String) courseSpinner.getSelectedItem();
-		// TODO -- find our present location
-		GeoPoint loc = new GeoPoint(Global.res.getInteger(R.integer.mapDefaultLatE6),
-				Global.res.getInteger(R.integer.mapDefaultLongE6));
+
+		GeoPoint loc = userLocator.getLocation(); // grab the user's location
+		Log.d(TAG,"loc: late6="+loc.getLatitudeE6()+" longe6="+loc.getLongitudeE6());
 
 		return new BeaconInfoSimple(-1, // don't have a BeaconId yet
 				courseName,
@@ -180,6 +183,9 @@ public class SBBeaconEditActivity extends Activity implements SBAPIHandler {
 		// Add a listener for the action button
 		beaconActionButton.setOnClickListener(new NewBeaconClickListener(this));
 
+		// start getting the user's location
+		userLocator = new UserLocator();
+		userLocator.startLocating();
 	}
 
 	protected static final class NewBeaconClickListener implements OnClickListener {
@@ -187,12 +193,16 @@ public class SBBeaconEditActivity extends Activity implements SBAPIHandler {
 		protected SBBeaconEditActivity mActivity;
 
 		public NewBeaconClickListener(SBBeaconEditActivity sbBeaconEditActivity) {
-			// TODO Auto-generated constructor stub
+			
 			mActivity = sbBeaconEditActivity;
 		}
 
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
+			if ( !mActivity.userLocator.isReady() ) {
+				Toast.makeText(mActivity, R.string.stilllocating, Toast.LENGTH_SHORT).show(); //inform we are still locating.
+				Log.d(TAG, "canceled, still locating");
+				return;
+			}
 			// TODO actually get this from the fields
 			APIClient.add(mActivity.beaconFromFields(), mActivity.durationFromField(), mActivity);
 		}

@@ -216,6 +216,7 @@ public class SBCourseResourceActivity extends ListActivity {
 			this.callingActivity.availableCourses.addAll(fetchedCourses);
 			Log.d(TAG,this.callingActivity.availableCourses.toString());
 			this.callingActivity.setStarredCourses();
+			((TextView) this.callingActivity.findViewById(android.R.id.empty)).setText(Global.res.getString(R.string.courseResourseNothing));
 			this.callingActivity.arrayAdapter.notifyDataSetChanged();
 		}
 		

@@ -13,9 +13,11 @@
     <string name="coursesEmpty">No Starred Courses</string>
     <string name="loadingcoursestoast">Loading Courses</string>
     <string name="courseResourseLoadText">Loading Courses…</string>
+    <string name="courseResourseNothing">Nothing to Display.</string>
     <string name="newBeacon">New Beacon</string>
     <string name="editBeacon">Edit Beacon</string>
     <string name="beaconDetails">Beacon Details</string>
+    <string name="stilllocating">Still acquiring location…</string>
     <string name="course">Course</string>
     <string name="expiresIn">Expires in</string>
     <string name="expiresAt">Expires at</string>
