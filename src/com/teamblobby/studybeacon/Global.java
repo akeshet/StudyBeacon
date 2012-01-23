@@ -5,6 +5,8 @@ import java.util.Random;
 
 import android.app.Application;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
@@ -78,5 +80,10 @@ public class Global extends Application {
 		//return Secure.getString(application.getContentResolver(), Secure.ANDROID_ID);
 		return Long.toHexString(random.nextLong());
 	}
-	
+
+	public static void goHome(Context c) {
+		Intent i = new Intent(c, SBMapActivity.class);
+		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		c.startActivity(i);
+	}
 }
