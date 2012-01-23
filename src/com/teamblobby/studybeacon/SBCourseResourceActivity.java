@@ -26,7 +26,9 @@ public class SBCourseResourceActivity extends ListActivity {
 	private List<CourseListable> availableCourses;
 	private List<CourseInfo> currentCourses;
 	private ArrayAdapter<CourseListable> arrayAdapter;
-	private int DATA_CHANGED_REQUEST_CODE = 0;
+	private final static int DATA_CHANGED_REQUEST_CODE = 0;
+	
+	public final static int RESULT_COURSES_CHANGED = Activity.RESULT_FIRST_USER;
 	
 	/** Called when the activity is first created. */
 	@Override
@@ -170,7 +172,7 @@ public class SBCourseResourceActivity extends ListActivity {
 				activity.availableCourses.set(this.position, new CourseInfoSqlite(CourseInfoSqlite.MYCOURSES_TABLE, this.courseInfo));
 			}
 			activity.arrayAdapter.notifyDataSetChanged();
-			activity.setResult(Activity.RESULT_OK);
+			activity.setResult(RESULT_COURSES_CHANGED);
 			Log.d(TAG,"data changed, result set to OK");
 		}
 	}

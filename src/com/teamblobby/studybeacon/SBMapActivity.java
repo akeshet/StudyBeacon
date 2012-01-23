@@ -95,7 +95,10 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (requestCode) {
 		case REQUESTCODE_RETURNED_FROM_MYCOURSES:
-			loadCourses(null);
+			if (resultCode == SBMyCoursesActivity.RESULT_COURSES_CHANGED) {
+				loadCourses(null);
+				startQuery();
+			}
 			break;
 		}
 	}

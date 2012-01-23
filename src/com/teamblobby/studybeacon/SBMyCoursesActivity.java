@@ -25,11 +25,13 @@ public class SBMyCoursesActivity extends ListActivity {
 	private List<CourseInfo> courseInfos;
 	ListView myListView;
 	
+	public static final int RESULT_COURSES_CHANGED = Activity.RESULT_FIRST_USER;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
     	setContentView(R.layout.mycourses);
-    	
+
     	// add footer button
     	Button footerButton = (Button) this.findViewById(R.id.addClassesButton);
     	//footerButton.setText(Global.res.getString(R.string.addclass));
@@ -78,6 +80,7 @@ public class SBMyCoursesActivity extends ListActivity {
 				
 				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 					courseInfo.setStarred(isChecked);
+					SBMyCoursesActivity.this.setResult(RESULT_COURSES_CHANGED);
 				}
 			});
 			
@@ -108,11 +111,15 @@ public class SBMyCoursesActivity extends ListActivity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == SBMyCoursesActivity.DATA_CHANGE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-			// RESULT_OK means data has changed
+		if (requestCode == DATA_CHANGE_REQUEST_CODE
+				&& resultCode == SBCourseResourceActivity.RESULT_COURSES_CHANGED) {
+			// RESULT_COURSES_CHANGED means data has changed
 			this.courseInfos.clear();
 			this.courseInfos.addAll(Global.getMyCourseInfos());
 			this.adapter.notifyDataSetChanged();
+			
+			setResult(RESULT_COURSES_CHANGED);
+			
 			Log.d(TAG, "data refreshed due to activity result");
 		}
 		super.onActivityResult(requestCode, resultCode, data);
