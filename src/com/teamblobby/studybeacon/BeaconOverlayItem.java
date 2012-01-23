@@ -11,20 +11,20 @@ public class BeaconOverlayItem extends OverlayItem {
 	public BeaconOverlayItem(GeoPoint point, String title, String snippet, BeaconInfo beacon) {
 		super(point, title, snippet);
 		mBeacon = beacon;
+		mBeacon.setLoc(point);
 	}
 
-	private static String buildBalloonTitle(BeaconInfo beacon) {
-		return beacon.getCourseName();
+	private static String getShortTitle(BeaconInfo beacon) {
+		return beacon.getCourseName() + " | x" + Integer.toString(beacon.getVisitors());
 	}
 
-	private static String buildBalloonSnippet(BeaconInfo beacon) {
-		return Integer.toString(beacon.getVisitors()) + " studying";
+	private static String getShortSnippet(BeaconInfo beacon) {
+		return  null;
 	}
 
 	public BeaconOverlayItem(BeaconInfo beacon) {
-		super(beacon.getLoc(), buildBalloonTitle(beacon),
-				buildBalloonSnippet(beacon));
-		mBeacon = beacon;
+		this(beacon.getLoc(), getShortTitle(beacon),
+				getShortSnippet(beacon), beacon);
 	}
 
 	public BeaconInfo getBeacon() {
