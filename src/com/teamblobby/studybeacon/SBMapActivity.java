@@ -82,6 +82,8 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 		super.onResume();
 		Log.d(TAG,"onResume()");
 		mapView.resume();
+		// TODO -- Do we want to do this?
+		startQuery();
 	}
 
 	@Override
@@ -92,10 +94,21 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 	}
 
 	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		// TODO Auto-generated method stub
+		super.onSaveInstanceState(outState);
+		// TODO Save the state of mBeacons
+
+	}
+
+	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (requestCode) {
 		case REQUESTCODE_RETURNED_FROM_MYCOURSES:
-			loadCourses(null);
+			if (resultCode == SBMyCoursesActivity.RESULT_COURSES_CHANGED) {
+				loadCourses(null);
+				startQuery();
+			}
 			break;
 		}
 	}
