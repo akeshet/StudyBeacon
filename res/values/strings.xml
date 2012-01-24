@@ -48,5 +48,6 @@
     <string name="detailHint">Room: …</string>
     <string name="phoneHint">(555)-555-1212</string>
     <string name="emailHint">tbeaver@mit.edu</string>
+    <string name="saveString">Save</string>
     
 </resources>

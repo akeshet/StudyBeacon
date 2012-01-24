@@ -10,20 +10,36 @@
         android:layout_height="wrap_content"
         android:text="@string/newBeacon" />
 
-    <Button
-        android:id="@+id/beaconActionButton"
+    <LinearLayout
+        android:id="@+id/beaconActionButtonsLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:text="@string/newBeacon"/>
-    
-    <ScrollView
-        android:layout_above="@+id/beaconActionButton"
-        android:layout_below="@+id/titleBar"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_alignParentLeft="true" >
+
+        <Button
+            android:id="@+id/beaconSecondaryActionButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/saveString"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/beaconActionButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/newBeacon" />
         
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/beaconActionButtonsLayout"
+        android:layout_below="@+id/titleBar" >
+
         <LinearLayout
             android:id="@+id/linearLayout1"
             android:layout_width="fill_parent"
@@ -34,7 +50,7 @@
                 android:id="@+id/courseTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/course"/>
+                android:text="@string/course" />
 
             <Spinner
                 android:id="@+id/courseSpinner"
@@ -55,8 +71,8 @@
             <TextView
                 android:id="@+id/expiresTimeTV"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" 
-                android:visibility="gone"/>
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -87,7 +103,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/emailHint"
                 android:inputType="textEmailAddress" />
-            
+
             <TextView
                 android:id="@+id/detailsTV"
                 android:layout_width="wrap_content"
@@ -112,7 +128,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/takePicture" />
-
         </LinearLayout>
     </ScrollView>
 

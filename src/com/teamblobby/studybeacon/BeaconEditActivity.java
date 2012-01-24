@@ -11,6 +11,7 @@ import com.teamblobby.studybeacon.network.APIHandler;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -48,6 +49,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 	protected EditText email;
 	protected EditText details;
 	protected Button beaconActionButton;
+	protected Button beaconSecondaryActionButton;
 
 	// This represents the beacon we are making.
 	protected BeaconInfoSimple mBeacon;
@@ -106,6 +108,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		email            = (EditText) findViewById(R.id.email);
 		details          = (EditText) findViewById(R.id.detailsEdit);
 		beaconActionButton = (Button) findViewById(R.id.beaconActionButton);
+		beaconSecondaryActionButton = (Button) findViewById(R.id.beaconSecondaryActionButton);
 
 		// Set the spinners up
 		courseAdapter =
@@ -210,6 +213,8 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		beaconTitleTV.setText(R.string.editBeacon);		
 
 		beaconActionButton.setText(R.string.editBeacon);
+
+		beaconSecondaryActionButton.setVisibility(View.VISIBLE);
 
 		loadBeaconData(startingIntent);
 
