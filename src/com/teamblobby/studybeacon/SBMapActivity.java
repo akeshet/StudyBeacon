@@ -44,7 +44,7 @@ public class SBMapActivity extends MapActivity implements APIHandler
 	/** Hash from course string to itemized overlays */
 	private HashMap<String,BeaconItemizedOverlay> beacItemOverlays; 
 
-	private Drawable beaconD = Global.res.getDrawable(R.drawable.beacon);
+	private final static Drawable beaconD = Global.res.getDrawable(R.drawable.beacon);
 
 	private List<String> courses;
 	
@@ -281,9 +281,6 @@ public class SBMapActivity extends MapActivity implements APIHandler
 				this.overlays.add(courseOverlay);
 			}
 
-			//			String snippet = Integer.toString(beacon.getVisitors()) + " visitors";
-			//			OverlayItem item = new OverlayItem(beacon.getLoc(), beacon.getCourseName(), snippet);
-			//			beacItemOverlay.addOverlay(item);
 		}
 			
 		mapView.invalidate();
@@ -311,6 +308,16 @@ public class SBMapActivity extends MapActivity implements APIHandler
 	}
 
 	public void onJoinFailure(Throwable e) {
+		// TODO Auto-generated method stub
+		// This should never be called
+	}
+
+	public void onLeaveSuccess() {
+		// TODO Auto-generated method stub
+		// This should never be called
+	}
+
+	public void onLeaveFailure(Throwable arg0) {
 		// TODO Auto-generated method stub
 		// This should never be called
 	}

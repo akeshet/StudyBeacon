@@ -14,4 +14,6 @@ public interface APIHandler {
 	public void onAddFailure(Throwable arg0);
 	public void onJoinSuccess(BeaconInfo beacon);
 	public void onJoinFailure(Throwable e);
+	public void onLeaveSuccess();
+	public void onLeaveFailure(Throwable arg0);
 }
