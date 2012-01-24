@@ -45,8 +45,8 @@ public class BeaconOverlayItem extends OverlayItem {
 		if ((presentBeaconInfo != null)
 				&& (mBeacon != null)
 				&& (presentBeaconInfo.getBeaconId() == mBeacon.getBeaconId())) {
-			Log.d(TAG,"This is my boi!");
-			return presentBeaconDrawable;
+			return //presentBeaconDrawable;
+					null;
 		} else {
 			return super.getMarker(stateBitset);
 		}
