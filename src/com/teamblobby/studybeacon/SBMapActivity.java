@@ -293,7 +293,7 @@ public class SBMapActivity extends MapActivity implements APIHandler
 		// This should never be called		
 	}
 
-	public void onJoinFailure(Exception e) {
+	public void onJoinFailure(Throwable e) {
 		// TODO Auto-generated method stub
 		// This should never be called
 	}

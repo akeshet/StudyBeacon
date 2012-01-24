@@ -236,13 +236,24 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 
 		loadBeaconData(startingIntent);
 
-		beaconActionButton.setVisibility(View.GONE);
+		beaconActionButton.setText(R.string.joinBeacon);
+
+		beaconActionButton.setOnClickListener(new OnClickListener() {
+
+			public void onClick(View v) {
+				// TODO check user's location
+				if (mBeacon != null)
+					APIClient.join(mBeacon.getBeaconId(), BeaconEditActivity.this);
+				else
+					Toast.makeText(BeaconEditActivity.this,
+							"Something went wrong -- I don't know which beacon you're viewing",
+							Toast.LENGTH_SHORT).show();
+			}
+		});
 
 	}
 
 	private void loadBeaconData(Intent startingIntent) {
-		// TODO Auto-generated method stub
-
 		// TODO What do we do if somebody did not call this properly?
 		mBeacon = startingIntent.getParcelableExtra(EXTRA_BEACON);
 
@@ -279,25 +290,27 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 	}
 
 	public void onAddSuccess(BeaconInfo beacon) {
-		// TODO Auto-generated method stub
 		Toast.makeText(this, "Beacon added successfully", Toast.LENGTH_SHORT).show();
+		Global.setCurrentBeacon(beacon);
 		// go back home
 		Global.goHome(this);
 	}
 
 	public void onAddFailure(Throwable arg0) {
-		// TODO Auto-generated method stub
 		Toast.makeText(this, "Failed to add beacon", Toast.LENGTH_SHORT).show();
+		Global.setCurrentBeacon(null);
 	}
 
 	public void onJoinSuccess(BeaconInfo beacon) {
-		// TODO Auto-generated method stub
-		
+		Toast.makeText(this, "Beacon joined successfully", Toast.LENGTH_SHORT).show();
+		Global.setCurrentBeacon(beacon);
+		// go back home
+		Global.goHome(this);
 	}
 
-	public void onJoinFailure(Exception e) {
-		// TODO Auto-generated method stub
-		
+	public void onJoinFailure(Throwable e) {
+		Toast.makeText(this, "Failed to join beacon", Toast.LENGTH_SHORT).show();
+		Global.setCurrentBeacon(null);
 	}
 
 }

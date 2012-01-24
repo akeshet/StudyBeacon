@@ -335,7 +335,7 @@ public class BeaconInfoSqlite extends BeaconInfo {
 	 */
 	public static void setCurrentBeacon(BeaconInfo beacon) {
 		openIfNecessaryDB();
-		database.execSQL("delete * from " + MYBEACONS_TABLE);
+		database.delete(MYBEACONS_TABLE, null, null);
 		
 		if (beacon!=null)
 			new BeaconInfoSqlite(MYBEACONS_TABLE, beacon); // create db entry
