@@ -146,9 +146,13 @@ public class CourseResourceActivity extends ListActivity {
 					notifyCheckBox.setOnCheckedChangeListener(new CourseCheckedListener(position,(CourseInfo) courseInfo));
 					break;
 				case CourseListable.TYPE_CATEGORY:
-					notifyCheckBox.setVisibility(View.INVISIBLE);
+					notifyCheckBox.setVisibility(View.GONE);
 					break;
 			}
+			
+			// set the description text
+			TextView descTextView = (TextView) viewToReturn.findViewById(R.id.mcrCourseDescriptionView);
+			descTextView.setText(courseInfo.getDescription());
 			
 			//Log.d(TAG,"getting course View for "+courseInfo.getName());
 			return viewToReturn;
