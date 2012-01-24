@@ -20,7 +20,7 @@
     <string name="joinBeacon">Join Beacon</string>
     <string name="leaveBeacon">Leave Beacon</string>
     <string name="beaconDetails">Beacon Details</string>
-    <string name="stilllocating">Still acquiring location…</string>
+    <string name="stilllocating">Still acquiring location. Try again in a moment.</string>
     <string name="course">Course</string>
     <string name="expiresIn">Expires in</string>
     <string name="expiresAt">Expires at</string>
