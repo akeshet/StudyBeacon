@@ -15,6 +15,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -130,10 +131,22 @@ public class SBMapActivity extends MapActivity implements APIHandler
 		if (Global.atBeacon()) {
 			Log.d(TAG, "We are at a beacon.");
 			beaconButton.setImageDrawable(getResources().getDrawable(R.drawable.beacon));
+			beaconButton.setOnClickListener(new OnClickListener() {
+				
+				public void onClick(View v) {
+					editBeaconClicked(v);
+				}
+			});
 		}
 		else {
 			Log.d(TAG, "We are not at a beacon.");
 			beaconButton.setImageDrawable(getResources().getDrawable(R.drawable.newbeaconicon));
+			beaconButton.setOnClickListener(new OnClickListener() {
+				
+				public void onClick(View v) {
+					newBeaconClicked(v);
+				}
+			});
 		}
 
 	}
@@ -230,6 +243,13 @@ public class SBMapActivity extends MapActivity implements APIHandler
 		if (! selected.equals(Global.res.getString(R.string.allCourses))) {
 			intent.putExtra(BeaconEditActivity.EXTRA_COURSE, selected);
 		}
+		startActivityForResult(intent, REQUESTCODE_RETURNED_FROM_BEACON);
+	}
+	
+	public void editBeaconClicked(View view) {
+		Intent intent = new Intent(this, BeaconEditActivity.class);
+		intent.setAction(BeaconEditActivity.ACTION_EDIT);
+		intent.putExtra(BeaconEditActivity.EXTRA_BEACON, Global.getCurrentBeacon());
 		startActivityForResult(intent, REQUESTCODE_RETURNED_FROM_BEACON);
 	}
 	
