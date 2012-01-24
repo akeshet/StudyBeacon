@@ -110,6 +110,10 @@ public class MyCoursesActivity extends ListActivity {
 				}
 			});
 			
+			// set the description text
+			TextView descTextView = (TextView) viewToReturn.findViewById(R.id.mcrCourseDescriptionView);
+			descTextView.setText(courseInfo.getDescription());
+			
 			return viewToReturn;
 			
 		};

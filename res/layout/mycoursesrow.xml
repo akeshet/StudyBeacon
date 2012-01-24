@@ -13,13 +13,34 @@
         android:button="@drawable/favoritetoggle"
         android:checked="true" />
     
-    <TextView
-        android:id="@+id/mcrCourseNameTextView"
-        android:layout_width="0dp"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="0dip"
         android:layout_height="@dimen/iconSize"
-        android:gravity="center_vertical"
-        android:layout_gravity="center|center_vertical"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:background="@color/rowBackground"
+        android:orientation="vertical"
+        android:gravity="bottom">
+
+        <TextView
+            android:id="@+id/mcrCourseNameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1" 
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:gravity="bottom"
+            android:maxLines="1"
+            android:ellipsize="marquee"/>
+
+        <TextView
+            android:id="@+id/mcrCourseDescriptionView"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:ellipsize="marquee"/>
+    </LinearLayout>
     
      <CheckBox
          android:id="@+id/mcrNotificationButton"
