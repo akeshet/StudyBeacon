@@ -101,4 +101,12 @@ public class Global extends Application {
 	public static void setCurrentBeacon(BeaconInfo beacon) {
 		BeaconInfoSqlite.setCurrentBeacon(beacon);
 	}
+	
+	/**
+	 * Returns true if we are at a beacon, otherwise false.
+	 * @return
+	 */
+	public static boolean atBeacon() {
+		return BeaconInfoSqlite.atBeacon();
+	}
 }

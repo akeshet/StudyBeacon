@@ -15,8 +15,10 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -27,7 +29,7 @@ public class SBMapActivity extends MapActivity implements APIHandler
 
 	public final static String TAG = "SBMapActivity";
 
-	private static final int REQUEST_NEW_BEACON = 0;
+	private static final int REQUESTCODE_RETURNED_FROM_BEACON = 0;
 	
 	protected Spinner courseSpinner;
 	private ArrayAdapter<String> courseSpinnerAdapter;
@@ -35,6 +37,7 @@ public class SBMapActivity extends MapActivity implements APIHandler
 	protected int courseSpinnerId;
 
 	protected Button myClassesButton;
+	protected ImageButton beaconButton;
 
 	private SBMapView mapView;
 
@@ -44,7 +47,7 @@ public class SBMapActivity extends MapActivity implements APIHandler
 	/** Hash from course string to itemized overlays */
 	private HashMap<String,BeaconItemizedOverlay> beacItemOverlays; 
 
-	private Drawable beaconD = Global.res.getDrawable(R.drawable.beacon);
+	private final static Drawable beaconD = Global.res.getDrawable(R.drawable.beacon);
 
 	private List<String> courses;
 	
@@ -71,6 +74,10 @@ public class SBMapActivity extends MapActivity implements APIHandler
 			}
 		});
 
+		beaconButton = (ImageButton) findViewById(R.id.newBeaconButton);
+				
+		updateBeaconButton();
+		
 		this.loadCourses(savedInstanceState);
 
 		this.setUpMapView(savedInstanceState);
@@ -112,7 +119,36 @@ public class SBMapActivity extends MapActivity implements APIHandler
 				startQuery();
 			}
 			break;
+		
+		case REQUESTCODE_RETURNED_FROM_BEACON:
+			updateBeaconButton();
 		}
+	}
+	
+	private void updateBeaconButton() {
+		// TODO: Update new beacon button according to currentbeacon state.
+		Log.d(TAG, "In updateBeaconButton(), not yet implemented due to lack of icons.");
+		if (Global.atBeacon()) {
+			Log.d(TAG, "We are at a beacon.");
+			beaconButton.setImageDrawable(getResources().getDrawable(R.drawable.beacon));
+			beaconButton.setOnClickListener(new OnClickListener() {
+				
+				public void onClick(View v) {
+					editBeaconClicked(v);
+				}
+			});
+		}
+		else {
+			Log.d(TAG, "We are not at a beacon.");
+			beaconButton.setImageDrawable(getResources().getDrawable(R.drawable.newbeaconicon));
+			beaconButton.setOnClickListener(new OnClickListener() {
+				
+				public void onClick(View v) {
+					newBeaconClicked(v);
+				}
+			});
+		}
+
 	}
 
 	protected void setUpMapView(Bundle savedInstanceState) {
@@ -207,7 +243,14 @@ public class SBMapActivity extends MapActivity implements APIHandler
 		if (! selected.equals(Global.res.getString(R.string.allCourses))) {
 			intent.putExtra(BeaconEditActivity.EXTRA_COURSE, selected);
 		}
-		startActivityForResult(intent, REQUEST_NEW_BEACON);
+		startActivityForResult(intent, REQUESTCODE_RETURNED_FROM_BEACON);
+	}
+	
+	public void editBeaconClicked(View view) {
+		Intent intent = new Intent(this, BeaconEditActivity.class);
+		intent.setAction(BeaconEditActivity.ACTION_EDIT);
+		intent.putExtra(BeaconEditActivity.EXTRA_BEACON, Global.getCurrentBeacon());
+		startActivityForResult(intent, REQUESTCODE_RETURNED_FROM_BEACON);
 	}
 	
     ////////////////////////////////////////////////////////////////
@@ -264,9 +307,6 @@ public class SBMapActivity extends MapActivity implements APIHandler
 				this.overlays.add(courseOverlay);
 			}
 
-			//			String snippet = Integer.toString(beacon.getVisitors()) + " visitors";
-			//			OverlayItem item = new OverlayItem(beacon.getLoc(), beacon.getCourseName(), snippet);
-			//			beacItemOverlay.addOverlay(item);
 		}
 			
 		mapView.invalidate();
@@ -294,6 +334,16 @@ public class SBMapActivity extends MapActivity implements APIHandler
 	}
 
 	public void onJoinFailure(Throwable e) {
+		// TODO Auto-generated method stub
+		// This should never be called
+	}
+
+	public void onLeaveSuccess() {
+		// TODO Auto-generated method stub
+		// This should never be called
+	}
+
+	public void onLeaveFailure(Throwable arg0) {
 		// TODO Auto-generated method stub
 		// This should never be called
 	}

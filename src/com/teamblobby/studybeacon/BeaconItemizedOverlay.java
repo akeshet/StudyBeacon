@@ -18,6 +18,7 @@ import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.OverlayItem;
 import com.google.android.maps.MapView.LayoutParams;
+import com.teamblobby.studybeacon.datastructures.BeaconInfo;
 
 public class BeaconItemizedOverlay extends ItemizedOverlay {
 
@@ -171,11 +172,16 @@ public class BeaconItemizedOverlay extends ItemizedOverlay {
 
 
 	 protected void handleTap(BeaconOverlayItem p) {
-		 // TODO Check if this is the beacon where we currently are.
-		 // If so, do an EDIT instead of VIEW
 		 Intent intent = new Intent(mContext, BeaconEditActivity.class);
-		 intent.setAction(BeaconEditActivity.ACTION_VIEW);
-
+		 // Check if this is the present beacon
+		 BeaconInfo presentBeacon = Global.getCurrentBeacon();
+		 if ((presentBeacon != null)
+				 && (p.getBeacon() != null)
+				 && (presentBeacon.getBeaconId() == p.getBeacon().getBeaconId())) {
+			 Log.d(TAG,"Tapped my own beacon");
+			 intent.setAction(BeaconEditActivity.ACTION_EDIT);
+		 } else
+			 intent.setAction(BeaconEditActivity.ACTION_VIEW);
 		 intent.putExtra(BeaconEditActivity.EXTRA_BEACON, p.getBeacon());
 		 mContext.startActivity(intent);
 

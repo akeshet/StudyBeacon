@@ -16,7 +16,7 @@
     <string name="courseResourseNothing">Nothing to Display.</string>
     <string name="courseResourseServerProblem">There was a problem getting the course list from Stellar.</string>
     <string name="newBeacon">New Beacon</string>
-    <string name="editBeacon">Edit Beacon</string>
+    <string name="editBeacon">Save Beacon</string>
     <string name="joinBeacon">Join Beacon</string>
     <string name="leaveBeacon">Leave Beacon</string>
     <string name="beaconDetails">Beacon Details</string>
@@ -48,6 +48,5 @@
     <string name="detailHint">Room: …</string>
     <string name="phoneHint">(555)-555-1212</string>
     <string name="emailHint">tbeaver@mit.edu</string>
-    <string name="saveString">Save</string>
     
 </resources>
