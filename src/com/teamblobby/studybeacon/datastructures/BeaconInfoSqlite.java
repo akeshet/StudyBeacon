@@ -15,7 +15,7 @@ public class BeaconInfoSqlite extends BeaconInfo {
 
 	// ***** Database related code
 
-	private static final int DB_VERSION = 1;
+	private static final int DB_VERSION = 3;
 	public static final String TAG = "BeaconInfoSqlite";
 
 	public static final String MYBEACONS_TABLE = "mybeacons";
@@ -55,11 +55,11 @@ public class BeaconInfoSqlite extends BeaconInfo {
 					COLUMN_COURSENAME + " text not null, " + 
 					COLUMN_LOC_LAT + " integer, " +
 					COLUMN_LOC_LONG + " integer, "+
-					COLUMN_VISITORS + " integer , "+
-					COLUMN_DETAILS + " text " +
-					COLUMN_TELEPHONE + " text " +
-					COLUMN_EMAIL + " text " +
-					COLUMN_CREATED + " text " +
+					COLUMN_VISITORS + " integer, "+
+					COLUMN_DETAILS + " text, " +
+					COLUMN_TELEPHONE + " text, " +
+					COLUMN_EMAIL + " text, " +
+					COLUMN_CREATED + " text, " +
 					COLUMN_EXPIRES + " text)";
 
 	private static final String [] TABLE_NAMES = {MYBEACONS_TABLE, ALLBEACONS_TABLE};
