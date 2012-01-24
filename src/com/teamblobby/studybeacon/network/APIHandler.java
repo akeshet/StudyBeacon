@@ -1,4 +1,4 @@
-package com.teamblobby.studybeacon;
+package com.teamblobby.studybeacon.network;
 
 import java.util.ArrayList;
 

@@ -6,6 +6,8 @@ import java.util.List;
 
 import com.google.android.maps.*;
 import com.teamblobby.studybeacon.datastructures.*;
+import com.teamblobby.studybeacon.network.APIClient;
+import com.teamblobby.studybeacon.network.APIHandler;
 
 import android.app.Activity;
 import android.content.Intent;

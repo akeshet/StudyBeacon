@@ -1,4 +1,4 @@
-package com.teamblobby.studybeacon;
+package com.teamblobby.studybeacon.network;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.google.android.maps.GeoPoint;
 import com.loopj.android.http.*;
+import com.teamblobby.studybeacon.Global;
 import com.teamblobby.studybeacon.datastructures.*;
 
 import org.json.*;
