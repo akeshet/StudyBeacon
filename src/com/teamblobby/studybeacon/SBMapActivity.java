@@ -27,7 +27,7 @@ public class SBMapActivity extends MapActivity implements APIHandler
 
 	public final static String TAG = "SBMapActivity";
 
-	private static final int REQUEST_NEW_BEACON = 0;
+	private static final int REQUESTCODE_RETURNED_FROM_BEACON = 0;
 	
 	protected Spinner courseSpinner;
 	private ArrayAdapter<String> courseSpinnerAdapter;
@@ -71,6 +71,8 @@ public class SBMapActivity extends MapActivity implements APIHandler
 			}
 		});
 
+		updateBeaconButton();
+		
 		this.loadCourses(savedInstanceState);
 
 		this.setUpMapView(savedInstanceState);
@@ -112,7 +114,22 @@ public class SBMapActivity extends MapActivity implements APIHandler
 				startQuery();
 			}
 			break;
+		
+		case REQUESTCODE_RETURNED_FROM_BEACON:
+			updateBeaconButton();
 		}
+	}
+	
+	private void updateBeaconButton() {
+		// TODO: Update new beacon button according to currentbeacon state.
+		Log.d(TAG, "In updateBeaconButton(), not yet implemented due to lack of icons.");
+		if (Global.atBeacon()) {
+			Log.d(TAG, "We are at a beacon.");
+		}
+		else {
+			Log.d(TAG, "We are not at a beacon.");
+		}
+
 	}
 
 	protected void setUpMapView(Bundle savedInstanceState) {
@@ -207,7 +224,7 @@ public class SBMapActivity extends MapActivity implements APIHandler
 		if (! selected.equals(Global.res.getString(R.string.allCourses))) {
 			intent.putExtra(BeaconEditActivity.EXTRA_COURSE, selected);
 		}
-		startActivityForResult(intent, REQUEST_NEW_BEACON);
+		startActivityForResult(intent, REQUESTCODE_RETURNED_FROM_BEACON);
 	}
 	
     ////////////////////////////////////////////////////////////////

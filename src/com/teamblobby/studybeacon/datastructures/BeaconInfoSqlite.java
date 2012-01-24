@@ -303,6 +303,25 @@ public class BeaconInfoSqlite extends BeaconInfo {
 		setRowValues(v);
 
 	}
+	
+	/**
+	 * Returns true if we are at a beacon (ie My Beacons table is non empty).
+	 * @return
+	 */
+	public static boolean atBeacon() {
+		openIfNecessaryDB();
+		Cursor cursor = database.query(MYBEACONS_TABLE, new String [] {COLUMN_ID}, 
+				null, null, null, null, null);
+
+		int count = cursor.getCount();
+		
+		cursor.close();
+		
+		if (count>0)
+			return true;
+		
+		return false;
+	}
 
 	/**
 	 * Returns a (should-be-unique) beacon info for the beacon we are at,
@@ -316,8 +335,10 @@ public class BeaconInfoSqlite extends BeaconInfo {
 
 		int count = cursor.getCount();
 
-		if (count==0)
+		if (count==0) {
+			cursor.close();
 			return null;
+		}
 
 		if (count>1)
 			Log.e(TAG, "Found more than 1 row in My Beacons table, in getCurrentBeacon method. Returning 1st one, but this should not happen.");
@@ -325,6 +346,8 @@ public class BeaconInfoSqlite extends BeaconInfo {
 		cursor.moveToFirst();
 
 		long id = cursor.getInt(0);		
+		cursor.close();
+		
 		return new BeaconInfoSqlite(MYBEACONS_TABLE, id);
 	}
 	
