@@ -11,9 +11,7 @@ import com.teamblobby.studybeacon.network.APIHandler;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.location.LocationProvider;
 import android.os.Bundle;
-import android.provider.ContactsContract.CommonDataKinds.Email;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -273,13 +271,11 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 	}
 
 	public void onQuerySuccess(ArrayList<BeaconInfo> beacons) {
-		// TODO Auto-generated method stub
-
+		// This should never be called
 	}
 
 	public void onQueryFailure(Throwable arg0) {
-		// TODO Auto-generated method stub
-
+		// This should never be called
 	}
 
 	public void onAddSuccess(BeaconInfo beacon) {
@@ -292,6 +288,16 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 	public void onAddFailure(Throwable arg0) {
 		// TODO Auto-generated method stub
 		Toast.makeText(this, "Failed to add beacon", Toast.LENGTH_SHORT).show();
+	}
+
+	public void onJoinSuccess(BeaconInfo beacon) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void onJoinFailure(Exception e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

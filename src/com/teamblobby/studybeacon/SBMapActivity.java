@@ -280,10 +280,20 @@ public class SBMapActivity extends MapActivity implements APIHandler
 
 	public void onAddSuccess(BeaconInfo beacon) {
 		// TODO Auto-generated method stub
-		
+		// This should never be called
 	}
 
 	public void onAddFailure(Throwable arg0) {
+		// TODO Auto-generated method stub
+		// This should never be called
+	}
+
+	public void onJoinSuccess(BeaconInfo beacon) {
+		// TODO Auto-generated method stub
+		// This should never be called		
+	}
+
+	public void onJoinFailure(Exception e) {
 		// TODO Auto-generated method stub
 		// This should never be called
 	}
