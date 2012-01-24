@@ -85,13 +85,27 @@ public class MyCoursesActivity extends ListActivity {
 			});
 			
 			ImageButton newBeaconButton = (ImageButton) viewToReturn.findViewById(R.id.mcrNewBeaconButton);
+			final BeaconInfo presentBeacon = Global.getCurrentBeacon();
+
+			if ((presentBeacon != null)
+					&& presentBeacon.getCourseName().equals(courseInfo.getName()))
+				newBeaconButton.setImageDrawable(getResources().getDrawable(R.drawable.beacon_edit));
+
 			newBeaconButton.setOnClickListener(new OnClickListener() {
 				
 				public void onClick(View v) {
 					Intent i = new Intent(MyCoursesActivity.this, BeaconEditActivity.class);
-					i.setAction(BeaconEditActivity.ACTION_NEW);
-					// Set the default class
-					i.putExtra(BeaconEditActivity.EXTRA_COURSE, courseInfo.getName());
+					if ((presentBeacon != null)
+							&& presentBeacon.getCourseName().equals(courseInfo.getName())) {
+						// edit
+						i.setAction(BeaconEditActivity.ACTION_EDIT);
+						i.putExtra(BeaconEditActivity.EXTRA_BEACON, presentBeacon);
+					} else {
+						// launch a new one
+						i.setAction(BeaconEditActivity.ACTION_NEW);
+						// Set the default class
+						i.putExtra(BeaconEditActivity.EXTRA_COURSE, courseInfo.getName());
+					};
 					MyCoursesActivity.this.startActivity(i);
 				}
 			});
