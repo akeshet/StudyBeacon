@@ -4,27 +4,23 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import com.google.android.maps.GeoPoint;
-import com.google.android.maps.MyLocationOverlay;
-import com.teamblobby.studybeacon.datastructures.BeaconInfo;
-import com.teamblobby.studybeacon.datastructures.BeaconInfoSimple;
+import com.google.android.maps.*;
+import com.teamblobby.studybeacon.datastructures.*;
+import com.teamblobby.studybeacon.network.APIClient;
+import com.teamblobby.studybeacon.network.APIHandler;
+
 import android.app.Activity;
 import android.content.Intent;
-import android.location.LocationProvider;
 import android.os.Bundle;
-import android.provider.ContactsContract.CommonDataKinds.Email;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
+import android.text.util.*;
+
 
 public class BeaconEditActivity extends Activity implements APIHandler {
-	
+
 	// Here is the interface for intents to use
 	public static final String EXTRA_COURSE = "Course";
 	public static final String EXTRA_BEACON = "beacon";
@@ -39,9 +35,9 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		MODE_EDIT,
 		MODE_VIEW
 	}
-	
+
 	protected OperationMode mode;
-	
+
 	protected TextView beaconTitleTV;
 	protected Spinner courseSpinner;
 	protected TextView expiresTV;
@@ -52,7 +48,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 	protected EditText email;
 	protected EditText details;
 	protected Button beaconActionButton;
-	
+
 	// This represents the beacon we are making.
 	protected BeaconInfoSimple mBeacon;
 
@@ -60,21 +56,21 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 	private ArrayAdapter<CharSequence> expiresAdapter;
 	private ArrayAdapter<CharSequence> workingOnAdapter;
 	private UserLocator userLocator;
-	
-	
+
+
 	private DateFormat df = DateFormat.getTimeInstance(DateFormat.SHORT);
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.beacon);
-		
+
 		loadUIEls();
-		
+
 		// This is the intent that started us
 		Intent startingIntent = getIntent();
 		String startingAction = startingIntent.getAction();
-		
+
 		// Figure out what to do
 		if (startingAction.equals(ACTION_VIEW)) {
 			mode = OperationMode.MODE_VIEW;
@@ -83,7 +79,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		} else { // By default, create a new beacon
 			mode = OperationMode.MODE_NEW;
 		}
-		
+
 		switch (mode) {
 		case MODE_VIEW:
 			setUpForView(savedInstanceState,startingIntent);
@@ -96,7 +92,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 			setUpForNew(savedInstanceState,startingIntent);
 			break;
 		}
-		
+
 	}
 
 	private void loadUIEls() {
@@ -110,29 +106,29 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		email            = (EditText) findViewById(R.id.email);
 		details          = (EditText) findViewById(R.id.detailsEdit);
 		beaconActionButton = (Button) findViewById(R.id.beaconActionButton);
-		
+
 		// Set the spinners up
 		courseAdapter =
 				new ArrayAdapter<String>(this,
 						android.R.layout.simple_spinner_item,
 						Global.getCourses());
-			
-	    courseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-	    courseSpinner.setAdapter(courseAdapter);
-		
+
+		courseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		courseSpinner.setAdapter(courseAdapter);
+
 		expiresAdapter = ArrayAdapter.createFromResource(
-	            this, R.array.expiresTimes, android.R.layout.simple_spinner_item);
-	    expiresAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-	    expiresSpinner.setAdapter(expiresAdapter);
-	    
-	    workingOnAdapter = ArrayAdapter.createFromResource(
-	            this, R.array.workingOnList, android.R.layout.simple_spinner_item);
-	    workingOnAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-	    workingOnSpinner.setAdapter(workingOnAdapter);
-	    // TODO add a listener for custom
-	    
+				this, R.array.expiresTimes, android.R.layout.simple_spinner_item);
+		expiresAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		expiresSpinner.setAdapter(expiresAdapter);
+
+		workingOnAdapter = ArrayAdapter.createFromResource(
+				this, R.array.workingOnList, android.R.layout.simple_spinner_item);
+		workingOnAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		workingOnSpinner.setAdapter(workingOnAdapter);
+		// TODO add a listener for custom
+
 		expiresSpinner.setSelection(Global.res.getInteger(R.integer.expiresDefaultIndex));
-	    
+
 	}
 
 	protected void setCourseSpinnerItem(String course) {
@@ -168,7 +164,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 				email.getText().toString(),
 				new Date(),
 				new Date() // TODO put this in the future
-		);
+				);
 	}
 
 	private void setUpForNew(Bundle savedInstanceState, Intent startingIntent) {
@@ -193,7 +189,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		protected BeaconEditActivity mActivity;
 
 		public NewBeaconClickListener(BeaconEditActivity sbBeaconEditActivity) {
-			
+
 			mActivity = sbBeaconEditActivity;
 		}
 
@@ -222,31 +218,42 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 	private void setUpForView(Bundle savedInstanceState, Intent startingIntent) {
 		// Set title text
 		beaconTitleTV.setText(R.string.beaconDetails);
-		
+
 		// Disable the elements' editability
 		Spinner spinners[] = {courseSpinner, expiresSpinner, workingOnSpinner};
 		for (Spinner s : spinners)
 			s.setEnabled(false);
-		
+
 		// Change the "expires" text
 		expiresTV.setText(R.string.expiresAt);
 		expiresSpinner.setVisibility(View.GONE);
 		expiresTimeTV.setVisibility(View.VISIBLE);
-		
+
 		EditText ets[] = {phone, email, details};
-		for (EditText e : ets)
-			e.setEnabled(false);
-		
-		
+		for (EditText e : ets) {
+			e.setFocusable(false);
+		}
+
 		loadBeaconData(startingIntent);
-		
-		beaconActionButton.setVisibility(View.GONE);
-		
+
+		beaconActionButton.setText(R.string.joinBeacon);
+
+		beaconActionButton.setOnClickListener(new OnClickListener() {
+
+			public void onClick(View v) {
+				// TODO check user's location
+				if (mBeacon != null)
+					APIClient.join(mBeacon.getBeaconId(), BeaconEditActivity.this);
+				else
+					Toast.makeText(BeaconEditActivity.this,
+							"Something went wrong -- I don't know which beacon you're viewing",
+							Toast.LENGTH_SHORT).show();
+			}
+		});
+
 	}
 
 	private void loadBeaconData(Intent startingIntent) {
-		// TODO Auto-generated method stub
-
 		// TODO What do we do if somebody did not call this properly?
 		mBeacon = startingIntent.getParcelableExtra(EXTRA_BEACON);
 
@@ -260,7 +267,10 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		details.setText(mBeacon.getDetails());
 		expiresTimeTV.setText(df.format(mBeacon.getExpires()));
 
-
+		if (this.mode == OperationMode.MODE_VIEW) {
+			Linkify.addLinks(phone, Linkify.PHONE_NUMBERS);
+			Linkify.addLinks(email, Linkify.EMAIL_ADDRESSES);
+		}
 	}
 
 	////////////////////////////////////////////////////////////////
@@ -272,25 +282,35 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 	}
 
 	public void onQuerySuccess(ArrayList<BeaconInfo> beacons) {
-		// TODO Auto-generated method stub
-		
+		// This should never be called
 	}
 
 	public void onQueryFailure(Throwable arg0) {
-		// TODO Auto-generated method stub
-		
+		// This should never be called
 	}
 
 	public void onAddSuccess(BeaconInfo beacon) {
-		// TODO Auto-generated method stub
 		Toast.makeText(this, "Beacon added successfully", Toast.LENGTH_SHORT).show();
+		Global.setCurrentBeacon(beacon);
 		// go back home
 		Global.goHome(this);
 	}
 
 	public void onAddFailure(Throwable arg0) {
-		// TODO Auto-generated method stub
 		Toast.makeText(this, "Failed to add beacon", Toast.LENGTH_SHORT).show();
+		Global.setCurrentBeacon(null);
+	}
+
+	public void onJoinSuccess(BeaconInfo beacon) {
+		Toast.makeText(this, "Beacon joined successfully", Toast.LENGTH_SHORT).show();
+		Global.setCurrentBeacon(beacon);
+		// go back home
+		Global.goHome(this);
+	}
+
+	public void onJoinFailure(Throwable e) {
+		Toast.makeText(this, "Failed to join beacon", Toast.LENGTH_SHORT).show();
+		Global.setCurrentBeacon(null);
 	}
 
 }

@@ -1,4 +1,4 @@
-package com.teamblobby.studybeacon;
+package com.teamblobby.studybeacon.network;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.google.android.maps.GeoPoint;
 import com.loopj.android.http.*;
+import com.teamblobby.studybeacon.Global;
 import com.teamblobby.studybeacon.datastructures.*;
 
 import org.json.*;
@@ -219,5 +220,67 @@ public class APIClient {
 		}
 
 	}
+	
+	////////////////////////////////////////////////////////////////
+	// Interface for doing a join
+
+	public final static String JOIN_URL = "join.py";
+
+
+	public static void join(int BeaconId, final APIHandler handler) {
+
+		RequestParams params = new RequestParams();
+
+		params.put(DEVID_STR, Global.getMyIdString());
+		params.put(BEACID_STR, Integer.toString(BeaconId));
+
+		get(JOIN_URL, params, new JoinJsonHandler(handler));
+
+	}
+
+	protected static class JoinJsonHandler extends JsonHttpResponseHandler {
+
+		protected final APIHandler handler;
+		
+		public JoinJsonHandler(APIHandler handler) {
+			// TODO Auto-generated constructor stub
+			this.handler = handler;
+		}
+
+		@Override
+		public void onSuccess(JSONObject bObj) {
+			// TODO Auto-generated method stub
+			super.onSuccess(bObj);
+
+			try {
+				final BeaconInfo beacon = parseJSONObjBeaconInfo(bObj);
+				handler.getActivity().runOnUiThread(new Runnable() {
+					public void run() {
+						handler.onJoinSuccess(beacon);
+					}
+				});
+			} catch (final Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				handler.getActivity().runOnUiThread(new Runnable() {
+					public void run() {
+						handler.onJoinFailure(e);
+					}
+				});
+			}
+		}
+
+		@Override
+		public void onFailure(final Throwable arg0) {
+			// TODO Auto-generated method stub
+			super.onFailure(arg0);
+			handler.getActivity().runOnUiThread(new Runnable() {
+				public void run() {
+					handler.onJoinFailure(arg0);
+				}
+			});
+		}
+
+	};
 
 }

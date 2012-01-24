@@ -17,6 +17,8 @@
     <string name="courseResourseServerProblem">There was a problem getting the course list from Stellar.</string>
     <string name="newBeacon">New Beacon</string>
     <string name="editBeacon">Edit Beacon</string>
+    <string name="joinBeacon">Join Beacon</string>
+    <string name="leaveBeacon">Leave Beacon</string>
     <string name="beaconDetails">Beacon Details</string>
     <string name="stilllocating">Still acquiring location…</string>
     <string name="course">Course</string>

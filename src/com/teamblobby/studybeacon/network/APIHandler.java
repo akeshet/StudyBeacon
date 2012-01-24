@@ -1,4 +1,4 @@
-package com.teamblobby.studybeacon;
+package com.teamblobby.studybeacon.network;
 
 import java.util.ArrayList;
 
@@ -12,4 +12,6 @@ public interface APIHandler {
 	public void onQueryFailure(Throwable arg0);
 	public void onAddSuccess(BeaconInfo beacon);
 	public void onAddFailure(Throwable arg0);
+	public void onJoinSuccess(BeaconInfo beacon);
+	public void onJoinFailure(Throwable e);
 }

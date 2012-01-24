@@ -6,6 +6,8 @@ import java.util.List;
 
 import com.google.android.maps.*;
 import com.teamblobby.studybeacon.datastructures.*;
+import com.teamblobby.studybeacon.network.APIClient;
+import com.teamblobby.studybeacon.network.APIHandler;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -278,10 +280,20 @@ public class SBMapActivity extends MapActivity implements APIHandler
 
 	public void onAddSuccess(BeaconInfo beacon) {
 		// TODO Auto-generated method stub
-		
+		// This should never be called
 	}
 
 	public void onAddFailure(Throwable arg0) {
+		// TODO Auto-generated method stub
+		// This should never be called
+	}
+
+	public void onJoinSuccess(BeaconInfo beacon) {
+		// TODO Auto-generated method stub
+		// This should never be called		
+	}
+
+	public void onJoinFailure(Throwable e) {
 		// TODO Auto-generated method stub
 		// This should never be called
 	}
