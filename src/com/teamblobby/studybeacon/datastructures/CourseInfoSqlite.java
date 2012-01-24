@@ -24,7 +24,7 @@ public class CourseInfoSqlite extends CourseInfo {
 
 	// ***** Database related code
 
-	private static final int DB_VERSION = 4;
+	private static final int DB_VERSION = 5;
 	public static final String TAG = "CourseInfoSqlite";
 
 	public static final String MYCOURSES_TABLE = "mycourses";
@@ -36,13 +36,17 @@ public class CourseInfoSqlite extends CourseInfo {
 	private static final String COLUMN_NAME = "courseName";
 	private static final String COLUMN_STAR = "courseStarred";
 	private static final String COLUMN_NOTIFY = "courseNotify";
-	private static final String [] COLUMNS_ALLVALUES = {COLUMN_NAME, COLUMN_STAR, COLUMN_NOTIFY};
+	private static final String COLUMN_DESC = "description";
+	private static final String COLUMN_PRETTY = "prettyName";
+	private static final String [] COLUMNS_ALLVALUES = {COLUMN_NAME, COLUMN_STAR, COLUMN_NOTIFY, COLUMN_DESC, COLUMN_PRETTY};
 
 	private static final String DB_COLUMNS_DESCRIPTION =  
 			"(" + COLUMN_ID + " integer primary key, "
 					+ COLUMN_NAME + " text not null, "
 					+ COLUMN_STAR + " integer, "
-					+ COLUMN_NOTIFY + " integer)";
+					+ COLUMN_NOTIFY + " integer, "
+					+ COLUMN_DESC + " text not null, "
+					+ COLUMN_PRETTY + " text not null)";
 
 	private static final String [] TABLE_NAMES = {MYCOURSES_TABLE, ALLCOURSES_TABLE};
 
@@ -149,6 +153,8 @@ public class CourseInfoSqlite extends CourseInfo {
 		cValues.put(COLUMN_NAME, courseInfo.getName());
 		cValues.put(COLUMN_STAR, courseInfo.getStarred());
 		cValues.put(COLUMN_NOTIFY, courseInfo.getNotify());
+		cValues.put(COLUMN_DESC, courseInfo.getDescription());
+		cValues.put(COLUMN_PRETTY, courseInfo.getPrettyName());
 		return cValues;
 	}
 
@@ -161,8 +167,9 @@ public class CourseInfoSqlite extends CourseInfo {
 	 * @param starred
 	 * @param notify
 	 */
-	public CourseInfoSqlite(String tableName, String courseName, boolean starred, boolean notify) {
-		this(tableName, new CourseInfoSimple(courseName, starred, notify));
+	public CourseInfoSqlite(String tableName, String courseName, boolean starred, boolean notify, 
+			String description, String prettyName) {
+		this(tableName, new CourseInfoSimple(courseName, starred, notify, description, prettyName));
 	}
 
 	/** If no courseInfo exists in the table with the given course name, then creates 
@@ -212,7 +219,9 @@ public class CourseInfoSqlite extends CourseInfo {
 		cursor.moveToFirst();
 		this.cachedInfo = new CourseInfoSimple(cursor.getString(0),
 				cursor.getInt(1)!=0,
-				cursor.getInt(2)!=0);
+				cursor.getInt(2)!=0,
+				cursor.getString(3),
+				cursor.getString(4));
 		cursor.close();
 	}
 
@@ -256,6 +265,32 @@ public class CourseInfoSqlite extends CourseInfo {
 		cachedInfo.setNotify(notify);
 		ContentValues values = new ContentValues();
 		values.put(COLUMN_NOTIFY, notify);
+		setRowValues(values);
+	}
+
+	@Override
+	public String getDescription() {
+		return cachedInfo.getDescription();
+	}
+
+	@Override
+	public void setDescription(String description) {
+		cachedInfo.setDescription(description);
+		ContentValues values = new ContentValues();
+		values.put(COLUMN_DESC, description);
+		setRowValues(values);
+	}
+
+	@Override
+	public String getPrettyName() {
+		return cachedInfo.getPrettyName();
+	}
+
+	@Override
+	public void setPrettyName(String prettyName) {
+		cachedInfo.setPrettyName(prettyName);
+		ContentValues values = new ContentValues();
+		values.put(COLUMN_PRETTY, prettyName);
 		setRowValues(values);
 	}
 }

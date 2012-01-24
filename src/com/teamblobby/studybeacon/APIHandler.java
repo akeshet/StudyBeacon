@@ -6,7 +6,7 @@ import android.app.Activity;
 
 import com.teamblobby.studybeacon.datastructures.*;
 
-public interface SBAPIHandler {
+public interface APIHandler {
 	public Activity getActivity();
 	public void onQuerySuccess(ArrayList<BeaconInfo> beacons);
 	public void onQueryFailure(Throwable arg0);

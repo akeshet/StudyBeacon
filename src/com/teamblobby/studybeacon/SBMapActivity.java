@@ -18,7 +18,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-public class SBMapActivity extends MapActivity implements SBAPIHandler
+public class SBMapActivity extends MapActivity implements APIHandler
 {
 
 	public final static int REQUESTCODE_RETURNED_FROM_MYCOURSES = 1;
@@ -64,7 +64,7 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 		myClassesButton = (Button) findViewById(R.id.myClassesButton);
 		myClassesButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				Intent i = new Intent(SBMapActivity.this, SBMyCoursesActivity.class);
+				Intent i = new Intent(SBMapActivity.this, MyCoursesActivity.class);
 				startActivityForResult(i, REQUESTCODE_RETURNED_FROM_MYCOURSES);
 			}
 		});
@@ -105,7 +105,7 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (requestCode) {
 		case REQUESTCODE_RETURNED_FROM_MYCOURSES:
-			if (resultCode == SBMyCoursesActivity.RESULT_COURSES_CHANGED) {
+			if (resultCode == MyCoursesActivity.RESULT_COURSES_CHANGED) {
 				loadCourses(null);
 				startQuery();
 			}
@@ -197,13 +197,13 @@ public class SBMapActivity extends MapActivity implements SBAPIHandler
 	}
 
 	public void newBeaconClicked(View view) {
-		Intent intent = new Intent(this, SBBeaconEditActivity.class);
-		intent.setAction(SBBeaconEditActivity.ACTION_NEW);
+		Intent intent = new Intent(this, BeaconEditActivity.class);
+		intent.setAction(BeaconEditActivity.ACTION_NEW);
 		// check what the spinner is set to
 		// TODO
 		String selected = (String)courseSpinner.getSelectedItem();
 		if (! selected.equals(Global.res.getString(R.string.allCourses))) {
-			intent.putExtra(SBBeaconEditActivity.EXTRA_COURSE, selected);
+			intent.putExtra(BeaconEditActivity.EXTRA_COURSE, selected);
 		}
 		startActivityForResult(intent, REQUEST_NEW_BEACON);
 	}

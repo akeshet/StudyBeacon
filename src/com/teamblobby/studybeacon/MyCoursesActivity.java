@@ -17,9 +17,9 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.teamblobby.studybeacon.datastructures.*;
 
-public class SBMyCoursesActivity extends ListActivity {
+public class MyCoursesActivity extends ListActivity {
 	
-	private static final String TAG = "SBMyCoursesActivity";
+	private static final String TAG = "MyCoursesActivity";
 	static final int DATA_CHANGE_REQUEST_CODE = 0;
 	private CourseAdapter adapter;
 	private List<CourseInfo> courseInfos;
@@ -80,7 +80,7 @@ public class SBMyCoursesActivity extends ListActivity {
 				
 				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 					courseInfo.setStarred(isChecked);
-					SBMyCoursesActivity.this.setResult(RESULT_COURSES_CHANGED);
+					MyCoursesActivity.this.setResult(RESULT_COURSES_CHANGED);
 				}
 			});
 			
@@ -88,11 +88,11 @@ public class SBMyCoursesActivity extends ListActivity {
 			newBeaconButton.setOnClickListener(new OnClickListener() {
 				
 				public void onClick(View v) {
-					Intent i = new Intent(SBMyCoursesActivity.this, SBBeaconEditActivity.class);
-					i.setAction(SBBeaconEditActivity.ACTION_NEW);
+					Intent i = new Intent(MyCoursesActivity.this, BeaconEditActivity.class);
+					i.setAction(BeaconEditActivity.ACTION_NEW);
 					// Set the default class
-					i.putExtra(SBBeaconEditActivity.EXTRA_COURSE, courseInfo.getName());
-					SBMyCoursesActivity.this.startActivity(i);
+					i.putExtra(BeaconEditActivity.EXTRA_COURSE, courseInfo.getName());
+					MyCoursesActivity.this.startActivity(i);
 				}
 			});
 			
@@ -104,15 +104,15 @@ public class SBMyCoursesActivity extends ListActivity {
 	private class AddCourseClickListener implements OnClickListener {
 		public void onClick(View view){
 			// launch the course resource activity
-			Intent i = new Intent(SBMyCoursesActivity.this,SBCourseResourceActivity.class);
-			SBMyCoursesActivity.this.startActivityForResult(i, DATA_CHANGE_REQUEST_CODE);
+			Intent i = new Intent(MyCoursesActivity.this,CourseResourceActivity.class);
+			MyCoursesActivity.this.startActivityForResult(i, DATA_CHANGE_REQUEST_CODE);
 		}
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == DATA_CHANGE_REQUEST_CODE
-				&& resultCode == SBCourseResourceActivity.RESULT_COURSES_CHANGED) {
+				&& resultCode == CourseResourceActivity.RESULT_COURSES_CHANGED) {
 			// RESULT_COURSES_CHANGED means data has changed
 			this.courseInfos.clear();
 			this.courseInfos.addAll(Global.getMyCourseInfos());

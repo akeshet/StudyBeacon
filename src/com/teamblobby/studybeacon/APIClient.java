@@ -78,7 +78,7 @@ public class APIClient {
 	public final static String EXPIRES_STR = "Expires";
 
 	public static void query(int LatE6Min, int LatE6Max, int LonE6Min, int LonE6Max, List<String> queryCourses,
-			final SBAPIHandler handler) {
+			final APIHandler handler) {
 		RequestParams params = new RequestParams();
 
 		params.put(LAT_MIN_STR,Integer.toString(LatE6Min));
@@ -101,9 +101,9 @@ public class APIClient {
 
 	protected static class QueryJsonHandler extends JsonHttpResponseHandler {
 
-		protected final SBAPIHandler handler;
+		protected final APIHandler handler;
 
-		public QueryJsonHandler(final SBAPIHandler handler) {
+		public QueryJsonHandler(final APIHandler handler) {
 			// TODO Auto-generated constructor stub
 			this.handler = handler;
 		}
@@ -158,7 +158,7 @@ public class APIClient {
 	public final static String DURATION_STR = "Duration";
 	public final static String DEVID_STR    = "DeviceId";
 
-	public static void add(BeaconInfo beacon, int duration, final SBAPIHandler handler) {
+	public static void add(BeaconInfo beacon, int duration, final APIHandler handler) {
 		RequestParams params = new RequestParams();
 
 		params.put(COURSE_STR,    beacon.getCourseName());
@@ -178,9 +178,9 @@ public class APIClient {
 
 	protected static class AddJsonHandler extends JsonHttpResponseHandler {
 
-		protected final SBAPIHandler handler;
+		protected final APIHandler handler;
 
-		public AddJsonHandler(SBAPIHandler handler) {
+		public AddJsonHandler(APIHandler handler) {
 			this.handler = handler;
 		}
 

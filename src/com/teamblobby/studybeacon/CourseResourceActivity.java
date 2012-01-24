@@ -19,7 +19,7 @@ import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
-public class SBCourseResourceActivity extends ListActivity {
+public class CourseResourceActivity extends ListActivity {
 
 	private static final String TAG = "SBCourseResourceListActivity";
 	
@@ -80,8 +80,8 @@ public class SBCourseResourceActivity extends ListActivity {
 				CourseListable courseListItem = (CourseListable) listView.getAdapter().getItem(position);
 				
 				if ( courseListItem.listableType() == CourseListable.TYPE_CATEGORY ) { 
-					Intent i = new Intent(SBCourseResourceActivity.this,
-							              SBCourseResourceActivity.class);
+					Intent i = new Intent(CourseResourceActivity.this,
+							              CourseResourceActivity.class);
 					i.putExtra("category", courseListItem.getName());
 					startActivityForResult(i, DATA_CHANGED_REQUEST_CODE);
 				}
@@ -167,7 +167,7 @@ public class SBCourseResourceActivity extends ListActivity {
 		
 		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 			this.courseInfo.setStarred(isChecked);
-			SBCourseResourceActivity activity = SBCourseResourceActivity.this;
+			CourseResourceActivity activity = CourseResourceActivity.this;
 			if ( isChecked ) {
 				activity.availableCourses.set(this.position, new CourseInfoSqlite(CourseInfoSqlite.MYCOURSES_TABLE, this.courseInfo));
 			}
@@ -180,9 +180,9 @@ public class SBCourseResourceActivity extends ListActivity {
     private class CourseLoadTask extends AsyncTask<String, Void, List<CourseListable>> {
     	
 		private static final String ROOT_CATEGORY = "_root";
-		private SBCourseResourceActivity callingActivity;
+		private CourseResourceActivity callingActivity;
     	
-    	public CourseLoadTask(SBCourseResourceActivity activity) {
+    	public CourseLoadTask(CourseResourceActivity activity) {
     		this.callingActivity = activity;
     	}
     	

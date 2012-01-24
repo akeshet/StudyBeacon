@@ -23,7 +23,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class SBBeaconEditActivity extends Activity implements SBAPIHandler {
+public class BeaconEditActivity extends Activity implements APIHandler {
 	
 	// Here is the interface for intents to use
 	public static final String EXTRA_COURSE = "Course";
@@ -190,9 +190,9 @@ public class SBBeaconEditActivity extends Activity implements SBAPIHandler {
 
 	protected static final class NewBeaconClickListener implements OnClickListener {
 
-		protected SBBeaconEditActivity mActivity;
+		protected BeaconEditActivity mActivity;
 
-		public NewBeaconClickListener(SBBeaconEditActivity sbBeaconEditActivity) {
+		public NewBeaconClickListener(BeaconEditActivity sbBeaconEditActivity) {
 			
 			mActivity = sbBeaconEditActivity;
 		}
