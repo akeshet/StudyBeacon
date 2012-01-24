@@ -15,7 +15,7 @@ public class BeaconInfoSqlite extends BeaconInfo {
 
 	// ***** Database related code
 
-	private static final int DB_VERSION = 1;
+	private static final int DB_VERSION = 3;
 	public static final String TAG = "BeaconInfoSqlite";
 
 	public static final String MYBEACONS_TABLE = "mybeacons";
@@ -36,17 +36,16 @@ public class BeaconInfoSqlite extends BeaconInfo {
 	private static final String COLUMN_EXPIRES = "expires";
 
 	private static final String [] COLUMNS_ALLVALUES = {
-		COLUMN_ID ,
-		COLUMN_BEACONID,
-		COLUMN_COURSENAME, 
-		COLUMN_LOC_LAT ,
-		COLUMN_LOC_LONG,
-		COLUMN_VISITORS,
-		COLUMN_DETAILS,
-		COLUMN_TELEPHONE,
-		COLUMN_EMAIL,
-		COLUMN_CREATED ,
-		COLUMN_EXPIRES
+		COLUMN_BEACONID,						// 0
+		COLUMN_COURSENAME, 						// 1
+		COLUMN_LOC_LAT,							// 2
+		COLUMN_LOC_LONG,						// 3
+		COLUMN_VISITORS,						// 4
+		COLUMN_DETAILS,							// 5
+		COLUMN_TELEPHONE,						// 6
+		COLUMN_EMAIL,							// 7
+		COLUMN_CREATED,							// 8
+		COLUMN_EXPIRES							// 9
 	};
 
 	private static final String DB_COLUMNS_DESCRIPTION =  
@@ -55,11 +54,11 @@ public class BeaconInfoSqlite extends BeaconInfo {
 					COLUMN_COURSENAME + " text not null, " + 
 					COLUMN_LOC_LAT + " integer, " +
 					COLUMN_LOC_LONG + " integer, "+
-					COLUMN_VISITORS + " integer , "+
-					COLUMN_DETAILS + " text " +
-					COLUMN_TELEPHONE + " text " +
-					COLUMN_EMAIL + " text " +
-					COLUMN_CREATED + " text " +
+					COLUMN_VISITORS + " integer, "+
+					COLUMN_DETAILS + " text, " +
+					COLUMN_TELEPHONE + " text, " +
+					COLUMN_EMAIL + " text, " +
+					COLUMN_CREATED + " text, " +
 					COLUMN_EXPIRES + " text)";
 
 	private static final String [] TABLE_NAMES = {MYBEACONS_TABLE, ALLBEACONS_TABLE};
@@ -165,6 +164,13 @@ public class BeaconInfoSqlite extends BeaconInfo {
 
 		Cursor cursor = database.query(tableName, COLUMNS_ALLVALUES, where, null, null, null, null);
 		cursor.moveToFirst();
+		
+		String creString = cursor.getString(8);
+		String expString = cursor.getString(9);
+		int Loc1 = cursor.getInt(2);
+		int Loc2 = cursor.getInt(3);
+		
+		
 		this.cachedInfo = new BeaconInfoSimple(
 				cursor.getInt(0),
 				cursor.getString(1),
