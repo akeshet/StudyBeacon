@@ -35,7 +35,7 @@ public class CourseResourceActivity extends ListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	
-	    // initial value of setresult is CANCELED (no data changed occured)
+	    // initial value of setResult is CANCELED (no data changed occurred)
 	    this.setResult(Activity.RESULT_CANCELED);
 	    Log.d(TAG,"result defaulted to canceled");
 	    
@@ -195,17 +195,11 @@ public class CourseResourceActivity extends ListActivity {
     	
 		@Override
 		protected List<CourseListable> doInBackground(String... category) {
+			String theCategory = category[0];
 			Log.v(TAG, "Loading Course Resources");
-			final String[] pulledCourseList;
 						
-			List<CourseListable> courses = new ArrayList<CourseListable>();
-			
-			pulledCourseList = StellarQuery.newQuery(category[0]).execute();
-			
-			for (String course : pulledCourseList) {
-				courses.add(category[0].equals(ROOT_CATEGORY) ? new CourseCategory(course) : new CourseInfoSimple(course));
-			}
-			
+			List<CourseListable> courses = StellarQuery.newQuery(theCategory).execute();
+						
 			Log.v(TAG,"load finished");
 			
 			return courses;
@@ -214,10 +208,17 @@ public class CourseResourceActivity extends ListActivity {
 		@Override
 		protected void onPostExecute(List<CourseListable> fetchedCourses) {
 			Log.v(TAG, "Post Load Action");
-			this.callingActivity.availableCourses.clear();
-			this.callingActivity.availableCourses.addAll(fetchedCourses);
-			Log.d(TAG,this.callingActivity.availableCourses.toString());
-			this.callingActivity.setStarredCourses();
+			
+			if ( fetchedCourses != null ){
+				this.callingActivity.availableCourses.clear();
+				this.callingActivity.availableCourses.addAll(fetchedCourses);
+				Log.d(TAG,this.callingActivity.availableCourses.toString());
+				this.callingActivity.setStarredCourses();
+			} else {
+				Toast.makeText(CourseResourceActivity.this, R.string.courseResourseServerProblem, Toast.LENGTH_SHORT).show();
+
+			}
+
 			((TextView) this.callingActivity.findViewById(android.R.id.empty)).setText(Global.res.getString(R.string.courseResourseNothing));
 			this.callingActivity.arrayAdapter.notifyDataSetChanged();
 		}

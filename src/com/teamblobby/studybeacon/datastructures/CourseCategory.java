@@ -5,11 +5,17 @@ import android.os.Parcelable;
 
 public class CourseCategory implements CourseListable, Parcelable {
 	
-	public CourseCategory(String nameIn) {
+	public CourseCategory(String nameIn, String descriptionIn) {
 		this.name = nameIn;
+		this.description = descriptionIn;
+	}
+	
+	public CourseCategory(String nameIn) {
+		this(nameIn,new String());
 	}
 	
 	private String name;
+	private String description;
 	
 	public String getName() {
 		return this.name;
@@ -21,7 +27,7 @@ public class CourseCategory implements CourseListable, Parcelable {
 	
 	@Override
 	public String toString(){
-		return this.getName();
+		return this.getPrettyName();
 	}
 
 	public int describeContents() {
@@ -59,6 +65,14 @@ public class CourseCategory implements CourseListable, Parcelable {
 
 	public int listableType() {
 		return CourseListable.TYPE_CATEGORY;
+	}
+
+	public String getPrettyName() {
+		return "Course "+this.getName(); // TODO maybe make string resource
+	}
+
+	public String getDescription() {
+		return this.description;
 	}
 
 }

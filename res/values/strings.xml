@@ -14,6 +14,7 @@
     <string name="loadingcoursestoast">Loading Courses</string>
     <string name="courseResourseLoadText">Loading Courses…</string>
     <string name="courseResourseNothing">Nothing to Display.</string>
+    <string name="courseResourseServerProblem">There was a problem getting the course list from Stellar.</string>
     <string name="newBeacon">New Beacon</string>
     <string name="editBeacon">Edit Beacon</string>
     <string name="beaconDetails">Beacon Details</string>

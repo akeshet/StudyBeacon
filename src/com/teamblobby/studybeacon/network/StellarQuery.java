@@ -2,12 +2,16 @@ package com.teamblobby.studybeacon.network;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.*;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.*;
+
+import com.teamblobby.studybeacon.datastructures.CourseListable;
 
 import android.util.Log;
 
@@ -33,9 +37,11 @@ public abstract class StellarQuery {
 	
 	protected abstract String getCommand();
 
-	public String[] execute() {
-		// create the url
+	public List<CourseListable> execute() {
+		// create the URL
 		String URL = this.getFullURL();
+
+		List<CourseListable> courses;
 		
 		// execute request
 		String response;
@@ -44,30 +50,28 @@ public abstract class StellarQuery {
 		} catch (IOException e) {
 			e.printStackTrace();
 			Log.e(TAG, "crap HTTP request failed");
-			return null;
+			// TODO make a toast?
+			return null; 
 		}
 		// get response
 
 		// parse JSON
 		JSONArray jsonArray;
-		String[] names;
 		try {
 			jsonArray = new JSONArray(response);
-
 			// extract response 
-			names = extractNames(jsonArray);
+			courses = extractCourses(jsonArray);
 		} catch (JSONException e) {
 			e.printStackTrace();
 			Log.e(TAG, "crap JSON parse failed");
-			return null;
+			return null; 
 		}
-		
 		//not sure how.
-		return names; 
+		return courses; 
 	}
 	
-	protected abstract String[] extractNames(JSONArray jsonArray) throws JSONException ;
-
+	protected abstract List<CourseListable> extractCourses(JSONArray jsonArray) throws JSONException ;
+	
 	protected String makeRequest(String URL) throws IOException{
 		HttpResponse response = httpclient.execute(new HttpGet(URL));
 	    StatusLine statusLine = response.getStatusLine();

@@ -34,7 +34,7 @@ public abstract class CourseInfo implements Parcelable,CourseListable{
 
 	@Override
 	public String toString() {
-		return this.getName();
+		return this.getPrettyName();
 	}
 
 	public static List<String> getCourseNames(List<CourseInfo> courses){

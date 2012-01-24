@@ -14,5 +14,9 @@ public interface CourseListable extends Parcelable{
 	
 	public String getName();
 	
+	public String getPrettyName();
+	
+	public String getDescription();
+	
 	public int listableType();
 }
