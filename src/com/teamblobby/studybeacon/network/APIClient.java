@@ -283,4 +283,55 @@ public class APIClient {
 
 	};
 
+
+	////////////////////////////////////////////////////////////////
+	// Interface for doing a leave
+
+	public final static String LEAVE_URL = "leave.py";
+
+
+	public static void leave(int BeaconId, final APIHandler handler) {
+
+		RequestParams params = new RequestParams();
+
+		params.put(DEVID_STR, Global.getMyIdString());
+		params.put(BEACID_STR, Integer.toString(BeaconId));
+
+		get(LEAVE_URL, params, new LeaveHTTPHandler(handler));
+
+	}
+
+	public static class LeaveHTTPHandler extends AsyncHttpResponseHandler {
+
+		protected final APIHandler handler;
+
+		public LeaveHTTPHandler(APIHandler handler) {
+			this.handler = handler;
+		}
+
+		@Override
+		public void onSuccess(String arg0) {
+			// TODO Auto-generated method stub
+			super.onSuccess(arg0);
+			Log.d(TAG,"Got leave success, response was "+ arg0);
+			handler.getActivity().runOnUiThread(new Runnable() {
+				public void run() {
+					handler.onLeaveSuccess();
+				}
+			});
+		}
+
+		@Override
+		public void onFailure(final Throwable arg0) {
+			// TODO Auto-generated method stub
+			super.onFailure(arg0);
+			handler.getActivity().runOnUiThread(new Runnable() {
+				public void run() {
+					handler.onLeaveFailure(arg0);
+				}
+			});
+		}
+
+	}
+
 }

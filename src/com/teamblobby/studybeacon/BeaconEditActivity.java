@@ -215,6 +215,18 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		beaconActionButton.setText(R.string.editBeacon);
 
 		beaconSecondaryActionButton.setVisibility(View.VISIBLE);
+		// The secondary button is the leave button
+		beaconSecondaryActionButton.setOnClickListener(new OnClickListener() {
+
+			public void onClick(View v) {
+				if (mBeacon != null)
+					APIClient.leave(mBeacon.getBeaconId(), BeaconEditActivity.this);
+				else
+					Toast.makeText(BeaconEditActivity.this,
+							"Something went wrong -- I don't know which beacon you're viewing",
+							Toast.LENGTH_SHORT).show();
+			}
+		});
 
 		loadBeaconData(startingIntent);
 
@@ -316,6 +328,18 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 	public void onJoinFailure(Throwable e) {
 		Toast.makeText(this, "Failed to join beacon", Toast.LENGTH_SHORT).show();
 		Global.setCurrentBeacon(null);
+	}
+
+	public void onLeaveSuccess() {
+		Toast.makeText(this, "Beacon left successfully", Toast.LENGTH_SHORT).show();
+		Global.setCurrentBeacon(null);
+		Global.goHome(this);
+	}
+
+	public void onLeaveFailure(Throwable arg0) {
+		// TODO Auto-generated method stub
+		Toast.makeText(this, "Failed to leave beacon -- out of sync with server", Toast.LENGTH_SHORT).show();
+		// TODO -- We need to resync with server, but that does not yet exist
 	}
 
 }
