@@ -34,6 +34,7 @@
         android:layout_width="@dimen/iconSize"
         android:layout_height="@dimen/iconSize"
         android:src="@drawable/newbeaconbutton"
-        android:layout_gravity="right|center_vertical"/>
+        android:layout_gravity="right|center_vertical"
+        android:background="@null"/>
 
 </LinearLayout>
