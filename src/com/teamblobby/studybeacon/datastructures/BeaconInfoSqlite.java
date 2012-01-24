@@ -6,6 +6,7 @@ import java.util.Date;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.google.android.maps.GeoPoint;
 import com.teamblobby.studybeacon.Global;
@@ -261,7 +262,7 @@ public class BeaconInfoSqlite extends BeaconInfo {
 		setRowValues(v);
 
 	}
-	
+
 	@Override
 	public String getEmail() {
 		return cachedInfo.getEmail();
@@ -301,6 +302,43 @@ public class BeaconInfoSqlite extends BeaconInfo {
 		v.put(COLUMN_EXPIRES, expires.toGMTString());
 		setRowValues(v);
 
+	}
+
+	/**
+	 * Returns a (should-be-unique) beacon info for the beacon we are at,
+	 * if we are checked into one. Otherwise returns null.
+	 * @return
+	 */
+	public static BeaconInfoSqlite getCurrentBeacon() {
+		openIfNecessaryDB();
+		Cursor cursor = database.query(MYBEACONS_TABLE, new String [] {COLUMN_ID}, 
+				null, null, null, null, null);
+
+		int count = cursor.getCount();
+
+		if (count==0)
+			return null;
+
+		if (count>1)
+			Log.e(TAG, "Found more than 1 row in My Beacons table, in getCurrentBeacon method. Returning 1st one, but this should not happen.");
+
+		cursor.moveToFirst();
+
+		long id = cursor.getInt(0);		
+		return new BeaconInfoSqlite(MYBEACONS_TABLE, id);
+	}
+	
+	/**
+	 * Clears the My Beacons table, and inserts passed beacon as the current beacon.
+	 * If beacon is null, does not insert an entry, and simply clears the My Beacons table.
+	 * @param beacon
+	 */
+	public static void setCurrentBeacon(BeaconInfo beacon) {
+		openIfNecessaryDB();
+		database.delete(MYBEACONS_TABLE, null, null);
+		
+		if (beacon!=null)
+			new BeaconInfoSqlite(MYBEACONS_TABLE, beacon); // create db entry
 	}
 
 }

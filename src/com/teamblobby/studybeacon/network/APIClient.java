@@ -1,4 +1,4 @@
-package com.teamblobby.studybeacon;
+package com.teamblobby.studybeacon.network;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.google.android.maps.GeoPoint;
 import com.loopj.android.http.*;
+import com.teamblobby.studybeacon.Global;
 import com.teamblobby.studybeacon.datastructures.*;
 
 import org.json.*;
@@ -78,7 +79,7 @@ public class APIClient {
 	public final static String EXPIRES_STR = "Expires";
 
 	public static void query(int LatE6Min, int LatE6Max, int LonE6Min, int LonE6Max, List<String> queryCourses,
-			final SBAPIHandler handler) {
+			final APIHandler handler) {
 		RequestParams params = new RequestParams();
 
 		params.put(LAT_MIN_STR,Integer.toString(LatE6Min));
@@ -101,9 +102,9 @@ public class APIClient {
 
 	protected static class QueryJsonHandler extends JsonHttpResponseHandler {
 
-		protected final SBAPIHandler handler;
+		protected final APIHandler handler;
 
-		public QueryJsonHandler(final SBAPIHandler handler) {
+		public QueryJsonHandler(final APIHandler handler) {
 			// TODO Auto-generated constructor stub
 			this.handler = handler;
 		}
@@ -158,7 +159,7 @@ public class APIClient {
 	public final static String DURATION_STR = "Duration";
 	public final static String DEVID_STR    = "DeviceId";
 
-	public static void add(BeaconInfo beacon, int duration, final SBAPIHandler handler) {
+	public static void add(BeaconInfo beacon, int duration, final APIHandler handler) {
 		RequestParams params = new RequestParams();
 
 		params.put(COURSE_STR,    beacon.getCourseName());
@@ -178,9 +179,9 @@ public class APIClient {
 
 	protected static class AddJsonHandler extends JsonHttpResponseHandler {
 
-		protected final SBAPIHandler handler;
+		protected final APIHandler handler;
 
-		public AddJsonHandler(SBAPIHandler handler) {
+		public AddJsonHandler(APIHandler handler) {
 			this.handler = handler;
 		}
 
@@ -219,5 +220,67 @@ public class APIClient {
 		}
 
 	}
+	
+	////////////////////////////////////////////////////////////////
+	// Interface for doing a join
+
+	public final static String JOIN_URL = "join.py";
+
+
+	public static void join(int BeaconId, final APIHandler handler) {
+
+		RequestParams params = new RequestParams();
+
+		params.put(DEVID_STR, Global.getMyIdString());
+		params.put(BEACID_STR, Integer.toString(BeaconId));
+
+		get(JOIN_URL, params, new JoinJsonHandler(handler));
+
+	}
+
+	protected static class JoinJsonHandler extends JsonHttpResponseHandler {
+
+		protected final APIHandler handler;
+		
+		public JoinJsonHandler(APIHandler handler) {
+			// TODO Auto-generated constructor stub
+			this.handler = handler;
+		}
+
+		@Override
+		public void onSuccess(JSONObject bObj) {
+			// TODO Auto-generated method stub
+			super.onSuccess(bObj);
+
+			try {
+				final BeaconInfo beacon = parseJSONObjBeaconInfo(bObj);
+				handler.getActivity().runOnUiThread(new Runnable() {
+					public void run() {
+						handler.onJoinSuccess(beacon);
+					}
+				});
+			} catch (final Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				handler.getActivity().runOnUiThread(new Runnable() {
+					public void run() {
+						handler.onJoinFailure(e);
+					}
+				});
+			}
+		}
+
+		@Override
+		public void onFailure(final Throwable arg0) {
+			// TODO Auto-generated method stub
+			super.onFailure(arg0);
+			handler.getActivity().runOnUiThread(new Runnable() {
+				public void run() {
+					handler.onJoinFailure(arg0);
+				}
+			});
+		}
+
+	};
 
 }

@@ -1,4 +1,4 @@
-package com.teamblobby.studybeacon;
+package com.teamblobby.studybeacon.network;
 
 import java.util.ArrayList;
 
@@ -6,10 +6,12 @@ import android.app.Activity;
 
 import com.teamblobby.studybeacon.datastructures.*;
 
-public interface SBAPIHandler {
+public interface APIHandler {
 	public Activity getActivity();
 	public void onQuerySuccess(ArrayList<BeaconInfo> beacons);
 	public void onQueryFailure(Throwable arg0);
 	public void onAddSuccess(BeaconInfo beacon);
 	public void onAddFailure(Throwable arg0);
+	public void onJoinSuccess(BeaconInfo beacon);
+	public void onJoinFailure(Throwable e);
 }

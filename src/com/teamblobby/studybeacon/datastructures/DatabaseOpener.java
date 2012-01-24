@@ -11,7 +11,7 @@ public class DatabaseOpener extends SQLiteOpenHelper {
 	private final String DBCreateColumns;
 	private final String[] tableNames;
 	private final String name;
-	
+
 	private static final String TAG = "DatabaseOpener";
 
 	public DatabaseOpener(Context context, String name,
@@ -26,7 +26,7 @@ public class DatabaseOpener extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		Log.d(TAG, "Creating " + name + " + database.");
+		Log.d(TAG, "Creating " + name + " database.");
 		for (String table : tableNames) {
 			createTable(db, table);
 		}

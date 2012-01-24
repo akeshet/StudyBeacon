@@ -173,10 +173,10 @@ public class BeaconItemizedOverlay extends ItemizedOverlay {
 	 protected void handleTap(BeaconOverlayItem p) {
 		 // TODO Check if this is the beacon where we currently are.
 		 // If so, do an EDIT instead of VIEW
-		 Intent intent = new Intent(mContext, SBBeaconEditActivity.class);
-		 intent.setAction(SBBeaconEditActivity.ACTION_VIEW);
+		 Intent intent = new Intent(mContext, BeaconEditActivity.class);
+		 intent.setAction(BeaconEditActivity.ACTION_VIEW);
 
-		 intent.putExtra(SBBeaconEditActivity.EXTRA_BEACON, p.getBeacon());
+		 intent.putExtra(BeaconEditActivity.EXTRA_BEACON, p.getBeacon());
 		 mContext.startActivity(intent);
 
 	 }
