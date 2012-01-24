@@ -44,14 +44,15 @@
             android:layout_weight="1"
             android:drawableLeft="@drawable/book_star"
             android:gravity="left|fill_vertical"
-            android:text="@string/myClasses" />
+            android:text="@string/myClasses"/>
 
         <ImageButton
             android:id="@+id/newBeaconButton"
             android:layout_width="@dimen/iconSize"
             android:layout_height="@dimen/iconSize"
             android:src="@drawable/newbeaconbutton" 
-            android:onClick="newBeaconClicked"/>
+            android:onClick="newBeaconClicked"
+            android:background="@null"/>
     </LinearLayout>
 
     <com.teamblobby.studybeacon.SBMapView
