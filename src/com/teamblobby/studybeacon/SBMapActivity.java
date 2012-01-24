@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -35,6 +36,7 @@ public class SBMapActivity extends MapActivity implements APIHandler
 	protected int courseSpinnerId;
 
 	protected Button myClassesButton;
+	protected ImageButton beaconButton;
 
 	private SBMapView mapView;
 
@@ -71,6 +73,8 @@ public class SBMapActivity extends MapActivity implements APIHandler
 			}
 		});
 
+		beaconButton = (ImageButton) findViewById(R.id.newBeaconButton);
+				
 		updateBeaconButton();
 		
 		this.loadCourses(savedInstanceState);
@@ -125,9 +129,11 @@ public class SBMapActivity extends MapActivity implements APIHandler
 		Log.d(TAG, "In updateBeaconButton(), not yet implemented due to lack of icons.");
 		if (Global.atBeacon()) {
 			Log.d(TAG, "We are at a beacon.");
+			beaconButton.setImageDrawable(getResources().getDrawable(R.drawable.beacon));
 		}
 		else {
 			Log.d(TAG, "We are not at a beacon.");
+			beaconButton.setImageDrawable(getResources().getDrawable(R.drawable.newbeaconicon));
 		}
 
 	}
