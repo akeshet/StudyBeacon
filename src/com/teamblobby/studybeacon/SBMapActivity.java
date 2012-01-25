@@ -52,6 +52,8 @@ public class SBMapActivity extends MapActivity implements APIHandler
 	private List<String> courses;
 
 	private HashMap<String,BeaconItemizedOverlay> beacItemizedOverlays;
+
+	protected int filterLastSelected = 0;
 	
 	///////////////////////////////////////////////////////
 
@@ -71,8 +73,7 @@ public class SBMapActivity extends MapActivity implements APIHandler
 		myClassesButton = (Button) findViewById(R.id.myClassesButton);
 		myClassesButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				Intent i = new Intent(SBMapActivity.this, MyCoursesActivity.class);
-				startActivityForResult(i, REQUESTCODE_RETURNED_FROM_MYCOURSES);
+				startMyCoursesActivity();
 			}
 		});
 
@@ -283,8 +284,15 @@ public class SBMapActivity extends MapActivity implements APIHandler
 		courseSpinner.setAdapter(courseSpinnerAdapter);
 		courseSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
-			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int arg2, long arg3) {
+			public void onItemSelected(AdapterView<?> parentAdapterView, View view,
+					int position, long id) {
+				if ( position == parentAdapterView.getAdapter().getCount()-1 ) {
+					//go back to all
+					parentAdapterView.setSelection(filterLastSelected);
+					// this is the edit item, so spawn my courses activity.
+					startMyCoursesActivity();
+				}
+				filterLastSelected  = position;
 				SBMapActivity.this.setBeaconOverlays();
 				// TODO Check if Edit ... was clicked.
 			}
@@ -371,6 +379,11 @@ public class SBMapActivity extends MapActivity implements APIHandler
 		default:
 			// Shouldn't ever get here. Complain?
 		}
+	}
+
+	protected void startMyCoursesActivity() {
+		Intent i = new Intent(SBMapActivity.this, MyCoursesActivity.class);
+		startActivityForResult(i, REQUESTCODE_RETURNED_FROM_MYCOURSES);
 	}
 
 }
