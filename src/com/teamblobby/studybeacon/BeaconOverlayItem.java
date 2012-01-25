@@ -1,7 +1,6 @@
 package com.teamblobby.studybeacon;
 
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.OverlayItem;
@@ -45,8 +44,7 @@ public class BeaconOverlayItem extends OverlayItem {
 		if ((presentBeaconInfo != null)
 				&& (mBeacon != null)
 				&& (presentBeaconInfo.getBeaconId() == mBeacon.getBeaconId())) {
-			return //presentBeaconDrawable;
-					null;
+			return BeaconItemizedOverlay.boundCenterBottom(presentBeaconDrawable);
 		} else {
 			return super.getMarker(stateBitset);
 		}

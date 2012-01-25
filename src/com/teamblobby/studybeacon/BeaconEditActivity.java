@@ -11,7 +11,6 @@ import com.teamblobby.studybeacon.network.APIHandler;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -198,7 +197,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 
 		public void onClick(View v) {
 			if ( !mActivity.userLocator.isReady() ) {
-				Toast.makeText(mActivity, R.string.stilllocating, Toast.LENGTH_SHORT).show(); //inform we are still locating.
+				Toast.makeText(mActivity, R.string.stillLocating, Toast.LENGTH_SHORT).show(); //inform we are still locating.
 				Log.d(TAG, "canceled, still locating");
 				return;
 			}
@@ -212,7 +211,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		// Set title text
 		beaconTitleTV.setText(R.string.editBeacon);		
 
-		beaconActionButton.setText(R.string.editBeacon);
+		beaconActionButton.setText(R.string.saveBeacon);
 
 		beaconSecondaryActionButton.setVisibility(View.VISIBLE);
 		// The secondary button is the leave button

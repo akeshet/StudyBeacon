@@ -116,18 +116,7 @@
                 android:layout_height="88dp"
                 android:hint="@string/detailHint"
                 android:inputType="textMultiLine" />
-
-            <TextView
-                android:id="@+id/portraitTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/portrait" />
-
-            <Button
-                android:id="@+id/portraitButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/takePicture" />
+            
         </LinearLayout>
     </ScrollView>
 

@@ -130,7 +130,7 @@ public class SBMapActivity extends MapActivity implements APIHandler
 		Log.d(TAG, "In updateBeaconButton(), not yet implemented due to lack of icons.");
 		if (Global.atBeacon()) {
 			Log.d(TAG, "We are at a beacon.");
-			beaconButton.setImageDrawable(getResources().getDrawable(R.drawable.beacon));
+			beaconButton.setImageDrawable(getResources().getDrawable(R.drawable.beacon_edit));
 			beaconButton.setOnClickListener(new OnClickListener() {
 				
 				public void onClick(View v) {

@@ -165,12 +165,6 @@ public class BeaconInfoSqlite extends BeaconInfo {
 		Cursor cursor = database.query(tableName, COLUMNS_ALLVALUES, where, null, null, null, null);
 		cursor.moveToFirst();
 		
-		String creString = cursor.getString(8);
-		String expString = cursor.getString(9);
-		int Loc1 = cursor.getInt(2);
-		int Loc2 = cursor.getInt(3);
-		
-		
 		this.cachedInfo = new BeaconInfoSimple(
 				cursor.getInt(0),
 				cursor.getString(1),
