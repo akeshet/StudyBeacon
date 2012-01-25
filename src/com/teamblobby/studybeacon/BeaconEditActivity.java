@@ -10,6 +10,7 @@ import com.teamblobby.studybeacon.network.APIClient;
 import com.teamblobby.studybeacon.network.APIHandler;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -57,6 +58,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 	private ArrayAdapter<CharSequence> expiresAdapter;
 	private ArrayAdapter<CharSequence> workingOnAdapter;
 	private UserLocator userLocator;
+	private ProgressDialog currentDialog;
 
 
 	private DateFormat df = DateFormat.getTimeInstance(DateFormat.SHORT);
@@ -186,7 +188,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		userLocator.startLocating();
 	}
 
-	protected static final class NewBeaconClickListener implements OnClickListener {
+	protected final class NewBeaconClickListener implements OnClickListener {
 
 		protected BeaconEditActivity mActivity;
 
@@ -201,7 +203,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 				Log.d(TAG, "canceled, still locating");
 				return;
 			}
-			// TODO actually get this from the fields
+			currentDialog = ProgressDialog.show(mActivity, "", "Creating beacon...");
 			APIClient.add(mActivity.beaconFromFields(), mActivity.durationFromField(), mActivity);
 		}
 	}
@@ -218,9 +220,10 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		beaconSecondaryActionButton.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
-				if (mBeacon != null)
+				if (mBeacon != null){
 					APIClient.leave(mBeacon.getBeaconId(), BeaconEditActivity.this);
-				else
+					currentDialog = ProgressDialog.show(BeaconEditActivity.this, "", "Leaving beacon...");
+				}else
 					Toast.makeText(BeaconEditActivity.this,
 							"Something went wrong -- I don't know which beacon you're viewing",
 							Toast.LENGTH_SHORT).show();
@@ -258,9 +261,10 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 
 			public void onClick(View v) {
 				// TODO check user's location
-				if (mBeacon != null)
+				if (mBeacon != null) {
 					APIClient.join(mBeacon.getBeaconId(), BeaconEditActivity.this);
-				else
+					currentDialog = ProgressDialog.show(BeaconEditActivity.this, "", "Joining beacon...");
+				} else
 					Toast.makeText(BeaconEditActivity.this,
 							"Something went wrong -- I don't know which beacon you're viewing",
 							Toast.LENGTH_SHORT).show();
@@ -308,12 +312,14 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 	public void onAddSuccess(BeaconInfo beacon) {
 		Toast.makeText(this, "Beacon added successfully", Toast.LENGTH_SHORT).show();
 		Global.setCurrentBeacon(beacon);
+		currentDialog.dismiss();
 		// go back home
 		Global.goHome(this);
 	}
 
 	public void onAddFailure(Throwable arg0) {
 		Toast.makeText(this, "Failed to add beacon", Toast.LENGTH_SHORT).show();
+		currentDialog.dismiss();
 		Global.setCurrentBeacon(null);
 	}
 
@@ -321,23 +327,26 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		Toast.makeText(this, "Beacon joined successfully", Toast.LENGTH_SHORT).show();
 		Global.setCurrentBeacon(beacon);
 		// go back home
+		currentDialog.dismiss();
 		Global.goHome(this);
 	}
 
 	public void onJoinFailure(Throwable e) {
-		Toast.makeText(this, "Failed to join beacon", Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, "Failed to join beacon", Toast.LENGTH_SHORT).show(); //TODO
+		currentDialog.dismiss();
 		Global.setCurrentBeacon(null);
 	}
 
 	public void onLeaveSuccess() {
 		Toast.makeText(this, "Beacon left successfully", Toast.LENGTH_SHORT).show();
 		Global.setCurrentBeacon(null);
+		currentDialog.dismiss();
 		Global.goHome(this);
 	}
 
 	public void onLeaveFailure(Throwable arg0) {
-		// TODO Auto-generated method stub
 		Toast.makeText(this, "Failed to leave beacon -- out of sync with server", Toast.LENGTH_SHORT).show();
+		currentDialog.dismiss();
 		// TODO -- We need to resync with server, but that does not yet exist
 	}
 
