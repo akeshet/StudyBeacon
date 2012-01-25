@@ -43,6 +43,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 	protected Spinner expiresSpinner;
 	protected TextView expiresTimeTV;
 	protected Spinner workingOnSpinner;
+	protected TextView contact;
 	protected EditText phone;
 	protected EditText email;
 	protected EditText details;
@@ -101,8 +102,9 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		courseSpinner    = (Spinner)  findViewById(R.id.courseSpinner);
 		expiresTV        = (TextView) findViewById(R.id.expiresTV);
 		expiresSpinner   = (Spinner)  findViewById(R.id.expiresSpinner);
-		expiresTimeTV    = (TextView)  findViewById(R.id.expiresTimeTV);
+		expiresTimeTV    = (TextView) findViewById(R.id.expiresTimeTV);
 		workingOnSpinner = (Spinner)  findViewById(R.id.workingOnSpinner);
+		contact          = (TextView) findViewById(R.id.contactTV);
 		phone            = (EditText) findViewById(R.id.phone);
 		email            = (EditText) findViewById(R.id.email);
 		details          = (EditText) findViewById(R.id.detailsEdit);
@@ -253,6 +255,19 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		for (EditText e : ets) {
 			e.setFocusable(false);
 		}
+
+		// don't show contact details if they weren't filled in
+		if ( phone.getText().toString().equals("") )
+			phone.setVisibility(View.GONE);
+
+		if ( email.getText().toString().equals("") )
+			email.setVisibility(View.GONE);
+
+		if ( phone.getText().toString().equals("") && email.getText().toString().equals("") )
+			contact.setVisibility(View.GONE);
+
+		// make the details have a different hint if nothing was given
+		details.setHint(R.string.detailHintView);
 
 		loadBeaconData(startingIntent);
 
