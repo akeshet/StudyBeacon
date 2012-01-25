@@ -1,19 +1,14 @@
 package com.teamblobby.studybeacon.network;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 
-import com.teamblobby.studybeacon.datastructures.*;
-
 public interface APIHandler {
+
+	public enum APICode {CODE_QUERY, CODE_ADD, CODE_JOIN, CODE_LEAVE};
+
 	public Activity getActivity();
-	public void onQuerySuccess(ArrayList<BeaconInfo> beacons);
-	public void onQueryFailure(Throwable arg0);
-	public void onAddSuccess(BeaconInfo beacon);
-	public void onAddFailure(Throwable arg0);
-	public void onJoinSuccess(BeaconInfo beacon);
-	public void onJoinFailure(Throwable e);
-	public void onLeaveSuccess();
-	public void onLeaveFailure(Throwable arg0);
+
+	public void onSuccess(APICode code, Object response);
+	public void onFailure(APICode code, Throwable e);
+
 }

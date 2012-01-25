@@ -331,64 +331,46 @@ public class SBMapActivity extends MapActivity implements APIHandler
 	/**
 	 *  This function is responsible for taking the data from
 	 *  the query and inserting it into the data structures.
-	 *  TODO: Rewrite this.
 	 */
-	public void onQuerySuccess(ArrayList<BeaconInfo> beacons) {
-		boolean dirtied = false;
-		// TODO Put the beacons on the map
-		Log.d(TAG,"onQuerySuccess()");
-		// Add them to mBeacons.
-		for (BeaconInfo beacon : beacons) {
-			BeaconInfo oldBeacon = mBeacons.put(beacon.getBeaconId(), beacon);
-			if (oldBeacon == null) {
-				dirtied = true;
-			} else {
-				// Compare the two to see if anything has changed
-				if (! oldBeacon.equals(beacon))
+	@SuppressWarnings("unchecked")
+	public void onSuccess(APICode code, Object result) {
+		switch (code) {
+		case CODE_QUERY:
+			ArrayList<BeaconInfo> beacons = (ArrayList<BeaconInfo>) result;
+			boolean dirtied = false;
+			// TODO Put the beacons on the map
+			Log.d(TAG,"onQuerySuccess()");
+			// Add them to mBeacons.
+			for (BeaconInfo beacon : beacons) {
+				BeaconInfo oldBeacon = mBeacons.put(beacon.getBeaconId(), beacon);
+				if (oldBeacon == null) {
 					dirtied = true;
+				} else {
+					// Compare the two to see if anything has changed
+					if (! oldBeacon.equals(beacon))
+						dirtied = true;
+				}
 			}
-		}
 
-		if (dirtied) {
-			Log.d(TAG,"dirtied");
-			setBeaconOverlays();
+			if (dirtied) {
+				Log.d(TAG,"dirtied");
+				setBeaconOverlays();
+			}
+			break;
+		default:
+			// Shouldn't ever get here. Complain?
 		}
-
 	}
 
-	public void onQueryFailure(Throwable t) {
+	public void onFailure(APICode code, Throwable t) {
 		// TODO Complain about failure
-		Toast.makeText(this, "Failed to load beacons from server", Toast.LENGTH_SHORT).show();
-	}
-
-	public void onAddSuccess(BeaconInfo beacon) {
-		// TODO Auto-generated method stub
-		// This should never be called
-	}
-
-	public void onAddFailure(Throwable arg0) {
-		// TODO Auto-generated method stub
-		// This should never be called
-	}
-
-	public void onJoinSuccess(BeaconInfo beacon) {
-		// TODO Auto-generated method stub
-		// This should never be called		
-	}
-
-	public void onJoinFailure(Throwable e) {
-		// TODO Auto-generated method stub
-		// This should never be called
-	}
-
-	public void onLeaveSuccess() {
-		// TODO Auto-generated method stub
-		// This should never be called
-	}
-
-	public void onLeaveFailure(Throwable arg0) {
-		// TODO Auto-generated method stub
-		// This should never be called
+		switch (code) {
+		case CODE_QUERY:
+			Toast.makeText(this, "Failed to load beacons from server", Toast.LENGTH_SHORT).show();
+			break;
+		default:
+			// Shouldn't ever get here. Complain?
+		}
 	}
 
 }

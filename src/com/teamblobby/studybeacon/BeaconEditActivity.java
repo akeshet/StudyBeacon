@@ -8,6 +8,7 @@ import com.google.android.maps.*;
 import com.teamblobby.studybeacon.datastructures.*;
 import com.teamblobby.studybeacon.network.APIClient;
 import com.teamblobby.studybeacon.network.APIHandler;
+import com.teamblobby.studybeacon.network.APIHandler.APICode;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -301,53 +302,51 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		return this;
 	}
 
-	public void onQuerySuccess(ArrayList<BeaconInfo> beacons) {
-		// This should never be called
-	}
-
-	public void onQueryFailure(Throwable arg0) {
-		// This should never be called
-	}
-
-	public void onAddSuccess(BeaconInfo beacon) {
-		Toast.makeText(this, "Beacon added successfully", Toast.LENGTH_SHORT).show();
+	public void onSuccess(APICode code, Object response) {
+		BeaconInfo beacon = null;
+		String messageText = null;
+		switch (code) {
+		case CODE_ADD:
+			beacon = (BeaconInfo) response;
+			messageText = new String("Beacon added successfully");
+			break;
+		case CODE_JOIN:
+			beacon = (BeaconInfo) response;
+			messageText = new String("Beacon joined successfully");
+			break;
+		case CODE_LEAVE:
+			messageText = new String("Beacon left successfully");
+			break;
+		default:
+			// Shouldn't get here ... complain?
+		}
+		Toast.makeText(this, messageText, Toast.LENGTH_SHORT).show();
 		Global.setCurrentBeacon(beacon);
 		currentDialog.dismiss();
 		// go back home
 		Global.goHome(this);
 	}
 
-	public void onAddFailure(Throwable arg0) {
-		Toast.makeText(this, "Failed to add beacon", Toast.LENGTH_SHORT).show();
+	public void onFailure(APICode code, Throwable e) {
+		String messageText = null;
+		switch (code) {
+		case CODE_ADD:
+			messageText = new String("Failed to add beacon");
+			Global.setCurrentBeacon(null);
+			break;
+		case CODE_JOIN:
+			messageText = new String("Failed to join beacon");
+			Global.setCurrentBeacon(null);
+			break;
+		case CODE_LEAVE:
+			messageText = new String("Failed to leave beacon -- out of sync with server");
+			// TODO -- We need to resync with server, but that does not yet exist
+			break;
+		default:
+			// Shouldn't get here ... complain?
+		}
+		Toast.makeText(this, messageText, Toast.LENGTH_SHORT).show();
 		currentDialog.dismiss();
-		Global.setCurrentBeacon(null);
-	}
-
-	public void onJoinSuccess(BeaconInfo beacon) {
-		Toast.makeText(this, "Beacon joined successfully", Toast.LENGTH_SHORT).show();
-		Global.setCurrentBeacon(beacon);
-		// go back home
-		currentDialog.dismiss();
-		Global.goHome(this);
-	}
-
-	public void onJoinFailure(Throwable e) {
-		Toast.makeText(this, "Failed to join beacon", Toast.LENGTH_SHORT).show(); //TODO
-		currentDialog.dismiss();
-		Global.setCurrentBeacon(null);
-	}
-
-	public void onLeaveSuccess() {
-		Toast.makeText(this, "Beacon left successfully", Toast.LENGTH_SHORT).show();
-		Global.setCurrentBeacon(null);
-		currentDialog.dismiss();
-		Global.goHome(this);
-	}
-
-	public void onLeaveFailure(Throwable arg0) {
-		Toast.makeText(this, "Failed to leave beacon -- out of sync with server", Toast.LENGTH_SHORT).show();
-		currentDialog.dismiss();
-		// TODO -- We need to resync with server, but that does not yet exist
 	}
 
 }

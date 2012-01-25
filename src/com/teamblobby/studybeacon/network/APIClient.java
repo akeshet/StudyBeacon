@@ -123,7 +123,7 @@ public class APIClient {
 				// Call the handler's function
 				handler.getActivity().runOnUiThread(new Runnable() {
 					public void run() {
-						handler.onQuerySuccess(beacons);
+						handler.onSuccess(APIHandler.APICode.CODE_QUERY, beacons);
 					}
 				});
 			}
@@ -132,7 +132,7 @@ public class APIClient {
 				e.printStackTrace();
 				handler.getActivity().runOnUiThread(new Runnable() {
 					public void run() {
-						handler.onQueryFailure(e);
+						handler.onFailure(APIHandler.APICode.CODE_QUERY, e);
 					}
 				});
 			}
@@ -145,7 +145,7 @@ public class APIClient {
 			super.onFailure(arg0);
 			handler.getActivity().runOnUiThread(new Runnable() {
 				public void run() {
-					handler.onQueryFailure(arg0);
+					handler.onFailure(APIHandler.APICode.CODE_QUERY,arg0);
 				}
 			});
 		}
@@ -194,7 +194,7 @@ public class APIClient {
 				final BeaconInfo beacon = parseJSONObjBeaconInfo(bObj);
 				handler.getActivity().runOnUiThread(new Runnable() {
 					public void run() {
-						handler.onAddSuccess(beacon);
+						handler.onSuccess(APIHandler.APICode.CODE_ADD,beacon);
 					}
 				});
 			} catch (final Exception e) {
@@ -202,7 +202,7 @@ public class APIClient {
 				e.printStackTrace();
 				handler.getActivity().runOnUiThread(new Runnable() {
 					public void run() {
-						handler.onAddFailure(e);
+						handler.onFailure(APIHandler.APICode.CODE_ADD,e);
 					}
 				});
 			}
@@ -214,7 +214,7 @@ public class APIClient {
 			super.onFailure(arg0);
 			handler.getActivity().runOnUiThread(new Runnable() {
 				public void run() {
-					handler.onAddFailure(arg0);
+					handler.onFailure(APIHandler.APICode.CODE_ADD,arg0);
 				}
 			});
 		}
@@ -256,7 +256,7 @@ public class APIClient {
 				final BeaconInfo beacon = parseJSONObjBeaconInfo(bObj);
 				handler.getActivity().runOnUiThread(new Runnable() {
 					public void run() {
-						handler.onJoinSuccess(beacon);
+						handler.onSuccess(APIHandler.APICode.CODE_JOIN,beacon);
 					}
 				});
 			} catch (final Exception e) {
@@ -264,7 +264,7 @@ public class APIClient {
 				e.printStackTrace();
 				handler.getActivity().runOnUiThread(new Runnable() {
 					public void run() {
-						handler.onJoinFailure(e);
+						handler.onFailure(APIHandler.APICode.CODE_JOIN,e);
 					}
 				});
 			}
@@ -276,7 +276,7 @@ public class APIClient {
 			super.onFailure(arg0);
 			handler.getActivity().runOnUiThread(new Runnable() {
 				public void run() {
-					handler.onJoinFailure(arg0);
+					handler.onFailure(APIHandler.APICode.CODE_JOIN,arg0);
 				}
 			});
 		}
@@ -316,7 +316,7 @@ public class APIClient {
 			Log.d(TAG,"Got leave success, response was "+ arg0);
 			handler.getActivity().runOnUiThread(new Runnable() {
 				public void run() {
-					handler.onLeaveSuccess();
+					handler.onSuccess(APIHandler.APICode.CODE_LEAVE,null);
 				}
 			});
 		}
@@ -327,7 +327,7 @@ public class APIClient {
 			super.onFailure(arg0);
 			handler.getActivity().runOnUiThread(new Runnable() {
 				public void run() {
-					handler.onLeaveFailure(arg0);
+					handler.onFailure(APIHandler.APICode.CODE_LEAVE,arg0);
 				}
 			});
 		}
