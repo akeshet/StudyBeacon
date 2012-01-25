@@ -20,17 +20,19 @@
         <Button
             android:id="@+id/beaconSecondaryActionButton"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/iconSize"
             android:layout_weight="1"
             android:text="@string/leaveBeacon"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:gravity="left|center_vertical" />
 
         <Button
             android:id="@+id/beaconActionButton"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/iconSize"
             android:layout_weight="1"
-            android:text="@string/newBeacon" />
+            android:text="@string/newBeacon" 
+            android:gravity="left|center_vertical"/>
         
     </LinearLayout>
 
@@ -115,7 +117,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="88dp"
                 android:hint="@string/detailHint"
-                android:inputType="textMultiLine" />
+                android:inputType="textMultiLine" 
+                android:gravity="top" />
             
         </LinearLayout>
     </ScrollView>

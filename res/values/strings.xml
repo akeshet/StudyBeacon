@@ -15,7 +15,7 @@
     <string name="courseResourseLoadText">Loading Courses…</string>
     <string name="courseResourseNothing">Nothing to Display.</string>
     <string name="courseResourseServerProblem">There was a problem getting the course list from Stellar.</string>
-    <string name="newBeacon">New Beacon</string>
+    <string name="newBeacon">Create Beacon</string>
     <string name="saveBeacon">Save Beacon</string>
     <string name="editBeacon">Edit Beacon</string>
     <string name="joinBeacon">Join Beacon</string>
@@ -49,8 +49,8 @@
     <string name="details">Details</string>
     <string name="portrait">Self portrait</string>
     <string name="takePicture">Take picture</string>
-    <string name="detailHint">Room: …</string>
-    <string name="phoneHint">(555)-555-1212</string>
+    <string name="detailHint">How will people find you? Building/Room number…</string>
+    <string name="phoneHint">(555)–555–1212</string>
     <string name="emailHint">tbeaver@mit.edu</string>
     <string name="contentDescription">A picture that you can\'t see because you are blind</string>
 
