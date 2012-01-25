@@ -153,8 +153,6 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 	}
 
 	protected BeaconInfo beaconFromFields() {
-		// TODO Auto-generated method stub
-
 		String courseName = (String) courseSpinner.getSelectedItem();
 
 		GeoPoint loc = userLocator.getLocation(); // grab the user's location
