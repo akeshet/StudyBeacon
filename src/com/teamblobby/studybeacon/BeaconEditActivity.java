@@ -12,6 +12,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
@@ -256,16 +257,6 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 			e.setFocusable(false);
 		}
 
-		// don't show contact details if they weren't filled in
-		if ( phone.getText().toString().equals("") )
-			phone.setVisibility(View.GONE);
-
-		if ( email.getText().toString().equals("") )
-			email.setVisibility(View.GONE);
-
-		if ( phone.getText().toString().equals("") && email.getText().toString().equals("") )
-			contact.setVisibility(View.GONE);
-
 		// make the details have a different hint if nothing was given
 		details.setHint(R.string.detailHintView);
 
@@ -289,6 +280,18 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 			}
 		});
 
+		if ( mBeacon == null )
+			return;
+
+		// don't show contact details if they weren't filled in
+		if ( mBeacon.getTelephone().equals("") )
+			phone.setVisibility(View.GONE);
+
+		if ( mBeacon.getEmail().equals("") )
+			email.setVisibility(View.GONE);
+
+		if ( mBeacon.getTelephone().equals("") && mBeacon.getEmail().equals("") )
+			contact.setVisibility(View.GONE);
 	}
 
 	private void loadBeaconData(Intent startingIntent) {
@@ -306,7 +309,9 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		expiresTimeTV.setText(df.format(mBeacon.getExpires()));
 
 		if (this.mode == OperationMode.MODE_VIEW) {
-			Linkify.addLinks(phone, Linkify.PHONE_NUMBERS);
+			Linkify.addLinks(phone, Patterns.PHONE, "sms:",
+					Linkify.sPhoneNumberMatchFilter,
+					Linkify.sPhoneNumberTransformFilter);
 			Linkify.addLinks(email, Linkify.EMAIL_ADDRESSES);
 		}
 	}
