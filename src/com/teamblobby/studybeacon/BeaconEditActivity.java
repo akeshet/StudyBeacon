@@ -1,15 +1,12 @@
 package com.teamblobby.studybeacon;
 
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 import com.google.android.maps.*;
 import com.teamblobby.studybeacon.datastructures.*;
 import com.teamblobby.studybeacon.network.APIClient;
 import com.teamblobby.studybeacon.network.APIHandler;
-import com.teamblobby.studybeacon.network.APIHandler.APICode;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
