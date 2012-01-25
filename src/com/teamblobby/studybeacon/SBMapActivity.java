@@ -280,8 +280,6 @@ public class SBMapActivity extends MapActivity implements APIHandler
 		courseSpinnerAdapter.insert(getString(R.string.allCourses),0);
 		courseSpinnerAdapter.add(getString(R.string.editCourses));
 
-		// TODO Add a handler for detecting "All" and "Edit"
-
 		courseSpinner.setAdapter(courseSpinnerAdapter);
 		courseSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
