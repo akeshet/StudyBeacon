@@ -86,10 +86,13 @@ public class MyCoursesActivity extends ListActivity {
 			ImageButton newBeaconButton = (ImageButton) viewToReturn.findViewById(R.id.mcrNewBeaconButton);
 			final BeaconInfo presentBeacon = Global.getCurrentBeacon();
 
-			if ((presentBeacon != null)
-					&& presentBeacon.getCourseName().equals(courseInfo.getName()))
-				newBeaconButton.setImageDrawable(getResources().getDrawable(R.drawable.beacon_edit));
-
+			if (presentBeacon != null)
+				if( presentBeacon.getCourseName().equals(courseInfo.getName()) ) {
+					newBeaconButton.setImageDrawable(getResources().getDrawable(R.drawable.beacon_edit));
+				} else {
+					newBeaconButton.setImageDrawable(getResources().getDrawable(R.drawable.newbeaconicon_gray));
+					newBeaconButton.setEnabled(false);
+				}
 			newBeaconButton.setOnClickListener(new OnClickListener() {
 				
 				public void onClick(View v) {
