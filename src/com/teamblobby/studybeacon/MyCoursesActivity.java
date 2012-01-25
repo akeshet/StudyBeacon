@@ -99,6 +99,12 @@ public class MyCoursesActivity extends ListActivity {
 			// set the description text
 			TextView descTextView = (TextView) viewToReturn.findViewById(R.id.mcrCourseDescriptionView);
 			descTextView.setText(courseInfo.getDescription());
+			// set the text click listener
+			LinearLayout courseTextLayout = (LinearLayout) viewToReturn.findViewById(R.id.mcrTextLayout);
+			courseTextLayout.setOnClickListener(new OnClickListener(){public void onClick(View v){
+				courseInfo.setStarred(!courseInfo.getStarred());
+				CourseAdapter.this.notifyDataSetChanged();}
+			});
 			
 			return viewToReturn;
 			

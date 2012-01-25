@@ -14,6 +14,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
@@ -84,7 +85,7 @@ public class CourseResourceActivity extends ListActivity {
 							              CourseResourceActivity.class);
 					i.putExtra("category", courseListItem.getName());
 					startActivityForResult(i, DATA_CHANGED_REQUEST_CODE);
-				}
+				} 
 			}
 		
 		});
@@ -121,8 +122,8 @@ public class CourseResourceActivity extends ListActivity {
 		}
 		
 		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			View viewToReturn =  super.getView(position, convertView, parent);
+		public View getView(final int position, View convertView, ViewGroup parent) {
+			final View viewToReturn =  super.getView(position, convertView, parent);
 
 			CheckBox notifyCheckBox = (CheckBox) viewToReturn.findViewById(R.id.mcrStarButton);
 			notifyCheckBox.setOnCheckedChangeListener(null);
@@ -141,9 +142,12 @@ public class CourseResourceActivity extends ListActivity {
 			switch (courseInfo.listableType()) {
 				case CourseListable.TYPE_COURSE_STARRED:
 				case CourseListable.TYPE_COURSE_UNSTARRED:
+					LinearLayout courseTextLayout = (LinearLayout) viewToReturn.findViewById(R.id.mcrTextLayout);
 					notifyCheckBox.setChecked(courseInfo.getStarred());
-					// TODO add onCheck listener to checkbox
 					notifyCheckBox.setOnCheckedChangeListener(new CourseCheckedListener(position,(CourseInfo) courseInfo));
+					courseTextLayout.setOnClickListener(new OnClickListener(){public void onClick(View v){
+						checkBoxPullRugOut(position, courseInfo, !courseInfo.getStarred());}
+					});
 					break;
 				case CourseListable.TYPE_CATEGORY:
 					notifyCheckBox.setVisibility(View.GONE);
@@ -162,23 +166,27 @@ public class CourseResourceActivity extends ListActivity {
 	private class CourseCheckedListener implements OnCheckedChangeListener{
 
 		private int position;
-		private CourseInfo courseInfo;
+		private CourseListable courseInfo;
 		
-		public CourseCheckedListener(int positionIn, CourseInfo courseInfoIn){
+		public CourseCheckedListener(int positionIn, CourseListable courseListItem){
 			this.position = positionIn;
-			this.courseInfo = courseInfoIn;
+			this.courseInfo = courseListItem;
 		}
 		
 		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-			this.courseInfo.setStarred(isChecked);
-			CourseResourceActivity activity = CourseResourceActivity.this;
-			if ( isChecked ) {
-				activity.availableCourses.set(this.position, new CourseInfoSqlite(CourseInfoSqlite.MYCOURSES_TABLE, this.courseInfo));
-			}
-			activity.arrayAdapter.notifyDataSetChanged();
-			activity.setResult(RESULT_COURSES_CHANGED);
-			Log.d(TAG,"data changed, result set to OK");
+			checkBoxPullRugOut(position, courseInfo, isChecked);
 		}
+	}
+	
+	private void checkBoxPullRugOut(int position, CourseListable courseListItem, boolean checked){
+		courseListItem.setStarred(checked);
+		CourseResourceActivity activity = CourseResourceActivity.this;
+		if ( checked ) {
+			activity.availableCourses.set(position, new CourseInfoSqlite(CourseInfoSqlite.MYCOURSES_TABLE, (CourseInfo) courseListItem));
+		}
+		activity.arrayAdapter.notifyDataSetChanged();
+		activity.setResult(RESULT_COURSES_CHANGED);
+		Log.d(TAG,"data changed, result set to OK");
 	}
     
     private class CourseLoadTask extends AsyncTask<String, Void, List<CourseListable>> {
