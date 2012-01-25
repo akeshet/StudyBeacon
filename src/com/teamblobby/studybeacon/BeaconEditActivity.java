@@ -183,6 +183,8 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 
 		// Add a listener for the action button
 		beaconActionButton.setOnClickListener(new NewBeaconClickListener(this));
+		// Set the drawable on the action button
+		beaconActionButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.newbeaconicon, 0, 0, 0);
 
 		// start getting the user's location
 		userLocator = new UserLocator();
@@ -215,8 +217,11 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		beaconTitleTV.setText(R.string.editBeacon);		
 
 		beaconActionButton.setText(R.string.saveBeacon);
+		// Set the drawable on the action button
+		beaconActionButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.beacon_edit, 0, 0, 0);
 
 		beaconSecondaryActionButton.setVisibility(View.VISIBLE);
+		beaconSecondaryActionButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.beacon_leave, 0, 0, 0);
 		// The secondary button is the leave button
 		beaconSecondaryActionButton.setOnClickListener(new OnClickListener() {
 
@@ -257,6 +262,8 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		loadBeaconData(startingIntent);
 
 		beaconActionButton.setText(R.string.joinBeacon);
+		// Set the drawable on the action button
+		beaconActionButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.beacon_join, 0, 0, 0);
 
 		beaconActionButton.setOnClickListener(new OnClickListener() {
 
