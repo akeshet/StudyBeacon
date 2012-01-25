@@ -114,6 +114,8 @@ public class BeaconItemizedOverlay extends ItemizedOverlay {
 	 */
 	protected void makeBalloon(final BeaconOverlayItem p) {
 		 
+		Log.d(TAG,"Making balloon");
+
 		if (p == null)
 			return;
 		
@@ -177,7 +179,6 @@ public class BeaconItemizedOverlay extends ItemizedOverlay {
 		 if ((presentBeacon != null)
 				 && (p.getBeacon() != null)
 				 && (presentBeacon.getBeaconId() == p.getBeacon().getBeaconId())) {
-			 Log.d(TAG,"Tapped my own beacon");
 			 intent.setAction(BeaconEditActivity.ACTION_EDIT);
 		 } else
 			 intent.setAction(BeaconEditActivity.ACTION_VIEW);

@@ -97,4 +97,16 @@ public abstract class BeaconInfo implements Parcelable {
 		}
 	};
 
+	public boolean equals(BeaconInfo other) {
+		return ((getBeaconId() == other.getBeaconId())
+				&& getCourseName().equals(other.getCourseName())
+				&& getLoc().equals(other.getLoc())
+				&& (getVisitors() == other.getVisitors())
+				&& getDetails().equals(other.getDetails())
+				&& getTelephone().equals(other.getTelephone())
+				&& getEmail().equals(other.getEmail())
+				&& getCreated().equals(other.getCreated())
+				&& getExpires().equals(other.getExpires()));
+	}
+
 }

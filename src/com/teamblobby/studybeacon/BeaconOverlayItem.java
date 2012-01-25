@@ -37,6 +37,10 @@ public class BeaconOverlayItem extends OverlayItem {
 		return mBeacon;
 	}
 
+	public void setBeacon(BeaconInfo beacon) {
+		mBeacon = beacon;
+	}
+
 	@Override
 	public Drawable getMarker(int stateBitset) {
 		// Find out if this is the beacon where we currently are
@@ -49,5 +53,5 @@ public class BeaconOverlayItem extends OverlayItem {
 			return super.getMarker(stateBitset);
 		}
 	}
-	
+
 }
