@@ -1,20 +1,27 @@
 package com.teamblobby.studybeacon;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import com.google.android.maps.*;
 import com.teamblobby.studybeacon.datastructures.*;
 import com.teamblobby.studybeacon.network.APIClient;
 import com.teamblobby.studybeacon.network.APIHandler;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.text.util.*;
 
 
@@ -53,9 +60,9 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 	// This represents the beacon we are making.
 	protected BeaconInfoSimple mBeacon;
 
-	private ArrayAdapter<String> courseAdapter;
-	private ArrayAdapter<CharSequence> expiresAdapter;
-	private ArrayAdapter<CharSequence> workingOnAdapter;
+	private ArrayAdapter<CourseInfo> courseAdapter;
+	private ArrayAdapter<DurationSpinnerItem> expiresAdapter;
+	private ArrayAdapter<String> workingOnAdapter;
 	private UserLocator userLocator;
 	private ProgressDialog currentDialog;
 
@@ -113,46 +120,118 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 
 		// Set the spinners up
 		courseAdapter =
-				new ArrayAdapter<String>(this,
+				new ArrayAdapter<CourseInfo>(this,
 						android.R.layout.simple_spinner_item,
-						Global.getCourses());
+						Global.getMyCourseInfos());
 
 		courseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		courseSpinner.setAdapter(courseAdapter);
 
-		expiresAdapter = ArrayAdapter.createFromResource(
-				this, R.array.expiresTimes, android.R.layout.simple_spinner_item);
+		// set up the array for the expires spinner
+		List<DurationSpinnerItem> expiresList = new ArrayList<DurationSpinnerItem>();
+		String[] expireTimes = this.getResources().getStringArray(R.array.expiresTimes);
+		int[] expireMinutes = this.getResources().getIntArray(R.array.expiresMinutes);
+		
+		for ( int j=0; j<expireTimes.length; j++ ){
+			expiresList.add(new DurationSpinnerItem(expireTimes[j], expireMinutes[j]));
+		}
+		
+		expiresAdapter = new ArrayAdapter<DurationSpinnerItem>(
+											this,
+											android.R.layout.simple_spinner_item,
+											expiresList);
+		
 		expiresAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		expiresSpinner.setAdapter(expiresAdapter);
 
-		workingOnAdapter = ArrayAdapter.createFromResource(
-				this, R.array.workingOnList, android.R.layout.simple_spinner_item);
+		//workingOnAdapter = ArrayAdapter.createFromResource(
+		//		this, R.array.workingOnList, android.R.layout.simple_spinner_item);
+		List<String> workingOnList = new ArrayList<String>();
+		workingOnList.addAll(Arrays.asList(getResources().getStringArray(R.array.workingOnList)));
+		
+		workingOnAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, workingOnList);
 		workingOnAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		workingOnSpinner.setAdapter(workingOnAdapter);
 		// TODO add a listener for custom
+		workingOnSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+			public void onItemSelected(AdapterView<?> adapterView, View itemView,
+					int position, long id) {
+				int count = workingOnAdapter.getCount();
+				if ( position == count-1 ) { // last element
+					customWorkingOnAlert(workingOnAdapter, count-1).show();
+				}
+			}
+			public void onNothingSelected(AdapterView<?> arg0) {}
+		});
 
 		expiresSpinner.setSelection(Global.res.getInteger(R.integer.expiresDefaultIndex));
 
+	}
+	
+	private Builder customWorkingOnAlert(final ArrayAdapter<String> workingOnAdapter, final int index){
+		final EditText input = new EditText(this);
+		return new AlertDialog.Builder(this)
+					.setTitle("Working on...")
+					.setView(input)
+					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+							workingOnAdapter.insert(input.getText().toString(), index);
+							workingOnAdapter.notifyDataSetChanged();
+						}
+					})
+					.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+							// nothing special
+						}
+					});
+	}
+	
+	private class DurationSpinnerItem {
+		private int minutes;
+		private String displayString;
+		
+		@Override
+		public String toString() {
+			return this.getDisplayString();
+		}
+
+		public int getMinutes() {
+			return minutes;
+		}
+
+		public String getDisplayString() {
+			return displayString;
+		}
+
+		DurationSpinnerItem(String displayString,int minutes){
+			this.minutes=minutes;
+			this.displayString=displayString;
+		}
+		
+		
 	}
 
 	protected void setCourseSpinnerItem(String course) {
 		if (course != null) {
 			// Set the course spinner's selected element
-			int courseIndex = courseAdapter.getPosition(course);
+			int courseIndex = 0;
+			int count = courseAdapter.getCount();
+			for ( int j=0; j<count; j++){
+				if (courseAdapter.getItem(j).getName().equals(course)){
+					courseIndex = j;
+					break;
+				}
+			}
 			courseSpinner.setSelection(courseIndex);
 		}
 	}
 
 	protected int durationFromField() {
-		// TODO This is a hack. Fix it.
-		String durationText = (String)expiresSpinner.getSelectedItem();
-		int spaceIndex = durationText.indexOf(" ");
-		// Convert to minutes
-		return 60*Integer.parseInt(durationText.substring(0, spaceIndex));
+		return ((DurationSpinnerItem) expiresSpinner.getSelectedItem()).getMinutes();
 	}
 
 	protected BeaconInfo beaconFromFields() {
-		String courseName = (String) courseSpinner.getSelectedItem();
+		String courseName = ((CourseInfo) courseSpinner.getSelectedItem()).getName();
 
 		GeoPoint loc = userLocator.getLocation(); // grab the user's location
 		Log.d(TAG,"loc: late6="+loc.getLatitudeE6()+" longe6="+loc.getLongitudeE6());

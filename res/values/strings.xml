@@ -26,7 +26,7 @@
     <string name="expiresIn">Expires in</string>
     <string name="expiresAt">Expires at</string>
 
-    <string-array name="expiresTimes">
+    <string-array name="expiresTimes"> <!-- this is connected to expiresMinutes int array in numbers.xml -->
         <item>1 hour</item>
         <item>2 hours</item>
         <item>3 hours</item>
