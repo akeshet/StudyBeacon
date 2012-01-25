@@ -17,6 +17,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -281,7 +283,19 @@ public class SBMapActivity extends MapActivity implements APIHandler
 		// TODO Add a handler for detecting "All" and "Edit"
 
 		courseSpinner.setAdapter(courseSpinnerAdapter);
+		courseSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				SBMapActivity.this.setBeaconOverlays();
+				// TODO Check if Edit ... was clicked.
+			}
+
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+			}
+
+		});
 	}
 
 	@Override
