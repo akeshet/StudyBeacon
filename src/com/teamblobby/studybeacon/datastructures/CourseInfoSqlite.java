@@ -6,7 +6,6 @@ import com.teamblobby.studybeacon.*;
 import android.content.*;
 import android.database.Cursor;
 import android.database.sqlite.*;
-import android.util.Log;
 
 /**
  * 

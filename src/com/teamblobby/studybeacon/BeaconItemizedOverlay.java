@@ -3,7 +3,6 @@ package com.teamblobby.studybeacon;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;

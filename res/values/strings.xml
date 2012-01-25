@@ -52,5 +52,6 @@
     <string name="detailHint">Room: …</string>
     <string name="phoneHint">(555)-555-1212</string>
     <string name="emailHint">tbeaver@mit.edu</string>
+    <string name="contentDescription">A picture that you can\'t see because you are blind</string>
 
 </resources>

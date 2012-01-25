@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/rowBackground"
     android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:background="@color/rowBackground" >
+    android:orientation="horizontal" >
 
     <CheckBox
         android:id="@+id/mcrStarButton"
@@ -12,50 +12,52 @@
         android:layout_height="@dimen/iconSize"
         android:button="@drawable/favoritetoggle"
         android:checked="true" />
-    
+
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="0dip"
         android:layout_height="@dimen/iconSize"
         android:layout_weight="1"
         android:background="@color/rowBackground"
-        android:orientation="vertical"
-        android:gravity="bottom">
+        android:gravity="bottom"
+        android:orientation="vertical" >
 
         <TextView
             android:id="@+id/mcrCourseNameTextView"
             android:layout_width="match_parent"
             android:layout_height="0dip"
-            android:layout_weight="1" 
-            android:textStyle="bold"
-            android:textColor="@android:color/white"
+            android:layout_weight="1"
+            android:contentDescription="@string/contentDescription"
+            android:ellipsize="marquee"
             android:gravity="bottom"
             android:maxLines="1"
-            android:ellipsize="marquee"/>
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/mcrCourseDescriptionView"
             android:layout_width="match_parent"
             android:layout_height="0dip"
             android:layout_weight="1"
-            android:maxLines="1"
-            android:ellipsize="marquee"/>
+            android:ellipsize="marquee"
+            android:maxLines="1" />
     </LinearLayout>
-    
-     <CheckBox
-         android:id="@+id/mcrNotificationButton"
-         android:layout_width="@dimen/iconSize"
-         android:layout_height="@dimen/iconSize"
-         android:layout_gravity="right|center_vertical"
-         android:button="@drawable/notifytoggle"
-         android:visibility="gone" />
-         
+
+    <CheckBox
+        android:id="@+id/mcrNotificationButton"
+        android:layout_width="@dimen/iconSize"
+        android:layout_height="@dimen/iconSize"
+        android:layout_gravity="right|center_vertical"
+        android:button="@drawable/notifytoggle"
+        android:visibility="gone" />
+
     <ImageButton
         android:id="@+id/mcrNewBeaconButton"
         android:layout_width="@dimen/iconSize"
         android:layout_height="@dimen/iconSize"
-        android:src="@drawable/newbeaconbutton"
         android:layout_gravity="right|center_vertical"
-        android:background="@null"/>
+        android:background="@null"
+        android:contentDescription="@string/contentDescription"
+        android:src="@drawable/newbeaconbutton" />
 
 </LinearLayout>

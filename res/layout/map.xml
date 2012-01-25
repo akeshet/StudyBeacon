@@ -15,6 +15,7 @@
         android:background="@color/titleBackground" >
 
         <ImageView
+            android:contentDescription="@string/contentDescription"
             android:id="@+id/mapIcon"
             android:layout_width="@dimen/iconSize"
             android:layout_height="@dimen/iconSize"
@@ -47,6 +48,7 @@
             android:text="@string/myClasses"/>
 
         <ImageButton
+            android:contentDescription="@string/contentDescription"
             android:id="@+id/newBeaconButton"
             android:layout_width="@dimen/iconSize"
             android:layout_height="@dimen/iconSize"
