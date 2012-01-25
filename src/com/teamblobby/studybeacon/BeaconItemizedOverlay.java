@@ -29,7 +29,7 @@ public class BeaconItemizedOverlay extends ItemizedOverlay {
 	protected MapController mc;
 	
 	// These things take care of the balloon
-	private int BubbleOffset = 0;
+	private int BubbleOffset = 30;
 	private BalloonOverlayView balloonView;
 	private int selectedIndex = -1;
 	private boolean balloonVisible = true;
@@ -37,7 +37,7 @@ public class BeaconItemizedOverlay extends ItemizedOverlay {
 	
 	
 	public BeaconItemizedOverlay(Drawable defaultMarker, Context context, SBMapView mv) {
-		super(boundCenter(defaultMarker));
+		super(boundCenterBottom(defaultMarker));
 		mContext = context;
 		this.mapView = mv;
 		this.mc = mv.getController();
@@ -186,5 +186,9 @@ public class BeaconItemizedOverlay extends ItemizedOverlay {
 		 mContext.startActivity(intent);
 
 	 }
-	
+
+	 // I'm cheating
+	 public static Drawable boundCenterBottom(Drawable d) {
+		 return ItemizedOverlay.boundCenterBottom(d);
+	 }
 }
