@@ -41,9 +41,16 @@ public class CourseResourceActivity extends ListActivity {
 	    Log.d(TAG,"result defaulted to canceled");
 	    
 	    this.setContentView(R.layout.mycourses);
+	    
+	    Bundle intentExtras = this.getIntent().getExtras();
+	    
 	    // set the title text
+	    String titleText = Global.res.getString(R.string.courseResourceTitleText); 
+	    if (intentExtras != null && intentExtras.getString("titleText") != null)
+	    	titleText = intentExtras.getString("titleText");
+	    
 	    ((TextView) this.findViewById(R.id.titleText))
-	    	.setText(Global.res.getString(R.string.courseResourceTitleText));
+	    	.setText(titleText);
 	    
 	    ((TextView) this.findViewById(android.R.id.empty))
     	.setText(Global.res.getString(R.string.courseResourseLoadText));
@@ -62,8 +69,8 @@ public class CourseResourceActivity extends ListActivity {
 	    	// create empty list and call to load courses
 	    	this.availableCourses = new ArrayList<CourseListable>(); // this is something else
 	    	String categoryName = null;
-	    	if ( this.getIntent().getExtras() != null )
-	    		categoryName = this.getIntent().getExtras().getString("category");
+	    	if ( intentExtras != null )
+	    		categoryName = intentExtras.getString("category");
 	    	if ( categoryName == null ) categoryName = CourseLoadTask.ROOT_CATEGORY;
 	    	(new CourseLoadTask(this)).execute(categoryName); // executes AsyncTask
 	    }
@@ -84,6 +91,7 @@ public class CourseResourceActivity extends ListActivity {
 					Intent i = new Intent(CourseResourceActivity.this,
 							              CourseResourceActivity.class);
 					i.putExtra("category", courseListItem.getName());
+					i.putExtra("titleText", courseListItem.getPrettyName());
 					startActivityForResult(i, DATA_CHANGED_REQUEST_CODE);
 				} 
 			}
@@ -136,7 +144,6 @@ public class CourseResourceActivity extends ListActivity {
 			
 			// set starred based on what's in the CourseInfo object
 			final CourseListable courseInfo = this.getItem(position);
-			
 			
 			// here split depending on if it's a course or course category			
 			switch (courseInfo.listableType()) {
