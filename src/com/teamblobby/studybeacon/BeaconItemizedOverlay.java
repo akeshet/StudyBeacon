@@ -180,9 +180,10 @@ public class BeaconItemizedOverlay extends ItemizedOverlay {
 				 && (p.getBeacon() != null)
 				 && (presentBeacon.getBeaconId() == p.getBeacon().getBeaconId())) {
 			 intent.setAction(BeaconEditActivity.ACTION_EDIT);
-		 } else
+		 } else {
 			 intent.setAction(BeaconEditActivity.ACTION_VIEW);
-		 intent.putExtra(BeaconEditActivity.EXTRA_BEACON, p.getBeacon());
+			 intent.putExtra(BeaconEditActivity.EXTRA_BEACON, p.getBeacon());
+		 }
 		 mContext.startActivity(intent);
 
 	 }

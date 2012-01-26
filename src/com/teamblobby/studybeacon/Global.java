@@ -87,7 +87,7 @@ public class Global extends Application {
 	 * Otherwise, returns null.
 	 * @return
 	 */
-	public static BeaconInfoSqlite getCurrentBeacon() {
+	public static BeaconInfo getCurrentBeacon() {
 		return BeaconInfoSqlite.getCurrentBeacon();
 	}
 
@@ -132,7 +132,7 @@ public class Global extends Application {
 		
 		Intent intent = new Intent(application, BeaconEditActivity.class);
 		intent.setAction(BeaconEditActivity.ACTION_EDIT);
-		intent.putExtra(BeaconEditActivity.EXTRA_BEACON, Global.getCurrentBeacon());
+		//intent.putExtra(BeaconEditActivity.EXTRA_BEACON, Global.getCurrentBeacon());
 		
 		PendingIntent pendingIntent = PendingIntent.getActivity(application, 0, intent, 0);
 		
