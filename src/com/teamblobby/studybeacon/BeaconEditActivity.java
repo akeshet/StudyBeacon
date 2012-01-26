@@ -298,7 +298,10 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 	private void setUpForEdit(Bundle savedInstanceState, Intent startingIntent) {
 		// TODO Add logic if already at a beacon
 		// Set title text
-		beaconTitleTV.setText(R.string.editBeacon);		
+		beaconTitleTV.setText(R.string.editBeacon);
+
+		// Don't let the class be editable
+		courseSpinner.setEnabled(false);
 
 		beaconActionButton.setText(R.string.saveBeacon);
 		// Set the drawable on the action button
