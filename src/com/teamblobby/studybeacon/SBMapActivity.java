@@ -206,13 +206,23 @@ public class SBMapActivity extends MapActivity implements APIHandler
 
 	private void setBeaconOverlays() {
 
+		List<Overlay> overlays = mapView.getOverlays();
+		boolean dirtied = false;
+
 		// First, go through the list of dirtyBeacons and
 		// remove any of them from the list of beacItemizedOverlays
-//		for (BeaconInfo dirtyBeacon : dirtyBeacons) {
-//			BeaconItemizedOverlay courseOverlay = beacItemizedOverlays.get(dirtyBeacon.getClass());
-//			courseOverlay.removeByBeaconId(dirtyBeacon.getBeaconId());
-//		}
-//		dirtyBeacons.clear();
+		for (BeaconInfo dirtyBeacon : dirtyBeacons) {
+			BeaconItemizedOverlay courseOverlay = beacItemizedOverlays.get(dirtyBeacon.getCourseName());
+			if (courseOverlay == null) // shouldn't happen
+				continue;
+			courseOverlay.removeByBeaconId(dirtyBeacon.getBeaconId());
+			if (courseOverlay.size() == 0) {
+				dirtied = true;
+				overlays.remove(courseOverlay);
+				beacItemizedOverlays.remove(courseOverlay);
+			}
+		}
+		dirtyBeacons.clear();
 
 		// Second, make sure that the BeaconItemizedOverlays contain everything they're supposed to
 		for (Map.Entry<Integer, BeaconInfo> entry : mBeacons.entrySet()) {
@@ -242,9 +252,7 @@ public class SBMapActivity extends MapActivity implements APIHandler
 
 		// Ok, beacItemizedOverlays ought to be up to date.
 		// Figure out which one(s) to display.
-		List<Overlay> overlays = mapView.getOverlays();
 		Boolean wantAllCourses = wantAllCourses();
-		boolean dirtied = false;
 		String selected = (String)courseSpinner.getSelectedItem();
 		for (Map.Entry<String, BeaconItemizedOverlay> entry : beacItemizedOverlays.entrySet()) {
 			String course = entry.getKey();
@@ -413,24 +421,35 @@ public class SBMapActivity extends MapActivity implements APIHandler
 			Log.d(TAG,"onSuccess()");
 			// Add them to mBeacons.
 			for (BeaconInfo beacon : beacons) {
-				BeaconInfo oldBeacon = mBeacons.put(beacon.getBeaconId(), beacon);
-				if (oldBeacon == null) {
-					dirtied = true;
-				} else {
-					// Compare the two to see if anything has changed
-					if (! oldBeacon.equals(beacon)) {
+				int beacId = beacon.getBeaconId();
+				if (beacon.getVisitors() == 0) {
+					// Check if there is an old one to remove
+					if (mBeacons.containsKey(beacId)) {
+						BeaconInfo dirtyBeacon = mBeacons.get(beacId);
+						dirtyBeacons.add(dirtyBeacon);
+						mBeacons.remove(beacId);
 						dirtied = true;
-						// Put the old one in a list to be deleted
-						//dirtyBeacons.add(oldBeacon);
-						// Check if we have new info on our present beacon
-						if (Global.atBeacon()
-								&& (Global.getCurrentBeacon().getBeaconId() == beacon.getBeaconId())) {
-							Log.d(TAG,"Updating present beacon info");
-							Global.setCurrentBeacon(beacon);
-							Global.updateBeaconRunningNotification();
+					}
+				} else {
+					BeaconInfo oldBeacon = mBeacons.put(beacon.getBeaconId(), beacon);
+					if (oldBeacon == null) {
+						dirtied = true;
+					} else {
+						// Compare the two to see if anything has changed
+						if (! oldBeacon.equals(beacon)) {
+							dirtied = true;
+							// Put the old one in a list to be deleted
+							dirtyBeacons.add(oldBeacon);
+							// Check if we have new info on our present beacon
+							if (Global.atBeacon()
+									&& (Global.getCurrentBeacon().getBeaconId() == beacon.getBeaconId())) {
+								Log.d(TAG,"Updating present beacon info");
+								Global.setCurrentBeacon(beacon);
+								Global.updateBeaconRunningNotification();
+							}
 						}
 					}
-				}
+				}				
 			}
 
 			if (dirtied) {
