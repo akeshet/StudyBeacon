@@ -175,6 +175,10 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 					.setView(input)
 					.setPositiveButton("OK", new DialogInterface.OnClickListener() { // TODO string resource
 						public void onClick(DialogInterface dialog, int which) {
+							if ( input.getText().toString().equals("")){
+								workingOnSpinner.setSelection(0);
+								return; // nothing to do!
+							}
 							workingOnAdapter.insert(input.getText().toString(), index);
 							workingOnAdapter.notifyDataSetChanged();
 						}
