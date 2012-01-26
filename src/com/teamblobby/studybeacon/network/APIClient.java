@@ -49,8 +49,11 @@ public class APIClient {
 
 		return new BeaconInfoSimple(bObj.getInt(BEACID_STR), bObj.getString(COURSE_STR),
 				point, bObj.getInt(COUNT_STR),
+				// TODO Once the server supports it, replace with bObj.getString(WORKINGON_STR) 
+				"",
 				bObj.getString(DETAILS_STR),
-				bObj.getString(TELEPHONE_STR),bObj.getString(EMAIL_STR),
+				bObj.getString(TELEPHONE_STR),
+				bObj.getString(EMAIL_STR),
 				created, expires);
 	}
 
@@ -71,6 +74,7 @@ public class APIClient {
 	public final static String BEACID_STR = "BeaconId";
 	public final static String LAT_STR = "LatE6";
 	public final static String LON_STR = "LonE6";
+	public final static String WORKINGON_STR = "WorkingOn";
 	public final static String DETAILS_STR = "Details";
 	public final static String TELEPHONE_STR = "Telephone";
 	public final static String EMAIL_STR = "Email";
@@ -169,6 +173,7 @@ public class APIClient {
 		params.put(DURATION_STR,  Integer.toString(duration));
 		params.put(TELEPHONE_STR, beacon.getTelephone() );
 		params.put(EMAIL_STR,     beacon.getEmail() );
+		params.put(WORKINGON_STR, beacon.getWorkingOn());
 		params.put(DETAILS_STR,   beacon.getDetails());
 
 		Log.d(TAG,"add string " + params.toString());

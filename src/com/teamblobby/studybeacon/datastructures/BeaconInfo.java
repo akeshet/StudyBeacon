@@ -26,6 +26,9 @@ public abstract class BeaconInfo implements Parcelable {
 	public abstract int getVisitors();
 	public abstract void setVisitors(int visitors);
 
+	public abstract String getWorkingOn();
+	public abstract void setWorkingOn(String workingOn);
+
 	public abstract String getDetails();
 	public abstract void setDetails(String details);
 
@@ -54,6 +57,7 @@ public abstract class BeaconInfo implements Parcelable {
 		dest.writeInt(p.getLatitudeE6());
 		dest.writeInt(p.getLongitudeE6());
 		dest.writeInt(getVisitors());
+		dest.writeString(getWorkingOn());
 		dest.writeString(getDetails());
 		dest.writeString(getTelephone());
 		dest.writeString(getEmail());
@@ -73,6 +77,7 @@ public abstract class BeaconInfo implements Parcelable {
 			String courseName = source.readString(); 
 			GeoPoint loc = new GeoPoint(source.readInt(), source.readInt());
 			int visitors = source.readInt();
+			String workingOn = source.readString();
 			String details = source.readString();
 			String telephone = source.readString();
 			String email = source.readString();
@@ -87,7 +92,7 @@ public abstract class BeaconInfo implements Parcelable {
 				e.printStackTrace();
 			}
 
-			return new BeaconInfoSimple(beaconId, courseName, loc, visitors, details, telephone, email, created, expires);
+			return new BeaconInfoSimple(beaconId, courseName, loc, visitors, workingOn, details, telephone, email, created, expires);
 
 		}
 
@@ -102,6 +107,7 @@ public abstract class BeaconInfo implements Parcelable {
 				&& getCourseName().equals(other.getCourseName())
 				&& getLoc().equals(other.getLoc())
 				&& (getVisitors() == other.getVisitors())
+				&& getWorkingOn().equals(other.getWorkingOn())
 				&& getDetails().equals(other.getDetails())
 				&& getTelephone().equals(other.getTelephone())
 				&& getEmail().equals(other.getEmail())

@@ -7,6 +7,7 @@ package com.teamblobby.studybeacon;
 import java.util.List;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -174,6 +175,20 @@ public class SBMapView extends MapView {
         	System.gc();
         	return false;
         }
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle state) {
+		// TODO Auto-generated method stub
+		super.onSaveInstanceState(state);
+		Log.d(TAG,"onSaveInstanceState()");
+	}
+
+	@Override
+	public void onRestoreInstanceState(Bundle state) {
+		// TODO Auto-generated method stub
+		super.onRestoreInstanceState(state);
+		Log.d(TAG,"onRestoreInstanceState()");
 	}
 
 }

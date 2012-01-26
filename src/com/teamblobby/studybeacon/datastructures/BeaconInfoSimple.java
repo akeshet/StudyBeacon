@@ -10,6 +10,7 @@ public class BeaconInfoSimple extends BeaconInfo {
 	private String courseName;
 	private GeoPoint loc;
 	private int visitors;
+	private String workingOn;
 	private String details;
 	private String telephone;
 	private String email;
@@ -17,13 +18,14 @@ public class BeaconInfoSimple extends BeaconInfo {
 	private Date expires;
 
 	public BeaconInfoSimple(int beaconId, String courseName, GeoPoint loc,
-			int visitors, String details, String telephone, String email,
+			int visitors, String workingOn, String details, String telephone, String email,
 			Date created, Date expires) {		
 
 		setBeaconId(beaconId);
 		setCourseName(courseName);
 		setLoc(loc);
 		setVisitors(visitors);
+		setWorkingOn(workingOn);
 		setDetails(details);
 		setTelephone(telephone);
 		setEmail(email);
@@ -41,6 +43,7 @@ public class BeaconInfoSimple extends BeaconInfo {
 				copyMe.getCourseName(),
 				copyMe.getLoc(),
 				copyMe.getVisitors(),
+				copyMe.getWorkingOn(),
 				copyMe.getDetails(),
 				copyMe.getTelephone(),
 				copyMe.getEmail(),
@@ -87,6 +90,16 @@ public class BeaconInfoSimple extends BeaconInfo {
 	@Override
 	public void setVisitors(int visitors) {
 		this.visitors = visitors;
+	}
+
+	@Override
+	public String getWorkingOn() {
+		return workingOn;
+	}
+
+	@Override
+	public void setWorkingOn(String workingOn) {
+		this.workingOn = workingOn;
 	}
 
 	@Override

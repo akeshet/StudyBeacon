@@ -246,6 +246,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 				courseName,
 				loc,
 				-1, // don't have a # of visitors yet
+				(String)workingOnSpinner.getSelectedItem(),
 				details.getText().toString(),
 				phone.getText().toString(),
 				email.getText().toString(),

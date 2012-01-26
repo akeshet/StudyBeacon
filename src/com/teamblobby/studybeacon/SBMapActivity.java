@@ -89,7 +89,15 @@ public class SBMapActivity extends MapActivity implements APIHandler
 
 		this.setUpBeacons(savedInstanceState);
 
+	}
+
+	@Override
+	protected void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+
 		checkFirstRun();
+
 	}
 
 	@Override
@@ -113,7 +121,15 @@ public class SBMapActivity extends MapActivity implements APIHandler
 		// TODO Auto-generated method stub
 		super.onSaveInstanceState(outState);
 		// TODO Save the state of mBeacons
+		mapView.onSaveInstanceState(outState);
+	}
 
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onRestoreInstanceState(savedInstanceState);
+		// This doesn't seem to ever get called
+		mapView.onRestoreInstanceState(savedInstanceState);
 	}
 
 	@Override
