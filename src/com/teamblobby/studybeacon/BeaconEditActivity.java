@@ -10,6 +10,9 @@ import com.google.android.maps.*;
 import com.teamblobby.studybeacon.datastructures.*;
 import com.teamblobby.studybeacon.network.APIClient;
 import com.teamblobby.studybeacon.network.APIHandler;
+
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -23,6 +26,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.telephony.PhoneNumberUtils;
+import android.telephony.TelephonyManager;
 import android.text.util.*;
 
 
@@ -167,6 +172,17 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 
 		expiresSpinner.setSelection(Global.res.getInteger(R.integer.expiresDefaultIndex));
 
+	}
+	
+	public void enterMyNumber(View v) {
+		TelephonyManager tm = (TelephonyManager)getSystemService(TELEPHONY_SERVICE); 
+		phone.setText(PhoneNumberUtils.formatNumber(tm.getLine1Number()));
+	}
+	
+	public void enterMyEmail(View v){
+		Account[] accounts = AccountManager.get(this).getAccounts();
+		if ( accounts[0] != null )
+			email.setText(accounts[0].name);
 	}
 	
 	private Builder customWorkingOnAlert(final int index){
