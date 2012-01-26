@@ -38,7 +38,9 @@
     <integer name="expiresDefaultIndex">2</integer>
 
     <string name="workingOn">Working on</string>
-
+    <string name="workingOnOK">OK</string>
+    <string name="workingOnCancel">Cancel</string>
+ 
     <string-array name="workingOnList">
         <item>Pset</item>
         <item>Exam studying</item>

@@ -28,6 +28,7 @@ import android.text.util.*;
 
 public class BeaconEditActivity extends Activity implements APIHandler {
 
+	private static final int DEFAULT_WORKINGON_SPINNER_POSITION = 0;
 	// Here is the interface for intents to use
 	public static final String EXTRA_COURSE = "Course";
 	public static final String EXTRA_BEACON = "beacon";
@@ -153,7 +154,6 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		workingOnAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, workingOnList);
 		workingOnAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		workingOnSpinner.setAdapter(workingOnAdapter);
-		// TODO add a listener for custom
 		workingOnSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 			public void onItemSelected(AdapterView<?> adapterView, View itemView,
 					int position, long id) {
@@ -172,22 +172,22 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 	private Builder customWorkingOnAlert(final int index){
 		final EditText input = new EditText(this);
 		return new AlertDialog.Builder(this)
-					.setTitle("Working on...") //TODO string resource
+					.setTitle(getResources().getString(R.string.workingOn))
 					.setView(input)
-					.setPositiveButton("OK", new DialogInterface.OnClickListener() { // TODO string resource
+					.setPositiveButton(getResources().getString(R.string.workingOnOK), new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
 							if ( input.getText().toString().equals("")){
-								workingOnSpinner.setSelection(0);
+								workingOnSpinner.setSelection(DEFAULT_WORKINGON_SPINNER_POSITION);
 								return; // nothing to do!
 							}
 							workingOnAdapter.insert(input.getText().toString(), index);
 							workingOnAdapter.notifyDataSetChanged();
 						}
 					})
-					.setNegativeButton("Cancel", new DialogInterface.OnClickListener() { //TODO string resource
+					.setNegativeButton(getResources().getString(R.string.workingOnCancel), new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
 							// return spinner to first element
-							workingOnSpinner.setSelection(0); //TODO constant
+							workingOnSpinner.setSelection(DEFAULT_WORKINGON_SPINNER_POSITION);
 						}
 					});
 	}
