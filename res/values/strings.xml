@@ -55,4 +55,14 @@
     <string name="emailHint">tbeaver@mit.edu</string>
     <string name="contentDescription">A picture that you can\'t see because you are blind</string>
 
+    <string name="welcomeMapMessage">Welcome to StudyBeacon!\n
+        To get started, you\'ll have to add some courses to My Courses.</string>
+    <string name="addCourses">Add Courses…</string>
+    <string name="welcomeCourseMessage">Star and unstar courses to add and remove them from My Courses.</string>
+    <string name="OK">OK</string>
+    <string name="createBeaconTutorial1">From the map, you can see any active beacons for the courses in My Courses.
+        At the top, you can choose to view the beacons for all courses or just one.</string>
+    <string name="createBeaconTutorial2">If you want to let other people know that you\'re studying,
+        create a StudyBeacon! Tap the icon in the lower right to create a new beacon.</string>
+
 </resources>
