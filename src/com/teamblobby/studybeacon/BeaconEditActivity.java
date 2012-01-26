@@ -323,6 +323,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 			}
 		});
 
+		mBeacon = Global.getCurrentBeacon();
 		loadBeaconData();
 
 	}
@@ -348,7 +349,8 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 
 		// make the details have a different hint if nothing was given
 		details.setHint(R.string.detailHintView);
-
+		
+		mBeacon = startingIntent.getParcelableExtra(EXTRA_BEACON);
 		loadBeaconData();
 
 		beaconActionButton.setText(R.string.joinBeacon);
@@ -385,7 +387,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 
 	private void loadBeaconData() {
 		// TODO What do we do if somebody did not call this properly?
-		mBeacon = Global.getCurrentBeacon();
+		
 
 		if (mBeacon == null) // FAILURE
 			return;
