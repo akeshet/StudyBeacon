@@ -2,18 +2,14 @@ package com.teamblobby.studybeacon;
 
 import java.util.List;
 
-import android.app.Application;
-
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
 import android.provider.Settings.Secure;
 import android.util.Log;
-
 import com.teamblobby.studybeacon.datastructures.*;
+import android.app.*;
 
 public class Global extends Application {
 
@@ -121,6 +117,48 @@ public class Global extends Application {
 			editor.putBoolean(FIRST_MAP_STR + activityString, false);
 			editor.commit();
 			return true;
+		}
+	}
+	
+	private static final int NOTIFICATION_BEACON_RUNNING = 1;
+	
+	private static void showBeaconRunningNotification() {
+		NotificationManager manager = (NotificationManager) 
+				application.getSystemService(Context.NOTIFICATION_SERVICE);
+		
+		Notification notification = new Notification(R.drawable.beacon_edit_grey_small, 
+				"Beacon Joined", 
+				System.currentTimeMillis());
+		
+		Intent intent = new Intent(application, BeaconEditActivity.class);
+		intent.setAction(BeaconEditActivity.ACTION_EDIT);
+		intent.putExtra(BeaconEditActivity.EXTRA_BEACON, Global.getCurrentBeacon());
+		
+		PendingIntent pendingIntent = PendingIntent.getActivity(application, 0, intent, 0);
+		
+		notification.setLatestEventInfo(application, "Beacon Running", "Select to edit/leave Beacon", pendingIntent);
+		
+		notification.flags |= Notification.FLAG_ONGOING_EVENT;
+		notification.flags |= Notification.FLAG_NO_CLEAR;
+		
+		
+		
+		manager.notify(NOTIFICATION_BEACON_RUNNING, notification);
+	}
+	
+	private static void clearBeaconRunningNotification() {
+		NotificationManager manager = (NotificationManager) 
+				application.getSystemService(Context.NOTIFICATION_SERVICE);
+		
+		manager.cancel(NOTIFICATION_BEACON_RUNNING);
+	}
+	
+	public static void updateBeaconRunningNotification() {
+		if (atBeacon()) {
+			showBeaconRunningNotification();
+		}
+		else {
+			clearBeaconRunningNotification();
 		}
 	}
 

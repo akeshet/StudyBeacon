@@ -427,6 +427,7 @@ public class SBMapActivity extends MapActivity implements APIHandler
 								&& (Global.getCurrentBeacon().getBeaconId() == beacon.getBeaconId())) {
 							Log.d(TAG,"Updating present beacon info");
 							Global.setCurrentBeacon(beacon);
+							Global.updateBeaconRunningNotification();
 						}
 					}
 				}

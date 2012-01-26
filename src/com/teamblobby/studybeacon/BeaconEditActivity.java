@@ -430,6 +430,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		}
 		Toast.makeText(this, messageText, Toast.LENGTH_SHORT).show();
 		Global.setCurrentBeacon(beacon);
+		Global.updateBeaconRunningNotification();
 		currentDialog.dismiss();
 		// go back home
 		Global.goHome(this);
@@ -441,10 +442,12 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		case CODE_ADD:
 			messageText = new String("Failed to add beacon");
 			Global.setCurrentBeacon(null);
+			Global.updateBeaconRunningNotification();
 			break;
 		case CODE_JOIN:
 			messageText = new String("Failed to join beacon");
 			Global.setCurrentBeacon(null);
+			Global.updateBeaconRunningNotification();
 			break;
 		case CODE_LEAVE:
 			messageText = new String("Failed to leave beacon -- out of sync with server");
