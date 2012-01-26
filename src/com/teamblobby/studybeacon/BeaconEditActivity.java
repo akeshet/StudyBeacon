@@ -391,6 +391,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		setCourseSpinnerItem(mBeacon.getCourseName());
 		phone.setText(mBeacon.getTelephone());
 		email.setText(mBeacon.getEmail());
+		setWorkingOn(mBeacon.getWorkingOn());
 		details.setText(mBeacon.getDetails());
 		expiresTimeTV.setText(df.format(mBeacon.getExpires()));
 
@@ -404,6 +405,10 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 
 	////////////////////////////////////////////////////////////////
 	// The following are for implementing SBAPIHandler
+
+	private void setWorkingOn(String workingOn) {
+		// TODO Nic, do this please? :)
+	}
 
 	public Activity getActivity() {
 		// TODO Auto-generated method stub
