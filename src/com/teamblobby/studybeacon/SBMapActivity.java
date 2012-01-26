@@ -11,6 +11,8 @@ import com.teamblobby.studybeacon.network.APIClient;
 import com.teamblobby.studybeacon.network.APIHandler;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -78,15 +80,16 @@ public class SBMapActivity extends MapActivity implements APIHandler
 		});
 
 		beaconButton = (ImageButton) findViewById(R.id.newBeaconButton);
-				
-		updateBeaconButton();
 		
 		this.loadCourses(savedInstanceState);
+		// Must come after loadCourses
+		updateBeaconButton();
 
 		this.setUpMapView(savedInstanceState);
 
 		this.setUpBeacons(savedInstanceState);
 
+		checkFirstRun();
 	}
 
 	@Override
@@ -119,6 +122,7 @@ public class SBMapActivity extends MapActivity implements APIHandler
 		case REQUESTCODE_RETURNED_FROM_MYCOURSES:
 			if (resultCode == MyCoursesActivity.RESULT_COURSES_CHANGED) {
 				loadCourses(null);
+				updateBeaconButton();
 				startQuery();
 			}
 			break;
@@ -131,23 +135,30 @@ public class SBMapActivity extends MapActivity implements APIHandler
 	private void updateBeaconButton() {
 		if (Global.atBeacon()) {
 			Log.d(TAG, "We are at a beacon.");
-			beaconButton.setImageDrawable(getResources().getDrawable(R.drawable.beacon_edit));
+			beaconButton.setImageResource(R.drawable.beacon_edit);
 			beaconButton.setOnClickListener(new OnClickListener() {
 
 				public void onClick(View v) {
 					editBeaconClicked(v);
 				}
 			});
+			beaconButton.setEnabled(true);
 		}
 		else {
 			Log.d(TAG, "We are not at a beacon.");
-			beaconButton.setImageDrawable(getResources().getDrawable(R.drawable.newbeaconicon));
-			beaconButton.setOnClickListener(new OnClickListener() {
+			if (courses.size() > 0) {
+				beaconButton.setImageResource(R.drawable.newbeaconicon);
+				beaconButton.setOnClickListener(new OnClickListener() {
 
-				public void onClick(View v) {
-					newBeaconClicked(v);
-				}
-			});
+					public void onClick(View v) {
+						newBeaconClicked(v);
+					}
+				});
+				beaconButton.setEnabled(true);
+			} else {
+				beaconButton.setImageResource(R.drawable.newbeaconicon_gray);
+				beaconButton.setEnabled(false);
+			}
 		}
 
 	}
@@ -238,6 +249,35 @@ public class SBMapActivity extends MapActivity implements APIHandler
 		if (dirtied)
 			mapView.invalidate();
 
+	}
+
+	private void checkFirstRun() {
+		if ( Global.isFirstTimeAtActivity(TAG))
+			(new AlertDialog.Builder(this)).setMessage(R.string.welcomeMapMessage)
+			.setCancelable(false).setPositiveButton(R.string.addCourses,
+					new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					Intent i = new Intent(SBMapActivity.this, CourseResourceActivity.class);
+					startActivityForResult(i, REQUESTCODE_RETURNED_FROM_MYCOURSES);
+
+
+					(new AlertDialog.Builder(SBMapActivity.this)).setMessage(R.string.createBeaconTutorial1)
+					.setCancelable(false).setPositiveButton(R.string.OK,
+							new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+
+							(new AlertDialog.Builder(SBMapActivity.this)).setMessage(R.string.createBeaconTutorial2)
+							.setCancelable(false).setPositiveButton(R.string.OK,
+									new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int which) {
+								}
+							}).show();
+
+						}
+					}).show();
+
+				}
+			}).show();
 	}
 
 	protected Boolean wantAllCourses() {

@@ -7,6 +7,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
 import android.provider.Settings.Secure;
@@ -22,6 +23,8 @@ public class Global extends Application {
 	private static final String TAG = "Global";
 
 	public final static String COURSES_STR = "courses";
+
+	private static final String FIRST_MAP_STR = "com.teamblobby.studybeacon.firstTimeAtActivity.";
 
 	// Shared Data
 	public static SharedPreferences prefs;
@@ -109,4 +112,16 @@ public class Global extends Application {
 	public static boolean atBeacon() {
 		return BeaconInfoSqlite.atBeacon();
 	}
+
+	public static boolean isFirstTimeAtActivity(String activityString) {
+		if ( prefs.contains(FIRST_MAP_STR + activityString) ) {
+			return false;
+		} else {
+			Editor editor = prefs.edit();
+			editor.putBoolean(FIRST_MAP_STR + activityString, false);
+			editor.commit();
+			return true;
+		}
+	}
+
 }

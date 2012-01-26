@@ -7,8 +7,10 @@ import com.teamblobby.studybeacon.datastructures.*;
 import com.teamblobby.studybeacon.network.StellarQuery;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -22,7 +24,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public class CourseResourceActivity extends ListActivity {
 
-	private static final String TAG = "SBCourseResourceListActivity";
+	private static final String TAG = "CourseResourceListActivity";
 	
 	private List<CourseListable> availableCourses;
 	private List<CourseInfo> currentCourses;
@@ -97,7 +99,9 @@ public class CourseResourceActivity extends ListActivity {
 			}
 		
 		});
-	    
+
+		if ((intentExtras != null) && intentExtras.containsKey("category"))
+			checkFirstRun();
 	}
 	
 	private void setStarredCourses() {
@@ -252,6 +256,19 @@ public class CourseResourceActivity extends ListActivity {
 			Log.d(TAG,"due to returned result, this result set to "+resultCode);
 		}
 		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	private void checkFirstRun() {
+		if ( !Global.isFirstTimeAtActivity(TAG) )
+			return;
+
+		(new AlertDialog.Builder(this)).setMessage(R.string.welcomeCourseMessage)
+		.setCancelable(false).setPositiveButton(R.string.OK,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+					}
+				}).show();
+
 	}
     
     
