@@ -158,7 +158,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 					int position, long id) {
 				int count = workingOnAdapter.getCount();
 				if ( position == count-1 ) { // last element
-					customWorkingOnAlert(workingOnAdapter, count-1).show();
+					customWorkingOnAlert(count-1).show();
 				}
 			}
 			public void onNothingSelected(AdapterView<?> arg0) {}
@@ -168,20 +168,21 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 
 	}
 	
-	private Builder customWorkingOnAlert(final ArrayAdapter<String> workingOnAdapter, final int index){
+	private Builder customWorkingOnAlert(final int index){
 		final EditText input = new EditText(this);
 		return new AlertDialog.Builder(this)
-					.setTitle("Working on...")
+					.setTitle("Working on...") //TODO string resource
 					.setView(input)
-					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					.setPositiveButton("OK", new DialogInterface.OnClickListener() { // TODO string resource
 						public void onClick(DialogInterface dialog, int which) {
 							workingOnAdapter.insert(input.getText().toString(), index);
 							workingOnAdapter.notifyDataSetChanged();
 						}
 					})
-					.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+					.setNegativeButton("Cancel", new DialogInterface.OnClickListener() { //TODO string resource
 						public void onClick(DialogInterface dialog, int which) {
-							// nothing special
+							// return spinner to first element
+							workingOnSpinner.setSelection(0); //TODO constant
 						}
 					});
 	}
@@ -283,6 +284,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 				return;
 			}
 			currentDialog = ProgressDialog.show(mActivity, "", "Creating beacon...");
+			// needs working on from fields
 			APIClient.add(mActivity.beaconFromFields(), mActivity.durationFromField(), mActivity);
 		}
 	}
