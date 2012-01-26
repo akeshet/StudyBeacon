@@ -49,8 +49,7 @@ public class APIClient {
 
 		return new BeaconInfoSimple(bObj.getInt(BEACID_STR), bObj.getString(COURSE_STR),
 				point, bObj.getInt(COUNT_STR),
-				// TODO Once the server supports it, replace with bObj.getString(WORKINGON_STR) 
-				"",
+				bObj.getString(WORKINGON_STR),
 				bObj.getString(DETAILS_STR),
 				bObj.getString(TELEPHONE_STR),
 				bObj.getString(EMAIL_STR),

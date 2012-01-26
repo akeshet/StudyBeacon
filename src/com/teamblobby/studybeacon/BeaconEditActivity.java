@@ -180,8 +180,8 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 								workingOnSpinner.setSelection(DEFAULT_WORKINGON_SPINNER_POSITION);
 								return; // nothing to do!
 							}
-							workingOnAdapter.insert(input.getText().toString(), index);
-							workingOnAdapter.notifyDataSetChanged();
+							String text = input.getText().toString();
+							addToWorkingOn(index, text);
 						}
 					})
 					.setNegativeButton(getResources().getString(R.string.workingOnCancel), new DialogInterface.OnClickListener() {
@@ -298,7 +298,10 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 	private void setUpForEdit(Bundle savedInstanceState, Intent startingIntent) {
 		// TODO Add logic if already at a beacon
 		// Set title text
-		beaconTitleTV.setText(R.string.editBeacon);		
+		beaconTitleTV.setText(R.string.editBeacon);
+
+		// Don't let the class be editable
+		courseSpinner.setEnabled(false);
 
 		beaconActionButton.setText(R.string.saveBeacon);
 		// Set the drawable on the action button
@@ -391,6 +394,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		setCourseSpinnerItem(mBeacon.getCourseName());
 		phone.setText(mBeacon.getTelephone());
 		email.setText(mBeacon.getEmail());
+		setWorkingOn(mBeacon.getWorkingOn());
 		details.setText(mBeacon.getDetails());
 		expiresTimeTV.setText(df.format(mBeacon.getExpires()));
 
@@ -402,11 +406,20 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		}
 	}
 
+	private void setWorkingOn(String workingOn) {
+		int position = workingOnAdapter.getPosition(workingOn);
+		if ( position == -1 ){ // -1 means it didn't find it
+			// add it to the spinner
+			position = workingOnAdapter.getCount()-1;
+			addToWorkingOn(position, workingOn);
+		}
+		workingOnSpinner.setSelection(position);
+	}
 	////////////////////////////////////////////////////////////////
 	// The following are for implementing SBAPIHandler
 
+
 	public Activity getActivity() {
-		// TODO Auto-generated method stub
 		return this;
 	}
 
@@ -458,6 +471,11 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		}
 		Toast.makeText(this, messageText, Toast.LENGTH_SHORT).show();
 		currentDialog.dismiss();
+	}
+
+	protected void addToWorkingOn(final int index, String text) {
+		workingOnAdapter.insert(text, index);
+		workingOnAdapter.notifyDataSetChanged();
 	}
 
 }
