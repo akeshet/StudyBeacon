@@ -67,4 +67,8 @@
     <string name="createBeaconTutorial2">If you want to let other people know that you\'re studying,
         create a StudyBeacon! Tap the icon in the lower right to create a new beacon.</string>
 
+    <string name="notificationText">StudyBeacon joined</string>
+    <string name="notificationTitle">Studying</string>
+    <string name="notificationDetailText">Tap to edit/leave beacon</string>
+
 </resources>

@@ -127,7 +127,7 @@ public class Global extends Application {
 				application.getSystemService(Context.NOTIFICATION_SERVICE);
 		
 		Notification notification = new Notification(R.drawable.beacon_edit_grey_small, 
-				"Beacon Joined", 
+				res.getText(R.string.notificationText),
 				System.currentTimeMillis());
 		
 		Intent intent = new Intent(application, BeaconEditActivity.class);
@@ -136,8 +136,10 @@ public class Global extends Application {
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
 		
 		PendingIntent pendingIntent = PendingIntent.getActivity(application, 0, intent, 0);
-		
-		notification.setLatestEventInfo(application, "Beacon Running", "Select to edit/leave Beacon", pendingIntent);
+
+		notification.setLatestEventInfo(application,
+				res.getText(R.string.notificationTitle).toString() + " " + getCurrentBeacon().getCourseName(),
+				res.getText(R.string.notificationDetailText), pendingIntent);
 		
 		notification.flags |= Notification.FLAG_ONGOING_EVENT;
 		notification.flags |= Notification.FLAG_NO_CLEAR;
