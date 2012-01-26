@@ -180,8 +180,8 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 								workingOnSpinner.setSelection(DEFAULT_WORKINGON_SPINNER_POSITION);
 								return; // nothing to do!
 							}
-							workingOnAdapter.insert(input.getText().toString(), index);
-							workingOnAdapter.notifyDataSetChanged();
+							String text = input.getText().toString();
+							addToWorkingOn(index, text);
 						}
 					})
 					.setNegativeButton(getResources().getString(R.string.workingOnCancel), new DialogInterface.OnClickListener() {
@@ -403,15 +403,20 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		}
 	}
 
+	private void setWorkingOn(String workingOn) {
+		int position = workingOnAdapter.getPosition(workingOn);
+		if ( position == -1 ){ // -1 means it didn't find it
+			// add it to the spinner
+			position = workingOnAdapter.getCount()-1;
+			addToWorkingOn(position, workingOn);
+		}
+		workingOnSpinner.setSelection(position);
+	}
 	////////////////////////////////////////////////////////////////
 	// The following are for implementing SBAPIHandler
 
-	private void setWorkingOn(String workingOn) {
-		// TODO Nic, do this please? :)
-	}
 
 	public Activity getActivity() {
-		// TODO Auto-generated method stub
 		return this;
 	}
 
@@ -460,6 +465,11 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		}
 		Toast.makeText(this, messageText, Toast.LENGTH_SHORT).show();
 		currentDialog.dismiss();
+	}
+
+	protected void addToWorkingOn(final int index, String text) {
+		workingOnAdapter.insert(text, index);
+		workingOnAdapter.notifyDataSetChanged();
 	}
 
 }
