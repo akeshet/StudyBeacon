@@ -396,7 +396,7 @@ public class SBMapActivity extends MapActivity implements APIHandler
 	public void editBeaconClicked(View view) {
 		Intent intent = new Intent(this, BeaconEditActivity.class);
 		intent.setAction(BeaconEditActivity.ACTION_EDIT);
-		intent.putExtra(BeaconEditActivity.EXTRA_BEACON, Global.getCurrentBeacon());
+		//intent.putExtra(BeaconEditActivity.EXTRA_BEACON, Global.getCurrentBeacon());
 		startActivityForResult(intent, REQUESTCODE_RETURNED_FROM_BEACON);
 	}
 	

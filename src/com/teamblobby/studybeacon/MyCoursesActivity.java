@@ -101,7 +101,7 @@ public class MyCoursesActivity extends ListActivity {
 							&& presentBeacon.getCourseName().equals(courseInfo.getName())) {
 						// edit
 						i.setAction(BeaconEditActivity.ACTION_EDIT);
-						i.putExtra(BeaconEditActivity.EXTRA_BEACON, presentBeacon);
+						//i.putExtra(BeaconEditActivity.EXTRA_BEACON, presentBeacon);
 					} else {
 						// launch a new one
 						i.setAction(BeaconEditActivity.ACTION_NEW);

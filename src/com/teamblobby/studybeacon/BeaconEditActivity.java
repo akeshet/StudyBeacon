@@ -60,7 +60,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 	protected Button beaconSecondaryActionButton;
 
 	// This represents the beacon we are making.
-	protected BeaconInfoSimple mBeacon;
+	protected BeaconInfo mBeacon;
 
 	private ArrayAdapter<CourseInfo> courseAdapter;
 	private ArrayAdapter<DurationSpinnerItem> expiresAdapter;
@@ -323,7 +323,8 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 			}
 		});
 
-		loadBeaconData(startingIntent);
+		mBeacon = Global.getCurrentBeacon();
+		loadBeaconData();
 
 	}
 
@@ -348,8 +349,9 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 
 		// make the details have a different hint if nothing was given
 		details.setHint(R.string.detailHintView);
-
-		loadBeaconData(startingIntent);
+		
+		mBeacon = startingIntent.getParcelableExtra(EXTRA_BEACON);
+		loadBeaconData();
 
 		beaconActionButton.setText(R.string.joinBeacon);
 		// Set the drawable on the action button
@@ -383,9 +385,9 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 			contact.setVisibility(View.GONE);
 	}
 
-	private void loadBeaconData(Intent startingIntent) {
+	private void loadBeaconData() {
 		// TODO What do we do if somebody did not call this properly?
-		mBeacon = startingIntent.getParcelableExtra(EXTRA_BEACON);
+		
 
 		if (mBeacon == null) // FAILURE
 			return;
