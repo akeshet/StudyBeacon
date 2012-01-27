@@ -7,11 +7,28 @@
 
     <TextView
         android:id="@+id/clicktoedittext"
-        android:layout_width="0dip"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|left"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColorLink="@android:color/secondary_text_dark" />
+    
+    <ImageButton
+        android:id="@+id/smsbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|left"
+        android:background="@null"
+        android:contentDescription="@string/contentDescription"
+        android:visibility="gone"
+        android:src="@drawable/sms" />
+    
+    <!-- Space filler this is hackey -->
+    <TextView
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:visibility="invisible" />"
 
     <ImageButton
         android:id="@+id/clicktoeditbutton"

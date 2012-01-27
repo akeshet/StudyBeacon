@@ -32,6 +32,7 @@ import android.text.util.*;
 
 public class BeaconEditActivity extends Activity implements APIHandler {
 
+	private static final String SMS_URI_PREFIX = "smsto:";
 	private static final int DEFAULT_WORKINGON_SPINNER_POSITION = 0;
 	// Here is the interface for intents to use
 	public static final String EXTRA_COURSE = "Course";
@@ -402,14 +403,17 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		} else {
 			text = phone.getText().toString();
 		}
-		convertToTextClickToEdit(phoneLayout, text, false);
+		TextClickToEdit phoneC2E = convertToTextClickToEdit(phoneLayout, text, false);
+		Linkify.addLinks(phoneC2E.getTextView(), Linkify.PHONE_NUMBERS);
+		phoneC2E.enableSmsButton(SMS_URI_PREFIX+PhoneNumberUtils.stripSeparators(phone.getText().toString()));
 
 		if ( mBeacon.getEmail().equals("") ){
 			text = "No email address given.";
 		} else {
 			text = email.getText().toString();
 		}
-		convertToTextClickToEdit(emailLayout, text, false);
+		TextClickToEdit emailC2E = convertToTextClickToEdit(emailLayout, text, false);
+		Linkify.addLinks(emailC2E.getTextView(), Linkify.EMAIL_ADDRESSES);
 
 	}
 
@@ -467,13 +471,16 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		if ( mBeacon.getTelephone().equals("") ){
 			phoneLayout.setVisibility(View.GONE);
 		} else {
-			convertToTextClickToEdit(phoneLayout, phone.getText().toString(), true);
+			TextClickToEdit phoneC2E = convertToTextClickToEdit(phoneLayout, phone.getText().toString(), true);
+			Linkify.addLinks(phoneC2E.getTextView(), Linkify.PHONE_NUMBERS);
+			phoneC2E.enableSmsButton(SMS_URI_PREFIX+PhoneNumberUtils.stripSeparators(phone.getText().toString()));
 		}
 
 		if ( mBeacon.getEmail().equals("") ){
 			emailLayout.setVisibility(View.GONE);
 		} else {
-			convertToTextClickToEdit(emailLayout, email.getText().toString(), true);
+			TextClickToEdit emailC2E = convertToTextClickToEdit(emailLayout, email.getText().toString(), true);
+			Linkify.addLinks(emailC2E.getTextView(), Linkify.EMAIL_ADDRESSES);
 		}
 
 		if ( mBeacon.getTelephone().equals("") && mBeacon.getEmail().equals("") )
@@ -539,13 +546,6 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		setWorkingOn(mBeacon.getWorkingOn());
 		details.setText(mBeacon.getDetails());
 		expiresTimeFormatted = df.format(mBeacon.getExpires());
-
-		if (this.mode == OperationMode.MODE_VIEW) {
-			Linkify.addLinks(phone, Patterns.PHONE, "sms:",
-					Linkify.sPhoneNumberMatchFilter,
-					Linkify.sPhoneNumberTransformFilter);
-			Linkify.addLinks(email, Linkify.EMAIL_ADDRESSES);
-		}
 	}
 
 	private void setWorkingOn(String workingOn) {
