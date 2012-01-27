@@ -19,7 +19,6 @@ public class TitleBar extends LinearLayout {
 	
 	public TitleBar(final Context context, AttributeSet attrs) {
 		super(context, attrs);
-		// TODO Auto-generated constructor stub
 		
 		LayoutInflater inflator = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		inflator.inflate(R.layout.title_bar, this);

@@ -10,6 +10,9 @@ import com.google.android.maps.*;
 import com.teamblobby.studybeacon.datastructures.*;
 import com.teamblobby.studybeacon.network.APIClient;
 import com.teamblobby.studybeacon.network.APIHandler;
+
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -23,6 +26,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.telephony.PhoneNumberUtils;
+import android.telephony.TelephonyManager;
 import android.text.util.*;
 
 
@@ -50,7 +55,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 	protected Spinner courseSpinner;
 	protected TextView expiresTV;
 	protected Spinner expiresSpinner;
-	protected TextView expiresTimeTV;
+	protected TextClickToEdit expiresTimeTV;
 	protected Spinner workingOnSpinner;
 	protected TextView contact;
 	protected EditText phone;
@@ -111,7 +116,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		courseSpinner    = (Spinner)  findViewById(R.id.courseSpinner);
 		expiresTV        = (TextView) findViewById(R.id.expiresTV);
 		expiresSpinner   = (Spinner)  findViewById(R.id.expiresSpinner);
-		expiresTimeTV    = (TextView) findViewById(R.id.expiresTimeTV);
+		//expiresTimeTV    = (TextView) findViewById(R.id.expiresTimeTV);
 		workingOnSpinner = (Spinner)  findViewById(R.id.workingOnSpinner);
 		contact          = (TextView) findViewById(R.id.contactTV);
 		phone            = (EditText) findViewById(R.id.phone);
@@ -167,6 +172,17 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 
 		expiresSpinner.setSelection(Global.res.getInteger(R.integer.expiresDefaultIndex));
 
+	}
+	
+	public void enterMyNumber(View v) {
+		TelephonyManager tm = (TelephonyManager)getSystemService(TELEPHONY_SERVICE); 
+		phone.setText(PhoneNumberUtils.formatNumber(tm.getLine1Number()));
+	}
+	
+	public void enterMyEmail(View v){
+		Account[] accounts = AccountManager.get(this).getAccounts();
+		if ( accounts[0] != null )
+			email.setText(accounts[0].name);
 	}
 	
 	private Builder customWorkingOnAlert(final int index){
@@ -311,7 +327,20 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		beaconTitleTV.setText(R.string.editBeacon);
 
 		// Don't let the class be editable
-		courseSpinner.setEnabled(false);
+		//courseSpinner.setEnabled(false);
+		convertToTextClickToEdit(courseSpinner,courseSpinner.getSelectedItem().toString(),true); // true hides the edit button
+		convertToTextClickToEdit(workingOnSpinner,workingOnSpinner.getSelectedItem().toString(),false);
+			//s.setEnabled(false);
+
+		// Change the "expires" text
+		expiresTV.setText(R.string.expiresAt);
+		//expiresSpinner.setVisibility(View.GONE);
+		//expiresTimeTV.setVisibility(View.VISIBLE);
+		expiresTimeTV = convertToTextClickToEdit(expiresSpinner,"",false,new Runnable() { // make the edit button also change the expires text
+			public void run() {
+				expiresTV.setText(R.string.expiresIn);
+			}
+		});
 
 		beaconActionButton.setText(R.string.saveBeacon);
 		// Set the drawable on the action button
@@ -343,6 +372,23 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 
 		mBeacon = Global.getCurrentBeacon();
 		loadBeaconData();
+		
+		View phoneLayout = findViewById(R.id.phoneLayout);
+		View emailLayout = findViewById(R.id.emailLayout);
+		String text;
+		if ( mBeacon.getTelephone().equals("") ){
+			text = "No phone number given.";
+		} else {
+			text = phone.getText().toString();
+		}
+		convertToTextClickToEdit(phoneLayout, text, false);
+
+		if ( mBeacon.getEmail().equals("") ){
+			text = "No email address given.";
+		} else {
+			text = email.getText().toString();
+		}
+		convertToTextClickToEdit(emailLayout, text, false);
 
 	}
 
@@ -350,15 +396,17 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		// Set title text
 		beaconTitleTV.setText(R.string.beaconDetails);
 
-		// Disable the elements' editability
-		Spinner spinners[] = {courseSpinner, expiresSpinner, workingOnSpinner};
+		// Turn the spinners into textClickToEdits
+		Spinner spinners[] = {courseSpinner, workingOnSpinner};
 		for (Spinner s : spinners)
-			s.setEnabled(false);
+			convertToTextClickToEdit(s,s.getSelectedItem().toString(),true);
+			//s.setEnabled(false);
 
 		// Change the "expires" text
 		expiresTV.setText(R.string.expiresAt);
-		expiresSpinner.setVisibility(View.GONE);
-		expiresTimeTV.setVisibility(View.VISIBLE);
+		//expiresSpinner.setVisibility(View.GONE);
+		//expiresTimeTV.setVisibility(View.VISIBLE);
+		expiresTimeTV = convertToTextClickToEdit(expiresSpinner,"",true);
 
 		EditText ets[] = {phone, email, details};
 		for (EditText e : ets) {
@@ -393,14 +441,67 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 			return;
 
 		// don't show contact details if they weren't filled in
-		if ( mBeacon.getTelephone().equals("") )
-			phone.setVisibility(View.GONE);
+		View phoneLayout = findViewById(R.id.phoneLayout);
+		View emailLayout = findViewById(R.id.emailLayout);
+		if ( mBeacon.getTelephone().equals("") ){
+			phoneLayout.setVisibility(View.GONE);
+		} else {
+			convertToTextClickToEdit(phoneLayout, phone.getText().toString(), true);
+		}
 
-		if ( mBeacon.getEmail().equals("") )
-			email.setVisibility(View.GONE);
+		if ( mBeacon.getEmail().equals("") ){
+			emailLayout.setVisibility(View.GONE);
+		} else {
+			convertToTextClickToEdit(emailLayout, email.getText().toString(), true);
+		}
 
 		if ( mBeacon.getTelephone().equals("") && mBeacon.getEmail().equals("") )
 			contact.setVisibility(View.GONE);
+	}
+
+	private TextClickToEdit convertToTextClickToEdit(final View s, String text, boolean hideButton) {
+		return convertToTextClickToEdit(s, text, hideButton, new Runnable() {public void run(){}});
+	}
+	
+	private TextClickToEdit convertToTextClickToEdit(final View s, String text, boolean hideButton, final Runnable callback) {
+		LinearLayout layout = (LinearLayout) s.getParent();
+		// find out where the spinner is
+		int spinnerIndex = -1;
+		for ( int j=0; j<layout.getChildCount(); j++ ){
+			if ( s.equals(layout.getChildAt(j)) ){
+				spinnerIndex = j;
+				break;
+			}
+		}
+		
+		if ( spinnerIndex == -1 ){
+			Log.e(TAG, "Crap, didn't find the spinner");
+			return null;
+		}
+		
+		// make the spinner disappear
+		s.setVisibility(View.GONE);
+		
+		// new text view
+		final TextClickToEdit textClick = new TextClickToEdit(this);
+		textClick.setText(text);
+		
+		// make the button reverse the process
+		textClick.setButtonClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				textClick.setVisibility(View.GONE);
+				s.setVisibility(View.VISIBLE);
+				callback.run();
+			}
+		});
+		
+		// hide the button if asked
+		if ( hideButton )
+			textClick.hideButton();
+		
+		//stick it in
+		layout.addView(textClick, spinnerIndex);
+		return textClick;
 	}
 
 	private void loadBeaconData() {
