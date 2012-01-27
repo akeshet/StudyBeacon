@@ -75,6 +75,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 
 
 	private DateFormat df = DateFormat.getTimeInstance(DateFormat.SHORT);
+	protected boolean expiresEdited = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -252,15 +253,15 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		return ((DurationSpinnerItem) expiresSpinner.getSelectedItem()).getMinutes();
 	}
 
-	protected BeaconInfo newBeaconFromFields() {
+	protected BeaconInfo newBeaconFromFields(GeoPoint location) {
 		String courseName = ((CourseInfo) courseSpinner.getSelectedItem()).getName();
 
-		GeoPoint loc = userLocator.getLocation(); // grab the user's location
-		Log.d(TAG,"loc: late6="+loc.getLatitudeE6()+" longe6="+loc.getLongitudeE6());
+		//GeoPoint loc = userLocator.getLocation(); // grab the user's location
+		Log.d(TAG,"loc: late6="+location.getLatitudeE6()+" longe6="+location.getLongitudeE6());
 
 		return new BeaconInfoSimple(-1, // don't have a BeaconId yet
 				courseName,
-				loc,
+				location,
 				-1, // don't have a # of visitors yet
 				(String)workingOnSpinner.getSelectedItem(),
 				details.getText().toString(),
@@ -307,18 +308,20 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 			}
 			currentDialog = ProgressDialog.show(mActivity, "", "Creating beacon...");
 			// needs working on from fields
-			APIClient.add(mActivity.newBeaconFromFields(), mActivity.newDurationFromField(), mActivity);
+			APIClient.add(mActivity.newBeaconFromFields(userLocator.getLocation()), mActivity.newDurationFromField(), mActivity);
 		}
 	}
 
 	protected int editDurationFromField() {
-		// TODO This is for Nic :)
-		return APIClient.DURATION_UNCHANGED;
+		if ( expiresEdited ){
+			return newDurationFromField();
+		} else {
+			return APIClient.DURATION_UNCHANGED;
+		}
 	}
 
 	protected BeaconInfo editBeaconFromFields() {
-		// TODO This is for Nic :)
-		return newBeaconFromFields();
+		return newBeaconFromFields(new GeoPoint(0, 0));
 	}
 
 	private void setUpForEdit(Bundle savedInstanceState, Intent startingIntent) {
@@ -339,6 +342,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		expiresTimeTV = convertToTextClickToEdit(expiresSpinner,"",false,new Runnable() { // make the edit button also change the expires text
 			public void run() {
 				expiresTV.setText(R.string.expiresIn);
+				expiresEdited = true;
 			}
 		});
 
