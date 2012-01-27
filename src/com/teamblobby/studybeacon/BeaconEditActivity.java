@@ -448,7 +448,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		Global.updateBeaconRunningNotification();
 		currentDialog.dismiss();
 		// go back home
-		Global.goHome(this);
+		this.finish();
 	}
 
 	public void onFailure(APICode code, Throwable e) {
