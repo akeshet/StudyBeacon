@@ -93,19 +93,47 @@
                 android:layout_height="wrap_content"
                 android:text="@string/contact" />
 
-            <EditText
-                android:id="@+id/phone"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/phoneHint"
-                android:inputType="phone" />
+                android:layout_height="wrap_content" >
 
+	            <EditText
+	                android:id="@+id/phone"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:hint="@string/phoneHint"
+	                android:inputType="phone" />
+
+				<ImageButton
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:layout_gravity="center_vertical|right"
+				    android:layout_margin="5dip"
+				    android:background="@null"
+				    android:src="@android:drawable/sym_action_call" 
+				    android:onClick="enterMyNumber"/>
+
+            </FrameLayout>
+            
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
             <EditText
                 android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/emailHint"
                 android:inputType="textEmailAddress" />
+            	<ImageButton
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:layout_gravity="center_vertical|right"
+				    android:layout_margin="5dip"
+				    android:background="@null"
+				    android:src="@android:drawable/sym_action_call" 
+				    android:onClick="enterMyEmail"/>
+
+            </FrameLayout>
 
             <TextView
                 android:id="@+id/detailsTV"
