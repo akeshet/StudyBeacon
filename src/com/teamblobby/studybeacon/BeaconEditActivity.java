@@ -232,11 +232,11 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		}
 	}
 
-	protected int durationFromField() {
+	protected int newDurationFromField() {
 		return ((DurationSpinnerItem) expiresSpinner.getSelectedItem()).getMinutes();
 	}
 
-	protected BeaconInfo beaconFromFields() {
+	protected BeaconInfo newBeaconFromFields() {
 		String courseName = ((CourseInfo) courseSpinner.getSelectedItem()).getName();
 
 		GeoPoint loc = userLocator.getLocation(); // grab the user's location
@@ -291,8 +291,18 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 			}
 			currentDialog = ProgressDialog.show(mActivity, "", "Creating beacon...");
 			// needs working on from fields
-			APIClient.add(mActivity.beaconFromFields(), mActivity.durationFromField(), mActivity);
+			APIClient.add(mActivity.newBeaconFromFields(), mActivity.newDurationFromField(), mActivity);
 		}
+	}
+
+	protected int editDurationFromField() {
+		// TODO This is for Nic :)
+		return APIClient.DURATION_UNCHANGED;
+	}
+
+	protected BeaconInfo editBeaconFromFields() {
+		// TODO This is for Nic :)
+		return newBeaconFromFields();
 	}
 
 	private void setUpForEdit(Bundle savedInstanceState, Intent startingIntent) {
@@ -306,6 +316,14 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		beaconActionButton.setText(R.string.saveBeacon);
 		// Set the drawable on the action button
 		beaconActionButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.beacon_edit, 0, 0, 0);
+
+		beaconActionButton.setOnClickListener(new OnClickListener() {
+
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				APIClient.edit(editBeaconFromFields(), editDurationFromField(), this);
+			}
+		});
 
 		beaconSecondaryActionButton.setVisibility(View.VISIBLE);
 		beaconSecondaryActionButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.beacon_leave, 0, 0, 0);
@@ -433,6 +451,10 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 			beacon = (BeaconInfo) response;
 			messageText = new String("Beacon added successfully");
 			break;
+		case CODE_EDIT:
+			beacon = (BeaconInfo) response;
+			messageText = new String("Beacon updated");
+			break;
 		case CODE_JOIN:
 			beacon = (BeaconInfo) response;
 			messageText = new String("Beacon joined successfully");
@@ -463,6 +485,10 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 			messageText = new String("Failed to add beacon");
 			Global.setCurrentBeacon(null);
 			Global.updateBeaconRunningNotification();
+			break;
+		case CODE_EDIT:
+			messageText = new String("Failed to save beacon");
+			// TODO What do we do here?
 			break;
 		case CODE_JOIN:
 			messageText = new String("Failed to join beacon");

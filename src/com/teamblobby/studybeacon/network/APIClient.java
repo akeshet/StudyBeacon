@@ -160,12 +160,14 @@ public class APIClient {
 	}
 
 	////////////////////////////////////////////////////////////////
-	// Interface for doing an add
+	// Interfaces for doing an add and an edit
 
 	public final static String ADD_URL = "add.py";
 
 	public final static String DURATION_STR = "Duration";
 	public final static String DEVID_STR    = "DeviceId";
+
+	public static final int DURATION_UNCHANGED = -1;
 
 	public static void add(BeaconInfo beacon, int duration, final APIHandler handler) {
 		RequestParams params = new RequestParams();
@@ -183,6 +185,25 @@ public class APIClient {
 		Log.d(TAG,"add string " + params.toString());
 
 		post(ADD_URL, params, new OneBeaconJsonHandler(handler,APICode.CODE_ADD));
+
+	}
+
+	public static void edit(BeaconInfo beacon, int duration, final APIHandler handler) {
+		RequestParams params = new RequestParams();
+
+		params.put(LAT_STR,       Integer.toString(beacon.getLoc().getLatitudeE6()));
+		params.put(LON_STR,       Integer.toString(beacon.getLoc().getLongitudeE6()));
+		params.put(DEVID_STR,     Global.getMyIdString());
+		if (duration != DURATION_UNCHANGED)
+			params.put(DURATION_STR,  Integer.toString(duration));
+		params.put(TELEPHONE_STR, beacon.getTelephone() );
+		params.put(EMAIL_STR,     beacon.getEmail() );
+		params.put(WORKINGON_STR, beacon.getWorkingOn());
+		params.put(DETAILS_STR,   beacon.getDetails());
+
+		Log.d(TAG,"edit string " + params.toString());
+
+		post(ADD_URL, params, new OneBeaconJsonHandler(handler,APICode.CODE_EDIT));
 
 	}
 
