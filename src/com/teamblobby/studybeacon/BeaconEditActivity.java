@@ -76,6 +76,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 
 	private DateFormat df = DateFormat.getTimeInstance(DateFormat.SHORT);
 	protected boolean expiresEdited = false;
+	private String expiresTimeFormatted;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -343,6 +344,10 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		// TODO Add logic if already at a beacon
 		// Set title text
 		beaconTitleTV.setText(R.string.editBeacon);
+		
+
+		mBeacon = Global.getCurrentBeacon();
+		loadBeaconData(); // do this first
 
 		// Don't let the class be editable
 		//courseSpinner.setEnabled(false);
@@ -354,7 +359,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		expiresTV.setText(R.string.expiresAt);
 		//expiresSpinner.setVisibility(View.GONE);
 		//expiresTimeTV.setVisibility(View.VISIBLE);
-		expiresTimeTV = convertToTextClickToEdit(expiresSpinner,"",false,new Runnable() { // make the edit button also change the expires text
+		expiresTimeTV = convertToTextClickToEdit(expiresSpinner,expiresTimeFormatted,false,new Runnable() { // make the edit button also change the expires text
 			public void run() {
 				expiresTV.setText(R.string.expiresIn);
 				expiresEdited = true;
@@ -390,8 +395,6 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 			}
 		});
 
-		mBeacon = Global.getCurrentBeacon();
-		loadBeaconData();
 		
 		View phoneLayout = findViewById(R.id.phoneLayout);
 		View emailLayout = findViewById(R.id.emailLayout);
@@ -416,6 +419,9 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		// Set title text
 		beaconTitleTV.setText(R.string.beaconDetails);
 
+		mBeacon = startingIntent.getParcelableExtra(EXTRA_BEACON); // do this first
+		loadBeaconData();
+
 		// Turn the spinners into textClickToEdits
 		Spinner spinners[] = {courseSpinner, workingOnSpinner};
 		for (Spinner s : spinners)
@@ -426,7 +432,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		expiresTV.setText(R.string.expiresAt);
 		//expiresSpinner.setVisibility(View.GONE);
 		//expiresTimeTV.setVisibility(View.VISIBLE);
-		expiresTimeTV = convertToTextClickToEdit(expiresSpinner,"",true);
+		expiresTimeTV = convertToTextClickToEdit(expiresSpinner,expiresTimeFormatted,true);
 
 		EditText ets[] = {phone, email, details};
 		for (EditText e : ets) {
@@ -435,9 +441,6 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 
 		// make the details have a different hint if nothing was given
 		details.setHint(R.string.detailHintView);
-		
-		mBeacon = startingIntent.getParcelableExtra(EXTRA_BEACON);
-		loadBeaconData();
 
 		beaconActionButton.setText(R.string.joinBeacon);
 		// Set the drawable on the action button
@@ -537,7 +540,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		email.setText(mBeacon.getEmail());
 		setWorkingOn(mBeacon.getWorkingOn());
 		details.setText(mBeacon.getDetails());
-		expiresTimeTV.setText(df.format(mBeacon.getExpires()));
+		expiresTimeFormatted = df.format(mBeacon.getExpires());
 
 		if (this.mode == OperationMode.MODE_VIEW) {
 			Linkify.addLinks(phone, Patterns.PHONE, "sms:",
