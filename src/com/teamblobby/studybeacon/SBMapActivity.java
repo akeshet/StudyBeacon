@@ -341,6 +341,18 @@ public class SBMapActivity extends MapActivity implements APIHandler
 
 			for (BeaconInfo beacon : beacons) {
 				beacItemizedOverlay.addReplaceRemoveBeacon(beacon);
+				if (Global.atBeacon()) {
+					BeaconInfo presentBeacon = Global.getCurrentBeacon();
+					if ((presentBeacon.getBeaconId() == beacon.getBeaconId())
+						&& ( ! presentBeacon.equals(beacon) )) {
+						// Update
+						if (beacon.getVisitors() > 0) {
+							Global.setCurrentBeacon(beacon);
+						} else {
+							Global.setCurrentBeacon(null);
+						}
+					}
+				}
 			}
 
 			break;
