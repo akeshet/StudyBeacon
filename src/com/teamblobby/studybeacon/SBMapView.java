@@ -152,7 +152,7 @@ public class SBMapView extends MapView {
             }
         }
 
-		
+
         try {
         	boolean consumedTouch = super.onTouchEvent(ev);
         	// FIXME something is always consuming event even when overlay not tapped

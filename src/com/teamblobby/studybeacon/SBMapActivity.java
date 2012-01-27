@@ -1,10 +1,8 @@
 package com.teamblobby.studybeacon;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
-
 import com.google.android.maps.*;
 import com.teamblobby.studybeacon.datastructures.*;
 import com.teamblobby.studybeacon.network.APIClient;
@@ -39,17 +37,12 @@ public class SBMapActivity extends MapActivity implements APIHandler
 	protected Spinner courseSpinner;
 	private ArrayAdapter<String> courseSpinnerAdapter;
 
-	protected int courseSpinnerId;
-
 	protected Button myClassesButton;
 	protected ImageButton beaconButton;
 
 	private SBMapView mapView;
 
-	// A map from BeaconId to BeaconInfo. Makes it easy to replace a beacon we already know of.
-	protected HashMap<Integer, BeaconInfo> mBeacons;
-	private List<BeaconInfo> dirtyBeacons;
-	private HashMap<String,BeaconItemizedOverlay> beacItemizedOverlays;
+	private BeaconItemizedOverlay beacItemizedOverlay;
 
 	private final static Drawable beaconD = Global.res.getDrawable(R.drawable.beacon);
 
@@ -67,9 +60,7 @@ public class SBMapActivity extends MapActivity implements APIHandler
 		setContentView(R.layout.map);
 
 		// Find the UI elements
-		// Find the spinner
-		courseSpinnerId = R.id.mapCourseSpinner;
-		courseSpinner = (Spinner) findViewById(courseSpinnerId);
+		courseSpinner = (Spinner) findViewById(R.id.mapCourseSpinner);
 		
 		// set up an onClickListener handler for classesButton
 		myClassesButton = (Button) findViewById(R.id.myClassesButton);
@@ -193,86 +184,15 @@ public class SBMapActivity extends MapActivity implements APIHandler
 
 	private void setUpBeacons(Bundle savedInstanceState) {
 		// TODO use savedInstanceState
-		mBeacons = new HashMap<Integer, BeaconInfo>();
-		dirtyBeacons = new ArrayList<BeaconInfo>();
 		// Don't fill beacItemOverlay unless you already have some beacons
 		// If we had some beacons from savedInstanceState, we would want to do that here
-		beacItemizedOverlays = new HashMap<String, BeaconItemizedOverlay>();
+		beacItemizedOverlay = new BeaconItemizedOverlay(beaconD, this, mapView);
+		beacItemizedOverlay.addReplaceRemoveBeacon(new BeaconInfoSimple(-1, "", new GeoPoint(0,0), 0, "", "", "", "", new Date(), new Date()));
 
-		setBeaconOverlays();
+		// TODO ADD THIS OVERLAY
+		mapView.getOverlays().add(beacItemizedOverlay);
 
 		startQuery();
-	}
-
-	private void setBeaconOverlays() {
-
-		List<Overlay> overlays = mapView.getOverlays();
-		boolean dirtied = false;
-
-		// First, go through the list of dirtyBeacons and
-		// remove any of them from the list of beacItemizedOverlays
-		for (BeaconInfo dirtyBeacon : dirtyBeacons) {
-			BeaconItemizedOverlay courseOverlay = beacItemizedOverlays.get(dirtyBeacon.getCourseName());
-			if (courseOverlay == null) // shouldn't happen
-				continue;
-			courseOverlay.removeByBeaconId(dirtyBeacon.getBeaconId());
-			if (courseOverlay.size() == 0) {
-				dirtied = true;
-				overlays.remove(courseOverlay);
-				beacItemizedOverlays.remove(courseOverlay);
-			}
-		}
-		dirtyBeacons.clear();
-
-		// Second, make sure that the BeaconItemizedOverlays contain everything they're supposed to
-		for (Map.Entry<Integer, BeaconInfo> entry : mBeacons.entrySet()) {
-			BeaconInfo beacon = entry.getValue();
-			String course = beacon.getCourseName();
-			// Put it in the appropriate beacItemizedOverlay
-			BeaconItemizedOverlay courseOverlay;
-
-			if (! beacItemizedOverlays.containsKey(course)) {
-				courseOverlay = new BeaconItemizedOverlay(beaconD, this, mapView);
-				beacItemizedOverlays.put(course,courseOverlay);
-			} else {
-				courseOverlay = beacItemizedOverlays.get(course);
-			}
-
-			BeaconOverlayItem item = courseOverlay.getByBeaconId(beacon.getBeaconId());
-
-			if (item == null) {
-				courseOverlay.addOverlay(new BeaconOverlayItem(beacon));
-			} else {
-				item.setBeacon(beacon); // This might update, or do nothing!
-			}
-
-
-		}
-
-
-		// Ok, beacItemizedOverlays ought to be up to date.
-		// Figure out which one(s) to display.
-		Boolean wantAllCourses = wantAllCourses();
-		String selected = (String)courseSpinner.getSelectedItem();
-		for (Map.Entry<String, BeaconItemizedOverlay> entry : beacItemizedOverlays.entrySet()) {
-			String course = entry.getKey();
-			BeaconItemizedOverlay beacItemizedOverlay = entry.getValue();
-			Boolean currentlyShown = overlays.contains(beacItemizedOverlay);
-			Boolean shouldBeShown = (wantAllCourses
-					|| course.equals(selected));
-
-			if (shouldBeShown && !currentlyShown) {
-				dirtied = true;
-				overlays.add(beacItemizedOverlay);
-			} else if (currentlyShown && !shouldBeShown) {
-				dirtied = true;
-				overlays.remove(beacItemizedOverlay);
-			}
-		}
-
-		if (dirtied)
-			mapView.invalidate();
-
 	}
 
 	private void checkFirstRun() {
@@ -364,8 +284,10 @@ public class SBMapActivity extends MapActivity implements APIHandler
 					startMyCoursesActivity();
 				}
 				filterLastSelected  = position;
-				SBMapActivity.this.setBeaconOverlays();
-				// TODO Check if Edit ... was clicked.
+				if (position == 0)
+					beacItemizedOverlay.setCourseToDisplay(null);
+				else if (position != parentAdapterView.getAdapter().getCount() - 1)
+					beacItemizedOverlay.setCourseToDisplay((String)parentAdapterView.getAdapter().getItem(position));
 			}
 
 			public void onNothingSelected(AdapterView<?> arg0) {
@@ -416,46 +338,11 @@ public class SBMapActivity extends MapActivity implements APIHandler
 		switch (code) {
 		case CODE_QUERY:
 			ArrayList<BeaconInfo> beacons = (ArrayList<BeaconInfo>) result;
-			boolean dirtied = false;
-			// TODO Put the beacons on the map
-			Log.d(TAG,"onSuccess()");
-			// Add them to mBeacons.
+
 			for (BeaconInfo beacon : beacons) {
-				int beacId = beacon.getBeaconId();
-				if (beacon.getVisitors() == 0) {
-					// Check if there is an old one to remove
-					if (mBeacons.containsKey(beacId)) {
-						BeaconInfo dirtyBeacon = mBeacons.get(beacId);
-						dirtyBeacons.add(dirtyBeacon);
-						mBeacons.remove(beacId);
-						dirtied = true;
-					}
-				} else {
-					BeaconInfo oldBeacon = mBeacons.put(beacon.getBeaconId(), beacon);
-					if (oldBeacon == null) {
-						dirtied = true;
-					} else {
-						// Compare the two to see if anything has changed
-						if (! oldBeacon.equals(beacon)) {
-							dirtied = true;
-							// Put the old one in a list to be deleted
-							dirtyBeacons.add(oldBeacon);
-							// Check if we have new info on our present beacon
-							if (Global.atBeacon()
-									&& (Global.getCurrentBeacon().getBeaconId() == beacon.getBeaconId())) {
-								Log.d(TAG,"Updating present beacon info");
-								Global.setCurrentBeacon(beacon);
-								Global.updateBeaconRunningNotification();
-							}
-						}
-					}
-				}				
+				beacItemizedOverlay.addReplaceRemoveBeacon(beacon);
 			}
 
-			if (dirtied) {
-				Log.d(TAG,"dirtied");
-				setBeaconOverlays();
-			}
 			break;
 		default:
 			// Shouldn't ever get here. Complain?
