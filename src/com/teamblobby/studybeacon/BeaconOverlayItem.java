@@ -14,6 +14,7 @@ public class BeaconOverlayItem extends OverlayItem {
 	boolean displayed = true;
 
 	static final Drawable presentBeaconDrawable = Global.res.getDrawable(R.drawable.present_beacon);
+	// TODO Simplify the following?
 	static final Drawable emptyDrawable = new Drawable() {
 		
 		@Override
@@ -54,11 +55,21 @@ public class BeaconOverlayItem extends OverlayItem {
 				getShortSnippet(beacon), beacon);
 	}
 
-	public static String getShortTitle(BeaconInfo beacon) {
+	@Override
+	public String getSnippet() {
+		return "×" + Integer.toString(mBeacon.getVisitors()) + " here";
+	}
+
+	@Override
+	public String getTitle() {
+		return mBeacon.getCourseName();
+	}
+
+	private static String getShortTitle(BeaconInfo beacon) {
 		return beacon.getCourseName();
 	}
 
-	public static String getShortSnippet(BeaconInfo beacon) {
+	private static String getShortSnippet(BeaconInfo beacon) {
 		return  "×" + Integer.toString(beacon.getVisitors()) + " here";
 	}
 

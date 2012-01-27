@@ -87,12 +87,15 @@ public class BeaconItemizedOverlay extends ItemizedOverlay {
 		} else {
 			// REPLACE OR REMOVE
 			if (beacon.getVisitors() > 0) {
-				// REPLACE
-				foundOverlay.setBeacon(beacon);
-				// TODO If this beacon has a currently displayed balloon, update the balloon.
+				if( !beacon.equals(foundOverlay.getBeacon()) ) {
+					// REPLACE
+					foundOverlay.setBeacon(beacon);
+					// TODO If this beacon has a currently displayed balloon, update the balloon.
+				}
 			} else {
 				// REMOVE
 				removeOverlay(foundOverlay);
+				// TODO If this beacon has a currently displayed balloon, get rid of it
 			}
 		}
 		populate();
@@ -105,7 +108,6 @@ public class BeaconItemizedOverlay extends ItemizedOverlay {
 	
 	protected void removeOverlay(BeaconOverlayItem overlay) {
 		mOverlays.remove(overlay);
-		// TODO Do I need to do this?
 		populate();
 	}
 	
