@@ -354,6 +354,23 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 
 		mBeacon = Global.getCurrentBeacon();
 		loadBeaconData();
+		
+		View phoneLayout = findViewById(R.id.phoneLayout);
+		View emailLayout = findViewById(R.id.emailLayout);
+		String text;
+		if ( mBeacon.getTelephone().equals("") ){
+			text = "No phone number given.";
+		} else {
+			text = phone.getText().toString();
+		}
+		convertToTextClickToEdit(phoneLayout, text, false);
+
+		if ( mBeacon.getEmail().equals("") ){
+			text = "No email address given.";
+		} else {
+			text = email.getText().toString();
+		}
+		convertToTextClickToEdit(emailLayout, text, false);
 
 	}
 
@@ -406,11 +423,19 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 			return;
 
 		// don't show contact details if they weren't filled in
-		if ( mBeacon.getTelephone().equals("") )
-			phone.setVisibility(View.GONE);
+		View phoneLayout = findViewById(R.id.phoneLayout);
+		View emailLayout = findViewById(R.id.emailLayout);
+		if ( mBeacon.getTelephone().equals("") ){
+			phoneLayout.setVisibility(View.GONE);
+		} else {
+			convertToTextClickToEdit(phoneLayout, phone.getText().toString(), true);
+		}
 
-		if ( mBeacon.getEmail().equals("") )
-			email.setVisibility(View.GONE);
+		if ( mBeacon.getEmail().equals("") ){
+			emailLayout.setVisibility(View.GONE);
+		} else {
+			convertToTextClickToEdit(emailLayout, email.getText().toString(), true);
+		}
 
 		if ( mBeacon.getTelephone().equals("") && mBeacon.getEmail().equals("") )
 			contact.setVisibility(View.GONE);

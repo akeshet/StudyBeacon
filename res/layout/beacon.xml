@@ -94,6 +94,7 @@
                 android:text="@string/contact" />
 
             <FrameLayout
+                android:id="@+id/phoneLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
 
@@ -116,23 +117,25 @@
             </FrameLayout>
             
             <FrameLayout
+                android:id="@+id/emailLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
-            <EditText
-                android:id="@+id/email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/emailHint"
-                android:inputType="textEmailAddress" />
-            	<ImageButton
-				    android:layout_width="wrap_content"
-				    android:layout_height="wrap_content"
-				    android:layout_gravity="center_vertical|right"
-				    android:layout_margin="5dip"
-				    android:background="@null"
-				    android:src="@android:drawable/sym_action_call" 
-				    android:onClick="enterMyEmail"/>
 
+                <EditText
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/emailHint"
+                    android:inputType="textEmailAddress" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|right"
+                    android:layout_margin="5dip"
+                    android:background="@null"
+                    android:onClick="enterMyEmail"
+                    android:src="@android:drawable/sym_action_call" />
             </FrameLayout>
 
             <TextView
