@@ -350,7 +350,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				APIClient.edit(editBeaconFromFields(), editDurationFromField(), this);
+				APIClient.edit(editBeaconFromFields(), editDurationFromField(), BeaconEditActivity.this);
 			}
 		});
 
