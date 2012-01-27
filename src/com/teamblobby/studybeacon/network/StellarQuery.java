@@ -49,7 +49,6 @@ public abstract class StellarQuery {
 		} catch (IOException e) {
 			e.printStackTrace();
 			Log.e(TAG, "crap HTTP request failed");
-			// TODO make a toast?
 			return null; 
 		}
 		// get response
@@ -65,7 +64,6 @@ public abstract class StellarQuery {
 			Log.e(TAG, "crap JSON parse failed");
 			return null; 
 		}
-		//not sure how.
 		return courses; 
 	}
 	
