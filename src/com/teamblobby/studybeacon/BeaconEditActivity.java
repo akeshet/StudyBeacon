@@ -485,7 +485,8 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		Toast.makeText(this, messageText, Toast.LENGTH_SHORT).show();
 		currentDialog.dismiss();
 		// For CODE_LEAVE, we have started a sync; now show a dialog must be after the above dismissal
-		currentDialog = ProgressDialog.show(this, "", "Trying to re-sync with server...");
+		if (code == APICode.CODE_LEAVE)
+			currentDialog = ProgressDialog.show(this, "", "Trying to re-sync with server...");
 	}
 
 	protected void addToWorkingOn(final int index, String text) {
