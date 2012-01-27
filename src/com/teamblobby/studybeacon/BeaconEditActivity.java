@@ -451,11 +451,9 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		Global.setCurrentBeacon(beacon);
 		Global.updateBeaconRunningNotification();
 		currentDialog.dismiss();
-		// go back home EXCEPT on sync
-		if (code != APICode.CODE_SYNC) {
-			// TODO Set a result code? SBMapActivity will need to get new data.
-			this.finish();
-		}
+		// go back home
+		// TODO Set a result code? SBMapActivity will need to get new data.
+		this.finish();
 	}
 
 	public void onFailure(APICode code, Throwable e) {
