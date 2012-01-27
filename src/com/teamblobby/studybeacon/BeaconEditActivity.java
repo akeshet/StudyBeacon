@@ -175,8 +175,10 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 	}
 	
 	public void enterMyNumber(View v) {
-		TelephonyManager tm = (TelephonyManager)getSystemService(TELEPHONY_SERVICE); 
-		phone.setText(PhoneNumberUtils.formatNumber(tm.getLine1Number()));
+		TelephonyManager tm = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
+		String myNumber = tm.getLine1Number();
+		if (myNumber != null)
+			phone.setText(PhoneNumberUtils.formatNumber(myNumber));
 	}
 	
 	public void enterMyEmail(View v){
