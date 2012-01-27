@@ -46,7 +46,9 @@
             android:id="@+id/linearLayout1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:focusable="true" 
+            android:focusableInTouchMode="true" >
 
             <TextView
                 android:id="@+id/courseTV"
