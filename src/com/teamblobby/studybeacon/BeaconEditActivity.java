@@ -248,11 +248,11 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		}
 	}
 
-	protected int durationFromField() {
+	protected int newDurationFromField() {
 		return ((DurationSpinnerItem) expiresSpinner.getSelectedItem()).getMinutes();
 	}
 
-	protected BeaconInfo beaconFromFields() {
+	protected BeaconInfo newBeaconFromFields() {
 		String courseName = ((CourseInfo) courseSpinner.getSelectedItem()).getName();
 
 		GeoPoint loc = userLocator.getLocation(); // grab the user's location
@@ -307,8 +307,18 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 			}
 			currentDialog = ProgressDialog.show(mActivity, "", "Creating beacon...");
 			// needs working on from fields
-			APIClient.add(mActivity.beaconFromFields(), mActivity.durationFromField(), mActivity);
+			APIClient.add(mActivity.newBeaconFromFields(), mActivity.newDurationFromField(), mActivity);
 		}
+	}
+
+	protected int editDurationFromField() {
+		// TODO This is for Nic :)
+		return APIClient.DURATION_UNCHANGED;
+	}
+
+	protected BeaconInfo editBeaconFromFields() {
+		// TODO This is for Nic :)
+		return newBeaconFromFields();
 	}
 
 	private void setUpForEdit(Bundle savedInstanceState, Intent startingIntent) {
@@ -335,6 +345,14 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		beaconActionButton.setText(R.string.saveBeacon);
 		// Set the drawable on the action button
 		beaconActionButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.beacon_edit, 0, 0, 0);
+
+		beaconActionButton.setOnClickListener(new OnClickListener() {
+
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				APIClient.edit(editBeaconFromFields(), editDurationFromField(), this);
+			}
+		});
 
 		beaconSecondaryActionButton.setVisibility(View.VISIBLE);
 		beaconSecondaryActionButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.beacon_leave, 0, 0, 0);
@@ -534,6 +552,10 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 			beacon = (BeaconInfo) response;
 			messageText = new String("Beacon added successfully");
 			break;
+		case CODE_EDIT:
+			beacon = (BeaconInfo) response;
+			messageText = new String("Beacon updated");
+			break;
 		case CODE_JOIN:
 			beacon = (BeaconInfo) response;
 			messageText = new String("Beacon joined successfully");
@@ -541,14 +563,19 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		case CODE_LEAVE:
 			messageText = new String("Beacon left successfully");
 			break;
+		case CODE_SYNC:
+			beacon = (BeaconInfo) response;
+			messageText = new String("Resynced with server successfully");
+			break;
 		default:
-			// Shouldn't get here ... complain?
+			// TODO Shouldn't get here ... complain?
 		}
 		Toast.makeText(this, messageText, Toast.LENGTH_SHORT).show();
 		Global.setCurrentBeacon(beacon);
 		Global.updateBeaconRunningNotification();
 		currentDialog.dismiss();
 		// go back home
+		// TODO Set a result code? SBMapActivity will need to get new data.
 		this.finish();
 	}
 
@@ -560,20 +587,31 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 			Global.setCurrentBeacon(null);
 			Global.updateBeaconRunningNotification();
 			break;
+		case CODE_EDIT:
+			messageText = new String("Failed to save beacon");
+			// TODO What do we do here?
+			break;
 		case CODE_JOIN:
 			messageText = new String("Failed to join beacon");
 			Global.setCurrentBeacon(null);
 			Global.updateBeaconRunningNotification();
 			break;
 		case CODE_LEAVE:
-			messageText = new String("Failed to leave beacon -- out of sync with server");
-			// TODO -- We need to resync with server, but that does not yet exist
+			messageText = new String("Failed to leave beacon -- trying to re-sync with server");
+			APIClient.sync(this);
+			break;
+		case CODE_SYNC:
+			messageText = new String("Failed to re-sync with server.");
+			// TODO What do we do?
 			break;
 		default:
 			// Shouldn't get here ... complain?
 		}
 		Toast.makeText(this, messageText, Toast.LENGTH_SHORT).show();
 		currentDialog.dismiss();
+		// For CODE_LEAVE, we have started a sync; now show a dialog must be after the above dismissal
+		if (code == APICode.CODE_LEAVE)
+			currentDialog = ProgressDialog.show(this, "", "Trying to re-sync with server...");
 	}
 
 	protected void addToWorkingOn(final int index, String text) {

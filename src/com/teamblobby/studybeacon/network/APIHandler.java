@@ -4,7 +4,7 @@ import android.app.Activity;
 
 public interface APIHandler {
 
-	public enum APICode {CODE_QUERY, CODE_ADD, CODE_JOIN, CODE_LEAVE};
+	public enum APICode {CODE_QUERY, CODE_ADD, CODE_JOIN, CODE_LEAVE, CODE_EDIT, CODE_SYNC};
 
 	public Activity getActivity();
 
