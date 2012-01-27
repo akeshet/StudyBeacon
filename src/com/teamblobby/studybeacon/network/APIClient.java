@@ -13,6 +13,7 @@ import com.google.android.maps.GeoPoint;
 import com.loopj.android.http.*;
 import com.teamblobby.studybeacon.Global;
 import com.teamblobby.studybeacon.datastructures.*;
+import com.teamblobby.studybeacon.network.APIHandler.APICode;
 
 import org.json.*;
 
@@ -42,6 +43,10 @@ public class APIClient {
 
 
 	protected static BeaconInfo parseJSONObjBeaconInfo(JSONObject bObj) throws JSONException, ParseException {
+
+		if (JSONObject.NULL.equals(bObj))
+			return null;
+
 		GeoPoint point = new GeoPoint(bObj.getInt(LAT_STR), bObj.getInt(LON_STR));
 
 		Date created = df.parse(bObj.getString(CREATED_STR));
@@ -177,58 +182,15 @@ public class APIClient {
 
 		Log.d(TAG,"add string " + params.toString());
 
-		post(ADD_URL, params, new AddJsonHandler(handler));
+		post(ADD_URL, params, new OneBeaconJsonHandler(handler,APICode.CODE_ADD));
 
 	}
 
-	protected static class AddJsonHandler extends JsonHttpResponseHandler {
-
-		protected final APIHandler handler;
-
-		public AddJsonHandler(APIHandler handler) {
-			this.handler = handler;
-		}
-
-		@Override
-		public void onSuccess(JSONObject bObj) {
-			// TODO Auto-generated method stub
-			super.onSuccess(bObj);
-
-			try {
-				final BeaconInfo beacon = parseJSONObjBeaconInfo(bObj);
-				handler.getActivity().runOnUiThread(new Runnable() {
-					public void run() {
-						handler.onSuccess(APIHandler.APICode.CODE_ADD,beacon);
-					}
-				});
-			} catch (final Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				handler.getActivity().runOnUiThread(new Runnable() {
-					public void run() {
-						handler.onFailure(APIHandler.APICode.CODE_ADD,e);
-					}
-				});
-			}
-		}
-
-		@Override
-		public void onFailure(final Throwable arg0) {
-			// TODO Auto-generated method stub
-			super.onFailure(arg0);
-			handler.getActivity().runOnUiThread(new Runnable() {
-				public void run() {
-					handler.onFailure(APIHandler.APICode.CODE_ADD,arg0);
-				}
-			});
-		}
-
-	}
-	
 	////////////////////////////////////////////////////////////////
-	// Interface for doing a join
+	// Interfaces for doing a join and a sync (whereami)
 
 	public final static String JOIN_URL = "join.py";
+	public final static String SYNC_URL = "whereami.py";
 
 
 	public static void join(int BeaconId, final APIHandler handler) {
@@ -238,17 +200,29 @@ public class APIClient {
 		params.put(DEVID_STR, Global.getMyIdString());
 		params.put(BEACID_STR, Integer.toString(BeaconId));
 
-		get(JOIN_URL, params, new JoinJsonHandler(handler));
+		get(JOIN_URL, params, new OneBeaconJsonHandler(handler, APICode.CODE_JOIN));
 
 	}
 
-	protected static class JoinJsonHandler extends JsonHttpResponseHandler {
+	public static void sync(final APIHandler handler) {
+
+		RequestParams params = new RequestParams();
+
+		params.put(DEVID_STR, Global.getMyIdString());
+
+		get(SYNC_URL, params, new OneBeaconJsonHandler(handler, APICode.CODE_SYNC));
+
+	}
+
+	protected static class OneBeaconJsonHandler extends JsonHttpResponseHandler {
 
 		protected final APIHandler handler;
+		protected final APIHandler.APICode code;
 		
-		public JoinJsonHandler(APIHandler handler) {
+		public OneBeaconJsonHandler(APIHandler handler, APIHandler.APICode code) {
 			// TODO Auto-generated constructor stub
 			this.handler = handler;
+			this.code = code;
 		}
 
 		@Override
@@ -260,7 +234,7 @@ public class APIClient {
 				final BeaconInfo beacon = parseJSONObjBeaconInfo(bObj);
 				handler.getActivity().runOnUiThread(new Runnable() {
 					public void run() {
-						handler.onSuccess(APIHandler.APICode.CODE_JOIN,beacon);
+						handler.onSuccess(code,beacon);
 					}
 				});
 			} catch (final Exception e) {
@@ -268,7 +242,7 @@ public class APIClient {
 				e.printStackTrace();
 				handler.getActivity().runOnUiThread(new Runnable() {
 					public void run() {
-						handler.onFailure(APIHandler.APICode.CODE_JOIN,e);
+						handler.onFailure(code,e);
 					}
 				});
 			}
@@ -280,7 +254,7 @@ public class APIClient {
 			super.onFailure(arg0);
 			handler.getActivity().runOnUiThread(new Runnable() {
 				public void run() {
-					handler.onFailure(APIHandler.APICode.CODE_JOIN,arg0);
+					handler.onFailure(code,arg0);
 				}
 			});
 		}

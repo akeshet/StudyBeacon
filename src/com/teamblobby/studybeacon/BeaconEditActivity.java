@@ -440,15 +440,22 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		case CODE_LEAVE:
 			messageText = new String("Beacon left successfully");
 			break;
+		case CODE_SYNC:
+			beacon = (BeaconInfo) response;
+			messageText = new String("Resynced with server successfully");
+			break;
 		default:
-			// Shouldn't get here ... complain?
+			// TODO Shouldn't get here ... complain?
 		}
 		Toast.makeText(this, messageText, Toast.LENGTH_SHORT).show();
 		Global.setCurrentBeacon(beacon);
 		Global.updateBeaconRunningNotification();
 		currentDialog.dismiss();
-		// go back home
-		this.finish();
+		// go back home EXCEPT on sync
+		if (code != APICode.CODE_SYNC) {
+			// TODO Set a result code? SBMapActivity will need to get new data.
+			this.finish();
+		}
 	}
 
 	public void onFailure(APICode code, Throwable e) {
@@ -465,14 +472,20 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 			Global.updateBeaconRunningNotification();
 			break;
 		case CODE_LEAVE:
-			messageText = new String("Failed to leave beacon -- out of sync with server");
-			// TODO -- We need to resync with server, but that does not yet exist
+			messageText = new String("Failed to leave beacon -- trying to re-sync with server");
+			APIClient.sync(this);
+			break;
+		case CODE_SYNC:
+			messageText = new String("Failed to re-sync with server.");
+			// TODO What do we do?
 			break;
 		default:
 			// Shouldn't get here ... complain?
 		}
 		Toast.makeText(this, messageText, Toast.LENGTH_SHORT).show();
 		currentDialog.dismiss();
+		// For CODE_LEAVE, we have started a sync; now show a dialog must be after the above dismissal
+		currentDialog = ProgressDialog.show(this, "", "Trying to re-sync with server...");
 	}
 
 	protected void addToWorkingOn(final int index, String text) {
