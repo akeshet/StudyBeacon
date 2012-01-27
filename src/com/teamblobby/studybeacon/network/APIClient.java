@@ -191,8 +191,8 @@ public class APIClient {
 	public static void edit(BeaconInfo beacon, int duration, final APIHandler handler) {
 		RequestParams params = new RequestParams();
 
-		params.put(LAT_STR,       Integer.toString(beacon.getLoc().getLatitudeE6()));
-		params.put(LON_STR,       Integer.toString(beacon.getLoc().getLongitudeE6()));
+		//params.put(LAT_STR,       Integer.toString(beacon.getLoc().getLatitudeE6()));
+		//params.put(LON_STR,       Integer.toString(beacon.getLoc().getLongitudeE6()));
 		params.put(DEVID_STR,     Global.getMyIdString());
 		if (duration != DURATION_UNCHANGED)
 			params.put(DURATION_STR,  Integer.toString(duration));
