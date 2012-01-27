@@ -270,7 +270,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 				phone.getText().toString(),
 				email.getText().toString(),
 				new Date(),
-				new Date() // TODO put this in the future
+				new Date()
 				);
 	}
 
@@ -323,7 +323,20 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 	}
 
 	protected BeaconInfo editBeaconFromFields() {
-		return newBeaconFromFields(new GeoPoint(0, 0));
+		String courseName = ((CourseInfo) courseSpinner.getSelectedItem()).getName();
+
+		return new BeaconInfoSimple(
+				Global.getCurrentBeacon().getBeaconId(),
+				courseName,
+				new GeoPoint(0,0),
+				-1, // don't have a # of visitors yet
+				(String)workingOnSpinner.getSelectedItem(),
+				details.getText().toString(),
+				phone.getText().toString(),
+				email.getText().toString(),
+				new Date(),
+				new Date()
+				);
 	}
 
 	private void setUpForEdit(Bundle savedInstanceState, Intent startingIntent) {

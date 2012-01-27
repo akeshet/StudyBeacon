@@ -162,7 +162,8 @@ public class APIClient {
 	////////////////////////////////////////////////////////////////
 	// Interfaces for doing an add and an edit
 
-	public final static String ADD_URL = "add.py";
+	public final static String ADD_URL  = "add.py";
+	public final static String EDIT_URL = "edit.py";
 
 	public final static String DURATION_STR = "Duration";
 	public final static String DEVID_STR    = "DeviceId";
@@ -194,6 +195,7 @@ public class APIClient {
 		//params.put(LAT_STR,       Integer.toString(beacon.getLoc().getLatitudeE6()));
 		//params.put(LON_STR,       Integer.toString(beacon.getLoc().getLongitudeE6()));
 		params.put(DEVID_STR,     Global.getMyIdString());
+		params.put(BEACID_STR,    Integer.toString(beacon.getBeaconId()));
 		if (duration != DURATION_UNCHANGED)
 			params.put(DURATION_STR,  Integer.toString(duration));
 		params.put(TELEPHONE_STR, beacon.getTelephone() );
@@ -203,7 +205,7 @@ public class APIClient {
 
 		Log.d(TAG,"edit string " + params.toString());
 
-		post(ADD_URL, params, new OneBeaconJsonHandler(handler,APICode.CODE_EDIT));
+		post(EDIT_URL, params, new OneBeaconJsonHandler(handler,APICode.CODE_EDIT));
 
 	}
 
