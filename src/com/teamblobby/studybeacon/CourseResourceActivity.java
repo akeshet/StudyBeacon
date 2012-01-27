@@ -209,13 +209,6 @@ public class CourseResourceActivity extends ListActivity {
     		this.callingActivity = activity;
     	}
     	
-    	@Override
-    	protected void onPreExecute() {
-    		Toast.makeText(this.callingActivity,
-    				Global.res.getString(R.string.loadingcoursestoast),
-    				Toast.LENGTH_SHORT).show();
-    	}
-    	
 		@Override
 		protected List<CourseListable> doInBackground(String... category) {
 			String theCategory = category[0];
