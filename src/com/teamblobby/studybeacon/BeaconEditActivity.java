@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.google.android.maps.*;
+import com.google.zxing.integration.android.IntentIntegrator;
 import com.teamblobby.studybeacon.datastructures.*;
 import com.teamblobby.studybeacon.network.APIClient;
 import com.teamblobby.studybeacon.network.APIHandler;
@@ -414,6 +415,10 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		}
 		TextClickToEdit emailC2E = convertToTextClickToEdit(emailLayout, text, false);
 		Linkify.addLinks(emailC2E.getTextView(), Linkify.EMAIL_ADDRESSES);
+		
+		
+		IntentIntegrator qrIntentMaker = new IntentIntegrator(this);
+		qrIntentMaker.shareText("studybeacon:"+mBeacon.getBeaconId());
 
 	}
 
