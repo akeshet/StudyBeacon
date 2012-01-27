@@ -153,11 +153,9 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		expiresAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		expiresSpinner.setAdapter(expiresAdapter);
 
-		//workingOnAdapter = ArrayAdapter.createFromResource(
-		//		this, R.array.workingOnList, android.R.layout.simple_spinner_item);
 		List<String> workingOnList = new ArrayList<String>();
 		workingOnList.addAll(Arrays.asList(getResources().getStringArray(R.array.workingOnList)));
-		
+
 		workingOnAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, workingOnList);
 		workingOnAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		workingOnSpinner.setAdapter(workingOnAdapter);
