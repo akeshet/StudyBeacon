@@ -10,7 +10,7 @@ import com.google.android.maps.GeoPoint;
 /**
  * User Locator class. Used for getting a user's current location.
  * This asks the location manager for a single grab of the user's location,
- * not continuous updates.
+ * not continuous updates. Note: location is not obtained until getLocation is called.
  * 
  * @author nicolas
  *
