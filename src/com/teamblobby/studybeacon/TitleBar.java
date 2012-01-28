@@ -47,11 +47,5 @@ public class TitleBar extends LinearLayout {
 	public void setTitle(String text) {
 		titleText.setText(text);
 	}
-	
-	public void setQRButton(OnClickListener l){
-		View qrLayout = findViewById(R.id.QRlayout);
-		qrLayout.setVisibility(VISIBLE);
-		qrLayout.setOnClickListener(l);
-	}
 
 }

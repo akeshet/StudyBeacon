@@ -19,28 +19,9 @@
         android:paddingLeft="@dimen/horizontalPadding"
         android:layout_weight="1" />
     
-    <LinearLayout
-        android:id="@+id/QRlayout"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:visibility="gone" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Scan/Show"
-            android:gravity="center_vertical|right"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <ImageView
-        	android:id="@+id/QRbutton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|right"
-            android:background="@null"
-            android:contentDescription="@string/contentDescription"
-            android:src="@android:drawable/ic_menu_edit" />
-        
-    </LinearLayout>
+    <com.teamblobby.studybeacon.ui.QRButton
+        android:id="@+id/qrbutton"
+        android:layout_width="@dimen/iconSize"
+        android:layout_height="@dimen/iconSize"/>
         
 </LinearLayout>

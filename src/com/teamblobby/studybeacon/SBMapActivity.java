@@ -8,6 +8,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.teamblobby.studybeacon.datastructures.*;
 import com.teamblobby.studybeacon.network.APIClient;
 import com.teamblobby.studybeacon.network.APIHandler;
+import com.teamblobby.studybeacon.ui.*;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -81,14 +82,6 @@ public class SBMapActivity extends MapActivity implements APIHandler
 
 		this.setUpBeacons(savedInstanceState);
 
-		final IntentIntegrator qrIntentMaker = new IntentIntegrator(this);
-		
-		findViewById(R.id.QRlayout).setOnClickListener(new OnClickListener() {
-			
-			public void onClick(View v) {
-				qrIntentMaker.initiateScan();
-			}
-		});
 	}
 
 	@Override
@@ -107,6 +100,8 @@ public class SBMapActivity extends MapActivity implements APIHandler
 		mapView.resume();
 		// TODO -- Do we want to do this?
 		startQuery();
+		
+		((QRButton) findViewById(R.id.qrbutton)).updateButton(Global.getCurrentBeacon());
 	}
 
 	@Override

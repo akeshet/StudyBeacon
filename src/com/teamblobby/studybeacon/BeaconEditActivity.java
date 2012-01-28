@@ -11,6 +11,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.teamblobby.studybeacon.datastructures.*;
 import com.teamblobby.studybeacon.network.APIClient;
 import com.teamblobby.studybeacon.network.APIHandler;
+import com.teamblobby.studybeacon.ui.QRButton;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -112,16 +113,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 			break;
 		}
 		
-		final IntentIntegrator qrIntentMaker = new IntentIntegrator(this);
-		
-		TitleBar titleBar = (TitleBar) findViewById(R.id.titleBar);
-		titleBar.setQRButton(new OnClickListener() {
-			
-			public void onClick(View v) {
-				qrIntentMaker.shareText("stubeac:beacon/"+mBeacon.getBeaconId());
-			}
-		});
-
+		((QRButton) findViewById(R.id.qrbutton)).updateButton(Global.getCurrentBeacon());
 	}
 
 	private void loadUIEls() {
