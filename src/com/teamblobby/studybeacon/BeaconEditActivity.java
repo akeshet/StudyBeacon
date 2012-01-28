@@ -396,14 +396,17 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		View phoneLayout = findViewById(R.id.phoneLayout);
 		View emailLayout = findViewById(R.id.emailLayout);
 		String text;
+		boolean numberGiven = false;
 		if ( mBeacon.getTelephone().equals("") ){
 			text = "No phone number given.";
 		} else {
 			text = phone.getText().toString();
+			numberGiven = true;
 		}
 		TextClickToEdit phoneC2E = convertToTextClickToEdit(phoneLayout, text, false);
 		Linkify.addLinks(phoneC2E.getTextView(), Linkify.PHONE_NUMBERS);
-		phoneC2E.enableSmsButton(SMS_URI_PREFIX+PhoneNumberUtils.stripSeparators(phone.getText().toString()));
+		if ( numberGiven )
+			phoneC2E.enableSmsButton(SMS_URI_PREFIX+PhoneNumberUtils.stripSeparators(phone.getText().toString()));
 
 		if ( mBeacon.getEmail().equals("") ){
 			text = "No email address given.";
