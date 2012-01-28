@@ -73,8 +73,6 @@ public class SBMapActivity extends MapActivity implements APIHandler
 		beaconButton = (ImageButton) findViewById(R.id.newBeaconButton);
 		
 		this.loadCourses(savedInstanceState);
-		// Must come after loadCourses
-		updateBeaconButton();
 
 		this.setUpMapView(savedInstanceState);
 
@@ -96,6 +94,8 @@ public class SBMapActivity extends MapActivity implements APIHandler
 		super.onResume();
 		Log.d(TAG,"onResume()");
 		mapView.resume();
+
+		updateBeaconButton();
 		// TODO -- Do we want to do this?
 		startQuery();
 	}
