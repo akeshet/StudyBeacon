@@ -1,5 +1,6 @@
 package com.teamblobby.studybeacon;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -16,9 +17,15 @@ public class TitleBar extends LinearLayout {
 
 	protected ImageView titleIcon;
 	protected TextView titleText;
+	protected Activity parentActivity;
 	
 	public TitleBar(final Context context, AttributeSet attrs) {
 		super(context, attrs);
+		
+		if (context instanceof Activity)
+			parentActivity = (Activity) context;
+		else
+			parentActivity = null;
 		
 		LayoutInflater inflator = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		inflator.inflate(R.layout.title_bar, this);
@@ -41,6 +48,9 @@ public class TitleBar extends LinearLayout {
 
 			public void onClick(View v) {
 				Global.goHome(context);
+				
+				if (parentActivity!=null)
+					parentActivity.finish(); // slightly hackish way to fix the notifictation->edit->homebutton problem
 			}
 		});
 
