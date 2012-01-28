@@ -2,19 +2,18 @@
 <resources>
 
     <string name="app_name">StudyBeacon</string>
-    <string name="myClasses">My Courses</string>
-    <string name="courseSpinnerPrompt">Show course(s)</string>
+    <string name="myClasses">My Subjects</string>
+    <string name="courseSpinnerPrompt">Show subject(s)</string>
     <string name="allCourses">All</string>
-    <string name="editCourses">Add/Remove Courses…</string>
+    <string name="editCourses">Add/Remove Subjects…</string>
     <string name="defaultTitle">Study Beacon</string>
-    <string name="coursesTitleText">My Courses</string>
-    <string name="addclass">Add New Course</string>
+    <string name="coursesTitleText">My Subjects</string>
+    <string name="addclass">Add Subjects</string>
     <string name="courseResourceTitleText">MIT Course List</string>
-    <string name="coursesEmpty">No Starred Courses</string>
-    <string name="loadingcoursestoast">Loading Courses</string>
-    <string name="courseResourseLoadText">Loading Courses…</string>
+    <string name="coursesEmpty">No Starred Subjects</string>
+    <string name="courseResourseLoadText">Loading…</string>
     <string name="courseResourseNothing">Nothing to Display.</string>
-    <string name="courseResourseServerProblem">There was a problem getting the course list from Stellar.</string>
+    <string name="courseResourseServerProblem">There was a problem getting the subject list from Stellar.</string>
     <string name="newBeacon">Create Beacon</string>
     <string name="saveBeacon">Save Beacon</string>
     <string name="editBeacon">Edit Beacon</string>
@@ -22,9 +21,10 @@
     <string name="leaveBeacon">Leave Beacon</string>
     <string name="beaconDetails">Beacon Details</string>
     <string name="stillLocating">Still acquiring location. Try again in a moment.</string>
-    <string name="course">Course</string>
+    <string name="course">Subject</string>
     <string name="expiresIn">Expires in</string>
     <string name="expiresAt">Expires at</string>
+    <string name="StellarCoursePrettyPrefix">Course</string>
 
     <string-array name="expiresTimes"> <!-- this is connected to expiresMinutes int array in numbers.xml -->
         <item>1 hour</item>

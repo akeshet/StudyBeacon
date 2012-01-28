@@ -1,5 +1,8 @@
 package com.teamblobby.studybeacon.datastructures;
 
+import com.teamblobby.studybeacon.Global;
+import com.teamblobby.studybeacon.R;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -31,7 +34,6 @@ public class CourseCategory implements CourseListable, Parcelable {
 	}
 
 	public int describeContents() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -68,7 +70,7 @@ public class CourseCategory implements CourseListable, Parcelable {
 	}
 
 	public String getPrettyName() {
-		return "Course "+this.getName(); // TODO maybe make string resource
+		return Global.res.getString(R.string.StellarCoursePrettyPrefix)+" "+this.getName();
 	}
 
 	public String getDescription() {
