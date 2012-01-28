@@ -23,9 +23,33 @@
 
         <Spinner
             android:id="@+id/mapCourseSpinner"
-            android:layout_width="fill_parent"
+            android:layout_width="0dip"
             android:layout_height="@dimen/iconSize"
-            android:prompt="@string/courseSpinnerPrompt" />
+            android:prompt="@string/courseSpinnerPrompt"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:id="@+id/QRlayout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|right"
+                android:text="Scan/Show"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <ImageView
+                android:id="@+id/QRbutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|right"
+                android:background="@null"
+                android:contentDescription="@string/contentDescription"
+                android:src="@android:drawable/ic_menu_edit" />
+        </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout

@@ -111,6 +111,16 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 			setUpForNew(savedInstanceState,startingIntent);
 			break;
 		}
+		
+		final IntentIntegrator qrIntentMaker = new IntentIntegrator(this);
+		
+		TitleBar titleBar = (TitleBar) findViewById(R.id.titleBar);
+		titleBar.setQRButton(new OnClickListener() {
+			
+			public void onClick(View v) {
+				qrIntentMaker.shareText("stubeac:beacon/"+mBeacon.getBeaconId());
+			}
+		});
 
 	}
 
@@ -415,10 +425,6 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		}
 		TextClickToEdit emailC2E = convertToTextClickToEdit(emailLayout, text, false);
 		Linkify.addLinks(emailC2E.getTextView(), Linkify.EMAIL_ADDRESSES);
-		
-		
-		IntentIntegrator qrIntentMaker = new IntentIntegrator(this);
-		qrIntentMaker.shareText("studybeacon:"+mBeacon.getBeaconId());
 
 	}
 

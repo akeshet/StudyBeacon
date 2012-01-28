@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import com.google.android.maps.*;
+import com.google.zxing.integration.android.IntentIntegrator;
 import com.teamblobby.studybeacon.datastructures.*;
 import com.teamblobby.studybeacon.network.APIClient;
 import com.teamblobby.studybeacon.network.APIHandler;
@@ -80,6 +81,14 @@ public class SBMapActivity extends MapActivity implements APIHandler
 
 		this.setUpBeacons(savedInstanceState);
 
+		final IntentIntegrator qrIntentMaker = new IntentIntegrator(this);
+		
+		findViewById(R.id.QRlayout).setOnClickListener(new OnClickListener() {
+			
+			public void onClick(View v) {
+				qrIntentMaker.initiateScan();
+			}
+		});
 	}
 
 	@Override

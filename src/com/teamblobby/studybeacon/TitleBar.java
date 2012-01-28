@@ -4,9 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.*;
 
 public class TitleBar extends LinearLayout {
 
@@ -48,6 +46,12 @@ public class TitleBar extends LinearLayout {
 
 	public void setTitle(String text) {
 		titleText.setText(text);
+	}
+	
+	public void setQRButton(OnClickListener l){
+		View qrLayout = findViewById(R.id.QRlayout);
+		qrLayout.setVisibility(VISIBLE);
+		qrLayout.setOnClickListener(l);
 	}
 
 }
