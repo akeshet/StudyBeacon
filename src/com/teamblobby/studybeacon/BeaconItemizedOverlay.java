@@ -1,6 +1,7 @@
 package com.teamblobby.studybeacon;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -254,4 +255,24 @@ public class BeaconItemizedOverlay extends ItemizedOverlay {
 	 public static Drawable boundCenterBottom(Drawable d) {
 		 return ItemizedOverlay.boundCenterBottom(d);
 	 }
+
+	public void cleanBeacons() {
+		Log.d(TAG,"checking for expired beacons");
+
+		boolean dirtied = false;
+		Date now = new Date(); // default constructor is current time
+		Iterator<BeaconOverlayItem> iter = mOverlays.iterator();
+		while (iter.hasNext()) {
+			BeaconOverlayItem beaconOverlay = iter.next();
+
+			if (beaconOverlay.getBeacon().getExpires().before(now)) {
+				Log.d(TAG,"found an expired beacon");
+				iter.remove();
+				dirtied = true;
+			}
+
+		}
+		if (dirtied)
+			populate();
+	}
 }

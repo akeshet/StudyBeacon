@@ -3,6 +3,9 @@ package com.teamblobby.studybeacon;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import com.google.android.maps.*;
 import com.teamblobby.studybeacon.datastructures.*;
 import com.teamblobby.studybeacon.network.APIClient;
@@ -50,6 +53,11 @@ public class SBMapActivity extends MapActivity implements APIHandler
 
 	protected int filterLastSelected = 0;
 	
+	protected Timer timer;
+	protected TimerTask timerTask;
+	// The timer interval is in milliseconds
+	public final static long timerInterval = 10*1000;
+
 	///////////////////////////////////////////////////////
 
 	/** Called when the activity is first created. */
@@ -78,6 +86,8 @@ public class SBMapActivity extends MapActivity implements APIHandler
 
 		this.setUpBeacons(savedInstanceState);
 
+		this.setUpTimer();
+
 	}
 
 	@Override
@@ -98,6 +108,8 @@ public class SBMapActivity extends MapActivity implements APIHandler
 		updateBeaconButton();
 		// TODO -- Do we want to do this?
 		startQuery();
+
+		startTimer();
 	}
 
 	@Override
@@ -105,6 +117,38 @@ public class SBMapActivity extends MapActivity implements APIHandler
 		super.onPause();
 		Log.d(TAG,"onPause()");
 		mapView.pause();
+
+		stopTimer();
+	}
+
+	private void setUpTimer() {
+		timer = new Timer();
+	}
+
+	private void startTimer() {
+
+		if (timerTask != null) {
+			timerTask.cancel();
+		}
+
+		timerTask = new TimerTask() {
+
+			@Override
+			public void run() {
+				beacItemizedOverlay.cleanBeacons();
+				startQuery();
+			}
+		};
+
+		timer.schedule(timerTask, timerInterval, timerInterval);
+
+	}
+
+	private void stopTimer() {
+
+		timerTask.cancel();
+		timerTask = null;
+
 	}
 
 	@Override
