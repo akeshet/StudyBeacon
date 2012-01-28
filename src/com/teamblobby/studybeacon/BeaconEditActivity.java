@@ -19,6 +19,7 @@ import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -77,6 +78,8 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 	private DateFormat df = DateFormat.getTimeInstance(DateFormat.SHORT);
 	protected boolean expiresEdited = false;
 	private String expiresTimeFormatted;
+	
+	private static final double DISTANCE_CUTOFF_JOIN_WARNING_METERS = 100;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -452,14 +455,53 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		beaconActionButton.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
-				// TODO check user's location
-				if (mBeacon != null) {
-					APIClient.join(mBeacon.getBeaconId(), BeaconEditActivity.this);
-					currentDialog = ProgressDialog.show(BeaconEditActivity.this, "", "Joining beacon...");
-				} else
+				if (mBeacon != null) {  // If we have a defined beacon
+					Location userLocation;
+					if (userLocator!=null && (userLocation=userLocator.getLocation())!=null) {
+										// and a defined location
+										// then check location distance to beacon before joining
+						GeoPoint beaconGeoPoint = mBeacon.getLoc();
+						Location beaconLoc = new Location("dummy provider");
+						beaconLoc.setLongitude(beaconGeoPoint.getLongitudeE6()/1000000.0);
+						beaconLoc.setLatitude(beaconGeoPoint.getLatitudeE6()/1000000.0);
+						float distanceToBeacon = userLocation.distanceTo(beaconLoc);
+						
+						if (distanceToBeacon>DISTANCE_CUTOFF_JOIN_WARNING_METERS) { // we are outside the cutoff distance
+							AlertDialog alertDialog = new AlertDialog.Builder(BeaconEditActivity.this)
+								.setMessage("You do not appear to be close to this beacon. Are you sure you want to join?")
+											// so poll the user to see if they want to join anyway
+								.setPositiveButton(R.string.join, new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int which) {
+										dialog.dismiss(); 
+										joinBeacon(); // Join beacon anyway at user's insistence
+									}
+								})
+								.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int which) {
+										dialog.dismiss();
+									}
+								})
+								.create();
+							
+							alertDialog.show();
+						}
+						else {  // We are within the cutoff distance, so join the beacon.
+							joinBeacon();
+						}
+					}
+					else {				// if we don't have a defined location or locator
+										// then just join the beacon
+						joinBeacon();
+					}
+				} else					// if we don't have a defined beacon, complain to user
 					Toast.makeText(BeaconEditActivity.this,
 							"Something went wrong -- I don't know which beacon you're viewing",
 							Toast.LENGTH_SHORT).show();
+			}
+
+			private void joinBeacon() {
+				APIClient.join(mBeacon.getBeaconId(), BeaconEditActivity.this);
+				currentDialog = ProgressDialog.show(BeaconEditActivity.this, "", "Joining beacon...");
 			}
 		});
 
@@ -486,6 +528,10 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 
 		if ( mBeacon.getTelephone().equals("") && mBeacon.getEmail().equals("") )
 			contact.setVisibility(View.GONE);
+		
+		// start getting the user's location
+		userLocator = new UserLocator();
+		userLocator.startLocating();
 	}
 
 	private TextClickToEdit convertToTextClickToEdit(final View s, String text, boolean hideButton) {

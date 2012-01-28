@@ -70,5 +70,8 @@
     <string name="notificationText">StudyBeacon joined</string>
     <string name="notificationTitle">Studying</string>
     <string name="notificationDetailText">Tap to edit/leave beacon</string>
+    
+    <string name="join">Join</string>
+    <string name="cancel">Cancel</string>
 
 </resources>
