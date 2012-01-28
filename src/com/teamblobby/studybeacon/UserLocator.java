@@ -58,10 +58,17 @@ class UserLocator {
 	/*
 	 * Returns GeoPoint of obtained location. If the location has not yet been obtained, returns null.
 	 */
-	public GeoPoint getLocation() {
+	public GeoPoint getGeoPoint() {
 		return this.isReady() ? new GeoPoint((int) (this.location.getLatitude()*TENTOTHESIX), (int)(this.location.getLongitude()*TENTOTHESIX)) : null;
 	}
 	
+	/*
+	 * Returns Location of obtained location. If the location has not yet been obtained, returns null.
+	 */
+	public Location getLocation() {
+		return this.isReady() ? this.location : null;
+	}
+
 	/*
 	 * Returns true if the location has been obtained, false otherwise.
 	 */

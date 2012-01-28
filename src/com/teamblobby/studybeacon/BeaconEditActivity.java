@@ -309,7 +309,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 			}
 			currentDialog = ProgressDialog.show(mActivity, "", "Creating beacon...");
 			// needs working on from fields
-			APIClient.add(mActivity.newBeaconFromFields(userLocator.getLocation()), mActivity.newDurationFromField(), mActivity);
+			APIClient.add(mActivity.newBeaconFromFields(userLocator.getGeoPoint()), mActivity.newDurationFromField(), mActivity);
 		}
 	}
 
