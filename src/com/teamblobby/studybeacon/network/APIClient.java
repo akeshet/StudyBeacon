@@ -210,11 +210,11 @@ public class APIClient {
 	}
 
 	////////////////////////////////////////////////////////////////
-	// Interfaces for doing a join and a sync (whereami)
+	// Interfaces for doing a join, a sync (whereami), and a getbeacon
 
 	public final static String JOIN_URL = "join.py";
 	public final static String SYNC_URL = "whereami.py";
-
+	public final static String GETBEACON_URL = "getbeacon.py";
 
 	public static void join(int BeaconId, final APIHandler handler) {
 
@@ -237,6 +237,16 @@ public class APIClient {
 
 	}
 
+	public static void getbeacon(int BeaconId, final APIHandler handler) {
+
+		RequestParams params = new RequestParams();
+
+		params.put(BEACID_STR, Integer.toString(BeaconId));
+
+		get(GETBEACON_URL, params, new OneBeaconJsonHandler(handler, APICode.CODE_GETBEACON));
+
+	}
+
 	protected static class OneBeaconJsonHandler extends JsonHttpResponseHandler {
 
 		protected final APIHandler handler;
@@ -248,7 +258,7 @@ public class APIClient {
 			this.code = code;
 		}
 
-		// This is basically only applicable for sync. It will return a null object.
+		// This is applicable for sync and getbeacon. It will return a null object.
 		@Override
 		public void onSuccess(String arg0) {
 			// TODO Auto-generated method stub
