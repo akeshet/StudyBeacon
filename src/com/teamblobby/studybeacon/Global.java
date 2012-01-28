@@ -78,7 +78,10 @@ public class Global extends Application {
 
 	public static void goHome(Context c) {
 		Intent i = new Intent(c, SBMapActivity.class);
-		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		// TODO Figure out what the fuck the flags are supposed to be
+		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+				| Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK
+				| Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
 		c.startActivity(i);
 	}
 
@@ -132,9 +135,8 @@ public class Global extends Application {
 		
 		Intent intent = new Intent(application, BeaconEditActivity.class);
 		intent.setAction(BeaconEditActivity.ACTION_EDIT);
-		//intent.putExtra(BeaconEditActivity.EXTRA_BEACON, Global.getCurrentBeacon());
+
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-		
 
 		
 		PendingIntent pendingIntent = PendingIntent.getActivity(application, 0, intent, 0);
