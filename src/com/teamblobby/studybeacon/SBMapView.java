@@ -104,9 +104,13 @@ public class SBMapView extends MapView {
 		// show user's position
 		myLocOverlay.runOnFirstFix(new Runnable() {
 			public void run() {
-				mapViewController.animateTo(myLocOverlay.getMyLocation());
-				if (mActivity != null)
-					mActivity.startQuery();
+				mapViewController.animateTo(myLocOverlay.getMyLocation(),
+						new Runnable() {
+							public void run() {
+								if (mActivity != null)
+									mActivity.startQuery();
+							}
+						});
 			}});
 	}
 	
