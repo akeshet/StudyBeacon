@@ -7,6 +7,14 @@ import android.util.Log;
 
 import com.google.android.maps.GeoPoint;
 
+/**
+ * User Locator class. Used for getting a user's current location.
+ * This asks the location manager for a single grab of the user's location,
+ * not continuous updates.
+ * 
+ * @author nicolas
+ *
+ */
 class UserLocator {
 
 	private static final String TAG = "UserLocator";
@@ -17,6 +25,10 @@ class UserLocator {
 	private Runnable callback;
 	private boolean isReady = false;
 
+	/**
+	 * Constructor with callback. Callback Runnable will be run when the location has been obtained.
+	 * @param obtainedLocationCallback
+	 */
 	public UserLocator(Runnable obtainedLocationCallback) {
 		//this.timeout = timeout;
 		this.callback = obtainedLocationCallback;
@@ -35,19 +47,31 @@ class UserLocator {
 		};
 	}
 	
+	/*
+	 * Constructor with no callback.
+	 */
 	public UserLocator() {
 		// no-arg doesn't need callback
 		this(new Runnable(){public void run() {return;}}); //blank callback that doesn't do anything
 	}
 	
+	/*
+	 * Returns GeoPoint of obtained location. If the location has not yet been obtained, returns null.
+	 */
 	public GeoPoint getLocation() {
 		return this.isReady() ? new GeoPoint((int) (this.location.getLatitude()*TENTOTHESIX), (int)(this.location.getLongitude()*TENTOTHESIX)) : null;
 	}
 	
+	/*
+	 * Returns true if the location has been obtained, false otherwise.
+	 */
 	public boolean isReady() {
 		return this.isReady;
 	}
 	
+	/*
+	 * Should be called when you want to start locating the user. Location will not be obtained unless this is called.
+	 */
 	public void startLocating() {
 		// register for a single update matching criteria
 		Criteria criteria = new Criteria();
