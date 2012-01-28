@@ -398,7 +398,7 @@ public class SBMapActivity extends MapActivity implements APIHandler
 					}
 				}
 			}
-
+			mapView.invalidate();
 			break;
 		default:
 			// Shouldn't ever get here. Complain?
