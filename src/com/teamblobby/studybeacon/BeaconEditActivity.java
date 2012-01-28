@@ -64,6 +64,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 	protected EditText details;
 	protected Button beaconActionButton;
 	protected Button beaconSecondaryActionButton;
+	protected TextView locationTV;
 
 	// This represents the beacon we are making.
 	protected BeaconInfo mBeacon;
@@ -129,6 +130,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		details          = (EditText) findViewById(R.id.detailsEdit);
 		beaconActionButton = (Button) findViewById(R.id.beaconActionButton);
 		beaconSecondaryActionButton = (Button) findViewById(R.id.beaconSecondaryActionButton);
+		locationTV = (TextView) 	  findViewById(R.id.locationTV);
 
 		// Set the spinners up
 		courseAdapter =
@@ -275,6 +277,12 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 				new Date()
 				);
 	}
+	
+	private Runnable locationAcquiredCallback = new Runnable() {
+		public void run() {
+			locationTV.setText(R.string.locationAcquired);
+		}
+	};
 
 	private void setUpForNew(Bundle savedInstanceState, Intent startingIntent) {
 		// TODO -- Add logic if already at a beacon
@@ -291,9 +299,11 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		beaconActionButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.newbeaconicon, 0, 0, 0);
 
 		// start getting the user's location
-		userLocator = new UserLocator();
+		userLocator = new UserLocator(locationAcquiredCallback);
 		userLocator.startLocating();
 	}
+	
+	
 
 	protected final class NewBeaconClickListener implements OnClickListener {
 
@@ -366,6 +376,9 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 				expiresEdited = true;
 			}
 		});
+		
+		
+		locationTV.setVisibility(View.GONE);
 
 		beaconActionButton.setText(R.string.saveBeacon);
 		// Set the drawable on the action button
@@ -439,6 +452,8 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		//expiresSpinner.setVisibility(View.GONE);
 		//expiresTimeTV.setVisibility(View.VISIBLE);
 		expiresTimeTV = convertToTextClickToEdit(expiresSpinner,expiresTimeFormatted,true);
+		
+		locationTV.setVisibility(View.GONE);
 
 		EditText ets[] = {phone, email, details};
 		for (EditText e : ets) {
@@ -530,7 +545,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 			contact.setVisibility(View.GONE);
 		
 		// start getting the user's location
-		userLocator = new UserLocator();
+		userLocator = new UserLocator(locationAcquiredCallback);
 		userLocator.startLocating();
 	}
 

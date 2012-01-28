@@ -73,5 +73,7 @@
     
     <string name="join">Join</string>
     <string name="cancel">Cancel</string>
+    <string name="acquiringLocation">Acquiring Location…</string>
+    <string name="locationAcquired">Location Acquired.</string>
 
 </resources>
