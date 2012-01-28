@@ -22,18 +22,17 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/iconSize"
             android:layout_weight="1"
+            android:gravity="left|center_vertical"
             android:text="@string/leaveBeacon"
-            android:visibility="gone"
-            android:gravity="left|center_vertical" />
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/beaconActionButton"
             android:layout_width="0dp"
             android:layout_height="@dimen/iconSize"
             android:layout_weight="1"
-            android:text="@string/newBeacon" 
-            android:gravity="left|center_vertical"/>
-        
+            android:gravity="left|center_vertical"
+            android:text="@string/newBeacon" />
     </LinearLayout>
 
     <ScrollView
@@ -46,9 +45,9 @@
             android:id="@+id/linearLayout1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:focusable="true" 
-            android:focusableInTouchMode="true" >
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical" >
 
             <TextView
                 android:id="@+id/courseTV"
@@ -90,6 +89,13 @@
                 android:layout_height="wrap_content" />
 
             <TextView
+                android:id="@+id/locationTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/acquiringLocation"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
                 android:id="@+id/contactTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -100,24 +106,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
 
-	            <EditText
-	                android:id="@+id/phone"
-	                android:layout_width="match_parent"
-	                android:layout_height="wrap_content"
-	                android:hint="@string/phoneHint"
-	                android:inputType="phone" />
+                <EditText
+                    android:id="@+id/phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/phoneHint"
+                    android:inputType="phone" />
 
-				<ImageButton
-				    android:layout_width="wrap_content"
-				    android:layout_height="wrap_content"
-				    android:layout_gravity="center_vertical|right"
-				    android:layout_marginRight="10dip"
-				    android:background="@null"
-				    android:src="@drawable/insertcontact" 
-				    android:onClick="enterMyNumber"/>
-
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|right"
+                    android:layout_marginRight="10dip"
+                    android:background="@null"
+                    android:onClick="enterMyNumber"
+                    android:src="@drawable/insertcontact" />
             </FrameLayout>
-            
+
             <FrameLayout
                 android:id="@+id/emailLayout"
                 android:layout_width="match_parent"
@@ -134,9 +139,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|right"
+                    android:layout_marginRight="10dip"
                     android:background="@null"
                     android:onClick="enterMyEmail"
-				    android:layout_marginRight="10dip"
                     android:src="@drawable/insertcontact" />
             </FrameLayout>
 
@@ -150,10 +155,9 @@
                 android:id="@+id/detailsEdit"
                 android:layout_width="match_parent"
                 android:layout_height="88dp"
+                android:gravity="top"
                 android:hint="@string/detailHint"
-                android:inputType="textMultiLine" 
-                android:gravity="top" />
-            
+                android:inputType="textMultiLine" />
         </LinearLayout>
     </ScrollView>
 
