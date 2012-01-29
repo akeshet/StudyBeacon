@@ -82,7 +82,7 @@ public class SBMapActivity extends MapActivity
 				ArrayList<BeaconInfo> beacons = (ArrayList<BeaconInfo>) result;
 
 				for (BeaconInfo beacon : beacons) {
-					beacItemizedOverlay.addReplaceRemoveBeacon(beacon);
+					beacItemizedOverlay.addReplaceRemoveBeacon(beacon); // also takes care of balloon
 					if (Global.atBeacon()) {
 						BeaconInfo presentBeacon = Global.getCurrentBeacon();
 						if ((presentBeacon.getBeaconId() == beacon.getBeaconId())
@@ -92,7 +92,6 @@ public class SBMapActivity extends MapActivity
 								Global.setCurrentBeacon(beacon);
 							} else {
 								Global.setCurrentBeacon(null);
-								// TODO Clear the balloon from the map
 							}
 						}
 					}

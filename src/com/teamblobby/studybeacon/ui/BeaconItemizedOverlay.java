@@ -60,6 +60,10 @@ public class BeaconItemizedOverlay extends ItemizedOverlay {
 		}
 
 		// If the balloon is shown and needs to be hidden, do so
+		checkRemoveBalloon();
+	}
+
+	public void checkRemoveBalloon() {
 		if (balloonVisible && (balloonView != null)) {
 			BeaconOverlayItem balloonItem = (BeaconOverlayItem)getItem(selectedIndex);
 			if ( !balloonItem.isDisplayed() ) {
@@ -95,12 +99,28 @@ public class BeaconItemizedOverlay extends ItemizedOverlay {
 				if( !beacon.equals(foundOverlay.getBeacon()) ) {
 					// REPLACE
 					foundOverlay.setBeacon(beacon);
-					// TODO If this beacon has a currently displayed balloon, update the balloon.
+					// If this beacon has a currently displayed balloon, update the balloon.
+					if (balloonVisible && (balloonView != null)) {
+						BeaconOverlayItem balloonItem = (BeaconOverlayItem)getItem(selectedIndex);
+						if ( balloonItem.equals(foundOverlay) ) {
+							mapView.removeView(balloonView);
+							makeBalloon(foundOverlay);
+						}
+					}
 				}
 			} else {
 				// REMOVE
+				// If this overlay has a balloon associated with it, get rid of the balloon first
+				if (balloonVisible && (balloonView != null)) {
+					BeaconOverlayItem balloonItem = (BeaconOverlayItem)getItem(selectedIndex);
+					if ( balloonItem.equals(foundOverlay) ) {
+						mapView.removeView(balloonView);
+						balloonVisible = false;
+						selectedIndex = -1;
+					}
+				}
+				// Now remove the overlay
 				removeOverlay(foundOverlay);
-				// TODO If this beacon has a currently displayed balloon, get rid of it
 			}
 		}
 		populate();
