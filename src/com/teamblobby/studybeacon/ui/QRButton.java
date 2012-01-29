@@ -79,6 +79,11 @@ public class QRButton extends ImageView {
 	}
 
 	public void handleResult(IntentResult scanResult) {
+
+		// If no scanResult or no contents, then they hit back.
+		if (scanResult == null || scanResult.getContents() == null)
+			return;
+
 		Uri uri = Uri.parse(scanResult.getContents());
 		
 		if (uri == null || !uri.getScheme().equals("beacon") ){
