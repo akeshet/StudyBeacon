@@ -23,9 +23,17 @@
 
         <Spinner
             android:id="@+id/mapCourseSpinner"
-            android:layout_width="fill_parent"
+            android:layout_width="0dip"
             android:layout_height="@dimen/iconSize"
-            android:prompt="@string/courseSpinnerPrompt" />
+            android:prompt="@string/courseSpinnerPrompt"
+            android:layout_weight="1" />
+
+        <com.teamblobby.studybeacon.ui.QRButton
+            android:id="@+id/qrbutton"
+            android:layout_width="@dimen/iconSize"
+            android:layout_height="@dimen/iconSize"
+             />
+
     </LinearLayout>
 
     <LinearLayout
