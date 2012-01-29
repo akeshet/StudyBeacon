@@ -3,8 +3,7 @@ package com.teamblobby.studybeacon;
 
 import com.teamblobby.studybeacon.datastructures.BeaconInfo;
 import com.teamblobby.studybeacon.network.APIClient;
-import com.teamblobby.studybeacon.network.APIHandler;
-import com.teamblobby.studybeacon.network.ActivityApiHandler;
+import com.teamblobby.studybeacon.network.ActivityAPIHandler;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -23,19 +22,19 @@ public class BeaconUriActivity extends Activity {
 	private ProgressDialog dialog;
 	private boolean autoJoin;
 	
-	private class MyActivityApiHandler extends ActivityApiHandler {
+	private class MyActivityApiHandler extends ActivityAPIHandler {
 		@Override
 		public Activity getActivity() {
 			return BeaconUriActivity.this;
 		}
 		
 		@Override
-		protected void handleFailure(APIHandler.APICode code, Throwable e) {
+		protected void handleFailure(APIClient.APICode code, Throwable e) {
 			BeaconUriActivity.this.onFailure(code, e);
 		}
 		
 		@Override
-		protected void handleSuccess(APIHandler.APICode code, Object response) {
+		protected void handleSuccess(APIClient.APICode code, Object response) {
 			BeaconUriActivity.this.onSuccess(code, response);
 		}	
 	}
@@ -85,7 +84,7 @@ public class BeaconUriActivity extends Activity {
 		return this;
 	}
 
-	public void onSuccess(APIHandler.APICode code, Object response) {
+	public void onSuccess(APIClient.APICode code, Object response) {
 		dialog.dismiss();
 		switch (code) {
 		case CODE_GETBEACON:
@@ -111,7 +110,7 @@ public class BeaconUriActivity extends Activity {
 		finish();
 	}
 
-	public void onFailure(APIHandler.APICode code, Throwable e) {
+	public void onFailure(APIClient.APICode code, Throwable e) {
 		dialog.dismiss();
 		switch (code) {
 		case CODE_GETBEACON:

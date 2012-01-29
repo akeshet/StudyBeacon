@@ -56,20 +56,51 @@ public class SBMapActivity extends MapActivity
 	// The timer interval is in milliseconds
 	public final static long timerInterval = 10*1000;
 	
-	private class MyActivityApiHandler extends ActivityApiHandler {
+	private class MyActivityApiHandler extends ActivityAPIHandler {
 		@Override
 		public Activity getActivity() {
 			return SBMapActivity.this;
 		}
 		
 		@Override
-		protected void handleFailure(APIHandler.APICode code, Throwable e) {
-			SBMapActivity.this.onFailure(code, e);
+		protected void handleFailure(APIClient.APICode code, Throwable e) {
+			// TODO Complain about failure
+			switch (code) {
+			case CODE_QUERY:
+				Toast.makeText(SBMapActivity.this, "Failed to load beacons from server", Toast.LENGTH_SHORT).show();
+				break;
+			default:
+				// Shouldn't ever get here. Complain?
+			}
 		}
 		
 		@Override
-		protected void handleSuccess(APIHandler.APICode code, Object response) {
-			SBMapActivity.this.onSuccess(code, response);
+		protected void handleSuccess(APIClient.APICode code, Object result) {
+			switch (code) {
+			case CODE_QUERY:
+				@SuppressWarnings("unchecked")
+				ArrayList<BeaconInfo> beacons = (ArrayList<BeaconInfo>) result;
+
+				for (BeaconInfo beacon : beacons) {
+					beacItemizedOverlay.addReplaceRemoveBeacon(beacon); // also takes care of balloon
+					if (Global.atBeacon()) {
+						BeaconInfo presentBeacon = Global.getCurrentBeacon();
+						if ((presentBeacon.getBeaconId() == beacon.getBeaconId())
+							&& ( ! presentBeacon.equals(beacon) )) {
+							// Update
+							if (beacon.getVisitors() > 0) {
+								Global.setCurrentBeacon(beacon);
+							} else {
+								Global.setCurrentBeacon(null);
+							}
+						}
+					}
+				}
+				mapView.invalidate();
+				break;
+			default:
+				// Shouldn't ever get here. Complain?
+			}
 		}	
 	}
 	
@@ -390,56 +421,6 @@ public class SBMapActivity extends MapActivity
 		intent.setAction(BeaconEditActivity.ACTION_EDIT);
 		//intent.putExtra(BeaconEditActivity.EXTRA_BEACON, Global.getCurrentBeacon());
 		startActivityForResult(intent, REQUESTCODE_RETURNED_FROM_BEACON);
-	}
-	
-    ////////////////////////////////////////////////////////////////
-	// The following methods are for implementing SBAPIHandler
-
-	public Activity getActivity() {
-		return this;
-	}
-
-	/**
-	 *  This function is responsible for taking the data from
-	 *  the query and inserting it into the data structures.
-	 */
-	@SuppressWarnings("unchecked")
-	public void onSuccess(APIHandler.APICode code, Object result) {
-		switch (code) {
-		case CODE_QUERY:
-			ArrayList<BeaconInfo> beacons = (ArrayList<BeaconInfo>) result;
-
-			for (BeaconInfo beacon : beacons) {
-				beacItemizedOverlay.addReplaceRemoveBeacon(beacon);
-				if (Global.atBeacon()) {
-					BeaconInfo presentBeacon = Global.getCurrentBeacon();
-					if ((presentBeacon.getBeaconId() == beacon.getBeaconId())
-						&& ( ! presentBeacon.equals(beacon) )) {
-						// Update
-						if (beacon.getVisitors() > 0) {
-							Global.setCurrentBeacon(beacon);
-						} else {
-							Global.setCurrentBeacon(null);
-						}
-					}
-				}
-			}
-			mapView.invalidate();
-			break;
-		default:
-			// Shouldn't ever get here. Complain?
-		}
-	}
-
-	public void onFailure(APIHandler.APICode code, Throwable t) {
-		// TODO Complain about failure
-		switch (code) {
-		case CODE_QUERY:
-			Toast.makeText(this, "Failed to load beacons from server", Toast.LENGTH_SHORT).show();
-			break;
-		default:
-			// Shouldn't ever get here. Complain?
-		}
 	}
 
 	protected void startMyCoursesActivity() {

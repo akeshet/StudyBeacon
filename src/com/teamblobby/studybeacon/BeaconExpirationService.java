@@ -4,8 +4,6 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.json.JSONObject;
-
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
@@ -33,15 +31,15 @@ public class BeaconExpirationService extends Service {
 	}
 
 	private class MyApiHandler implements APIHandler {
-		public void onFailure(APICode code, Throwable e) {
-			if (code==APICode.CODE_SYNC) {
+		public void onFailure(APIClient.APICode code, Throwable e) {
+			if (code==APIClient.APICode.CODE_SYNC) {
 				Log.e(TAG, "Failure when syncing from server.");
 			}
 			checkBeaconExpiration();
 		}
 
-		public void onSuccess(APICode code, Object response) {
-			if (code == APICode.CODE_SYNC) {
+		public void onSuccess(APIClient.APICode code, Object response) {
+			if (code == APIClient.APICode.CODE_SYNC) {
 				if (! (response instanceof BeaconInfo) ) {
 					Log.e(TAG, "Received non-beaconinfo response in onSuccess.");
 				} 

@@ -14,8 +14,6 @@ import com.google.android.maps.GeoPoint;
 import com.loopj.android.http.*;
 import com.teamblobby.studybeacon.Global;
 import com.teamblobby.studybeacon.datastructures.*;
-import com.teamblobby.studybeacon.network.APIHandler.APICode;
-
 import org.json.*;
 
 public class APIClient {
@@ -46,9 +44,11 @@ public class APIClient {
 	////////////////////////////////////////////////////////////////
 	// Interface for canceling requests
 
-	public static void cancel(ActivityApiHandler handler) {
+	public static void cancel(ActivityAPIHandler handler) {
 		client.cancelRequests(handler.getActivity(), true);
 	}
+
+	public static enum APICode {CODE_QUERY, CODE_ADD, CODE_JOIN, CODE_LEAVE, CODE_EDIT, CODE_SYNC, CODE_GETBEACON}
 
 	protected static BeaconInfo parseJSONObjBeaconInfo(JSONObject bObj) throws JSONException, ParseException {
 
@@ -137,13 +137,13 @@ public class APIClient {
 					beacons.add(parseJSONObjBeaconInfo(response.getJSONObject(i)));
 
 				// Call the handler's function
-				handler.onSuccess(APIHandler.APICode.CODE_QUERY, beacons);
+				handler.onSuccess(APICode.CODE_QUERY, beacons);
 
 			}
 			catch (final Exception e) {
 				// TODO
 				e.printStackTrace();
-				handler.onFailure(APIHandler.APICode.CODE_QUERY, e);
+				handler.onFailure(APICode.CODE_QUERY, e);
 
 			}
 
@@ -153,7 +153,7 @@ public class APIClient {
 		public void onFailure(final Throwable arg0) {
 			// TODO Do we do this first or last?
 			super.onFailure(arg0);
-			handler.onFailure(APIHandler.APICode.CODE_QUERY,arg0);
+			handler.onFailure(APICode.CODE_QUERY,arg0);
 
 		}
 	}
@@ -184,7 +184,7 @@ public class APIClient {
 
 		Log.d(TAG,"add string " + params.toString());
 
-		post(context, ADD_URL, params, new OneBeaconJsonHandler(handler,APICode.CODE_ADD));
+		post(context, ADD_URL, params, new OneBeaconJsonHandler(handler, APICode.CODE_ADD));
 
 	}
 
@@ -197,15 +197,23 @@ public class APIClient {
 		params.put(BEACID_STR,    Integer.toString(beacon.getBeaconId()));
 		if (duration != DURATION_UNCHANGED)
 			params.put(DURATION_STR,  Integer.toString(duration));
-		params.put(TELEPHONE_STR, beacon.getTelephone() );
-		params.put(EMAIL_STR,     beacon.getEmail() );
-		params.put(WORKINGON_STR, beacon.getWorkingOn());
-		params.put(DETAILS_STR,   beacon.getDetails());
+
+		putOrClear(params, TELEPHONE_STR, beacon.getTelephone());
+		putOrClear(params, EMAIL_STR, beacon.getEmail());
+		putOrClear(params, WORKINGON_STR, beacon.getWorkingOn());
+		putOrClear(params, DETAILS_STR, beacon.getDetails());
 
 		Log.d(TAG,"edit string " + params.toString());
 
-		post(context, EDIT_URL, params, new OneBeaconJsonHandler(handler,APICode.CODE_EDIT));
+		post(context, EDIT_URL, params, new OneBeaconJsonHandler(handler, APICode.CODE_EDIT));
 
+	}
+
+	protected static void putOrClear(RequestParams params, String key, String val) {
+		if ((val == null) || val.equals(""))
+			params.put(key, " " );
+		else
+			params.put(key, val );
 	}
 
 	////////////////////////////////////////////////////////////////
@@ -249,9 +257,9 @@ public class APIClient {
 	protected static class OneBeaconJsonHandler extends JsonHttpResponseHandler {
 
 		protected final APIHandler handler;
-		protected final APIHandler.APICode code;
+		protected final APICode code;
 
-		public OneBeaconJsonHandler(APIHandler handler, APIHandler.APICode code) {
+		public OneBeaconJsonHandler(APIHandler handler, APICode code) {
 			// TODO Auto-generated constructor stub
 			this.handler = handler;
 			this.code = code;
@@ -329,7 +337,7 @@ public class APIClient {
 			super.onSuccess(arg0);
 			Log.d(TAG,"Got leave success, response was "+ arg0);
 
-			handler.onSuccess(APIHandler.APICode.CODE_LEAVE,null);
+			handler.onSuccess(APICode.CODE_LEAVE,null);
 
 		}
 
@@ -337,7 +345,7 @@ public class APIClient {
 		public void onFailure(final Throwable arg0) {
 			// TODO Auto-generated method stub
 			super.onFailure(arg0);
-			handler.onFailure(APIHandler.APICode.CODE_LEAVE,arg0);
+			handler.onFailure(APICode.CODE_LEAVE,arg0);
 		}
 
 	}

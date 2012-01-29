@@ -11,8 +11,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.teamblobby.studybeacon.datastructures.*;
 import com.teamblobby.studybeacon.network.APIClient;
-import com.teamblobby.studybeacon.network.APIHandler;
-import com.teamblobby.studybeacon.network.ActivityApiHandler;
+import com.teamblobby.studybeacon.network.ActivityAPIHandler;
 import com.teamblobby.studybeacon.ui.QRButton;
 import com.teamblobby.studybeacon.ui.TextClickToEdit;
 
@@ -22,7 +21,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
@@ -88,24 +86,86 @@ public class BeaconEditActivity extends Activity {
 	private static final double DISTANCE_CUTOFF_JOIN_WARNING_METERS = 100;
 	private QRButton qrButton;
 	
-	private class BeaconEditActivityApiHandler extends ActivityApiHandler {
+	private class MyApiHandler extends ActivityAPIHandler {
 		@Override
 		public Activity getActivity() {
 			return BeaconEditActivity.this;
 		}
 		
 		@Override
-		protected void handleFailure(APIHandler.APICode code, Throwable e) {
-			BeaconEditActivity.this.onFailure(code, e);
+		protected void handleFailure(APIClient.APICode code, Throwable e) {
+			String messageText = null;
+			switch (code) {
+			case CODE_ADD:
+				messageText = new String("Failed to add beacon");
+				Global.setCurrentBeacon(null);
+				Global.updateBeaconRunningNotification();
+				break;
+			case CODE_EDIT:
+				messageText = new String("Failed to save beacon");
+				// TODO What do we do here?
+				break;
+			case CODE_JOIN:
+				messageText = new String("Failed to join beacon");
+				Global.setCurrentBeacon(null);
+				Global.updateBeaconRunningNotification();
+				break;
+			case CODE_LEAVE:
+				messageText = new String("Failed to leave beacon -- trying to re-sync with server");
+				APIClient.sync(myAPIHandler, BeaconEditActivity.this);
+				break;
+			case CODE_SYNC:
+				messageText = new String("Failed to re-sync with server.");
+				// TODO What do we do?
+				break;
+			default:
+				// Shouldn't get here ... complain?
+			}
+			Toast.makeText(BeaconEditActivity.this, messageText, Toast.LENGTH_SHORT).show();
+			currentDialog.dismiss();
+			// For CODE_LEAVE, we have started a sync; now show a dialog must be after the above dismissal
+			if (code == APIClient.APICode.CODE_LEAVE)
+				currentDialog = ProgressDialog.show(BeaconEditActivity.this, "", "Trying to re-sync with server...");
 		}
 		
 		@Override
-		protected void handleSuccess(APIHandler.APICode code, Object response) {
-			BeaconEditActivity.this.onSuccess(code, response);
+		protected void handleSuccess(APIClient.APICode code, Object response) {
+			BeaconInfo beacon = null;
+			String messageText = null;
+			switch (code) {
+			case CODE_ADD:
+				beacon = (BeaconInfo) response;
+				messageText = new String("Beacon added successfully");
+				break;
+			case CODE_EDIT:
+				beacon = (BeaconInfo) response;
+				messageText = new String("Beacon updated");
+				break;
+			case CODE_JOIN:
+				beacon = (BeaconInfo) response;
+				messageText = new String("Beacon joined successfully");
+				break;
+			case CODE_LEAVE:
+				messageText = new String("Beacon left successfully");
+				break;
+			case CODE_SYNC:
+				beacon = (BeaconInfo) response;
+				messageText = new String("Resynced with server successfully");
+				break;
+			default:
+				// TODO Shouldn't get here ... complain?
+			}
+			Toast.makeText(BeaconEditActivity.this, messageText, Toast.LENGTH_SHORT).show();
+			Global.setCurrentBeacon(beacon);
+			Global.updateBeaconRunningNotification();
+			currentDialog.dismiss();
+			// go back home
+			// TODO Set a result code? SBMapActivity will need to get new data.
+			finish();
 		}	
 	}
 	
-	private BeaconEditActivityApiHandler myAPIHandler = new BeaconEditActivityApiHandler();
+	private MyApiHandler myAPIHandler = new MyApiHandler();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -675,83 +735,6 @@ public class BeaconEditActivity extends Activity {
 			addToWorkingOn(position, workingOn);
 		}
 		workingOnSpinner.setSelection(position);
-	}
-	////////////////////////////////////////////////////////////////
-	// The following are for implementing SBAPIHandler
-
-
-	public Activity getActivity() {
-		return this;
-	}
-
-	public void onSuccess(APIHandler.APICode code, Object response) {
-		BeaconInfo beacon = null;
-		String messageText = null;
-		switch (code) {
-		case CODE_ADD:
-			beacon = (BeaconInfo) response;
-			messageText = new String("Beacon added successfully");
-			break;
-		case CODE_EDIT:
-			beacon = (BeaconInfo) response;
-			messageText = new String("Beacon updated");
-			break;
-		case CODE_JOIN:
-			beacon = (BeaconInfo) response;
-			messageText = new String("Beacon joined successfully");
-			break;
-		case CODE_LEAVE:
-			messageText = new String("Beacon left successfully");
-			break;
-		case CODE_SYNC:
-			beacon = (BeaconInfo) response;
-			messageText = new String("Resynced with server successfully");
-			break;
-		default:
-			// TODO Shouldn't get here ... complain?
-		}
-		Toast.makeText(this, messageText, Toast.LENGTH_SHORT).show();
-		Global.setCurrentBeacon(beacon);
-		Global.updateBeaconRunningNotification();
-		currentDialog.dismiss();
-		// go back home
-		// TODO Set a result code? SBMapActivity will need to get new data.
-		this.finish();
-	}
-
-	public void onFailure(APIHandler.APICode code, Throwable e) {
-		String messageText = null;
-		switch (code) {
-		case CODE_ADD:
-			messageText = new String("Failed to add beacon");
-			Global.setCurrentBeacon(null);
-			Global.updateBeaconRunningNotification();
-			break;
-		case CODE_EDIT:
-			messageText = new String("Failed to save beacon");
-			// TODO What do we do here?
-			break;
-		case CODE_JOIN:
-			messageText = new String("Failed to join beacon");
-			Global.setCurrentBeacon(null);
-			Global.updateBeaconRunningNotification();
-			break;
-		case CODE_LEAVE:
-			messageText = new String("Failed to leave beacon -- trying to re-sync with server");
-			APIClient.sync(myAPIHandler, this);
-			break;
-		case CODE_SYNC:
-			messageText = new String("Failed to re-sync with server.");
-			// TODO What do we do?
-			break;
-		default:
-			// Shouldn't get here ... complain?
-		}
-		Toast.makeText(this, messageText, Toast.LENGTH_SHORT).show();
-		currentDialog.dismiss();
-		// For CODE_LEAVE, we have started a sync; now show a dialog must be after the above dismissal
-		if (code == APIHandler.APICode.CODE_LEAVE)
-			currentDialog = ProgressDialog.show(this, "", "Trying to re-sync with server...");
 	}
 
 	protected void addToWorkingOn(final int index, String text) {
