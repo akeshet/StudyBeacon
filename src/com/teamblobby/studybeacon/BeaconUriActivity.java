@@ -1,13 +1,10 @@
 package com.teamblobby.studybeacon;
 
-import java.util.List;
-
 import com.teamblobby.studybeacon.datastructures.BeaconInfo;
 import com.teamblobby.studybeacon.network.APIClient;
 import com.teamblobby.studybeacon.network.APIHandler;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.Intent;
