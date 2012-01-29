@@ -244,7 +244,7 @@ public class APIClient {
 
 	}
 
-	public static void getbeacon(int BeaconId, final APIHandler handler) {
+	public static void getBeacon(int BeaconId, final APIHandler handler) {
 
 		RequestParams params = new RequestParams();
 

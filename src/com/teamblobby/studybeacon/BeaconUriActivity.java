@@ -43,7 +43,7 @@ public class BeaconUriActivity extends Activity implements APIHandler{
 	    	} else {
 	    		dialog = ProgressDialog.show(this, "", "Getting beacon data...");
 	    		Log.d(TAG,"sending api client call to getbeacon");
-	    		APIClient.getbeacon(beaconId, this);
+	    		APIClient.getBeacon(beaconId, this);
 	    	}
 	    	
 	    	thingsHappening = true;
