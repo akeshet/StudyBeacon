@@ -299,7 +299,7 @@ public class SBMapActivity extends MapActivity
 		return selected.equals(Global.res.getString(R.string.allCourses));
 	}
 
-	void startQuery() {
+	public void startQuery() {
 		// find the view bounds
 		int deltaLat = mapView.getLatitudeSpan(), deltaLon = mapView.getLongitudeSpan();
 		GeoPoint ctr = mapView.getMapCenter();

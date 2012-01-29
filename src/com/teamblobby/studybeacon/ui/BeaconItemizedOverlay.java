@@ -1,4 +1,4 @@
-package com.teamblobby.studybeacon;
+package com.teamblobby.studybeacon.ui;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,6 +18,10 @@ import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.MapView.LayoutParams;
+import com.teamblobby.studybeacon.BeaconEditActivity;
+import com.teamblobby.studybeacon.Global;
+import com.teamblobby.studybeacon.R;
+import com.teamblobby.studybeacon.R.id;
 import com.teamblobby.studybeacon.datastructures.BeaconInfo;
 
 public class BeaconItemizedOverlay extends ItemizedOverlay {
@@ -142,7 +146,7 @@ public class BeaconItemizedOverlay extends ItemizedOverlay {
 	 
 	 	if (!balloonsEnabled) return false;
 	 
-	 	mapView.tapped_overlay = true;
+	 	mapView.setTapped_overlay(true);
 	 
 	 	if (balloonView==null) balloonVisible = false;
 	 	else if (!balloonView.isShown()) balloonVisible = false;

@@ -1,4 +1,4 @@
-package com.teamblobby.studybeacon;
+package com.teamblobby.studybeacon.ui;
 
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
@@ -6,6 +6,9 @@ import android.graphics.drawable.Drawable;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.OverlayItem;
+import com.teamblobby.studybeacon.Global;
+import com.teamblobby.studybeacon.R;
+import com.teamblobby.studybeacon.R.drawable;
 import com.teamblobby.studybeacon.datastructures.BeaconInfo;
 
 public class BeaconOverlayItem extends OverlayItem {

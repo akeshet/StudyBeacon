@@ -1,4 +1,8 @@
-package com.teamblobby.studybeacon;
+package com.teamblobby.studybeacon.ui;
+
+import com.teamblobby.studybeacon.R;
+import com.teamblobby.studybeacon.R.id;
+import com.teamblobby.studybeacon.R.layout;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,7 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
 
-class TextClickToEdit extends LinearLayout {
+public class TextClickToEdit extends LinearLayout {
 	
 	private static final String TAG = "TextClickToEdit";
 	private TextView textView;

@@ -1,4 +1,10 @@
-package com.teamblobby.studybeacon;
+package com.teamblobby.studybeacon.ui;
+
+import com.teamblobby.studybeacon.Global;
+import com.teamblobby.studybeacon.R;
+import com.teamblobby.studybeacon.R.id;
+import com.teamblobby.studybeacon.R.layout;
+import com.teamblobby.studybeacon.R.string;
 
 import android.app.Activity;
 import android.content.Context;
