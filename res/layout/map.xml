@@ -65,7 +65,7 @@
             android:background="@null"/>
     </LinearLayout>
 
-    <com.teamblobby.studybeacon.SBMapView
+    <com.teamblobby.studybeacon.ui.SBMapView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/mapView"
         android:layout_width="fill_parent"
