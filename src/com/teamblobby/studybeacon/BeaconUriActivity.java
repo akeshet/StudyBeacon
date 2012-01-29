@@ -91,7 +91,16 @@ public class BeaconUriActivity extends Activity implements APIHandler{
 
 	public void onFailure(APICode code, Throwable e) {
 		dialog.dismiss();
-		Toast.makeText(this, "Problem communicating with server.", Toast.LENGTH_SHORT).show();
+		switch (code) {
+		case CODE_GETBEACON:
+			Toast.makeText(this, "Problem communicating with server.", Toast.LENGTH_SHORT).show();
+			break;
+		case CODE_JOIN:
+			Toast.makeText(this, "Could not join beacon.", Toast.LENGTH_SHORT).show();
+			break;
+		default:
+			break;
+		}
 		finish();
 	}
 
