@@ -29,18 +29,25 @@ public class APIClient {
 	private static SimpleDateFormat df = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
 
 
-	public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
-		client.get(getAbsoluteUrl(url), params, responseHandler);
+	public static void get(APIHandler handler, String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+		client.get(handler.getActivity(), getAbsoluteUrl(url), params, responseHandler);
 	}
 
-	public static void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
-		client.post(getAbsoluteUrl(url), params, responseHandler);
+	public static void post(APIHandler handler, String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+		client.post(handler.getActivity(), getAbsoluteUrl(url), params, responseHandler);
 	}
 
 	private static String getAbsoluteUrl(String relativeUrl) {
 		return BASE_URL + relativeUrl;
 	}
 
+
+	////////////////////////////////////////////////////////////////
+	// Interface for canceling requests
+	
+	public static void cancel(APIHandler handler) {
+		client.cancelRequests(handler.getActivity(), true);
+	}
 
 	protected static BeaconInfo parseJSONObjBeaconInfo(JSONObject bObj) throws JSONException, ParseException {
 
@@ -104,7 +111,7 @@ public class APIClient {
 
 		Log.d(TAG,"Query string " + params.toString());
 
-		get(QUERY_URL, params, new QueryJsonHandler(handler));
+		get(handler, QUERY_URL, params, new QueryJsonHandler(handler));
 
 	}
 
@@ -185,7 +192,7 @@ public class APIClient {
 
 		Log.d(TAG,"add string " + params.toString());
 
-		post(ADD_URL, params, new OneBeaconJsonHandler(handler,APICode.CODE_ADD));
+		post(handler, ADD_URL, params, new OneBeaconJsonHandler(handler,APICode.CODE_ADD));
 
 	}
 
@@ -205,7 +212,7 @@ public class APIClient {
 
 		Log.d(TAG,"edit string " + params.toString());
 
-		post(EDIT_URL, params, new OneBeaconJsonHandler(handler,APICode.CODE_EDIT));
+		post(handler, EDIT_URL, params, new OneBeaconJsonHandler(handler,APICode.CODE_EDIT));
 
 	}
 
@@ -223,7 +230,7 @@ public class APIClient {
 		params.put(DEVID_STR, Global.getMyIdString());
 		params.put(BEACID_STR, Integer.toString(BeaconId));
 
-		get(JOIN_URL, params, new OneBeaconJsonHandler(handler, APICode.CODE_JOIN));
+		get(handler, JOIN_URL, params, new OneBeaconJsonHandler(handler, APICode.CODE_JOIN));
 
 	}
 
@@ -233,7 +240,7 @@ public class APIClient {
 
 		params.put(DEVID_STR, Global.getMyIdString());
 
-		get(SYNC_URL, params, new OneBeaconJsonHandler(handler, APICode.CODE_SYNC));
+		get(handler, SYNC_URL, params, new OneBeaconJsonHandler(handler, APICode.CODE_SYNC));
 
 	}
 
@@ -243,7 +250,7 @@ public class APIClient {
 
 		params.put(BEACID_STR, Integer.toString(BeaconId));
 
-		get(GETBEACON_URL, params, new OneBeaconJsonHandler(handler, APICode.CODE_GETBEACON));
+		get(handler, GETBEACON_URL, params, new OneBeaconJsonHandler(handler, APICode.CODE_GETBEACON));
 
 	}
 
@@ -320,7 +327,7 @@ public class APIClient {
 		params.put(DEVID_STR, Global.getMyIdString());
 		params.put(BEACID_STR, Integer.toString(BeaconId));
 
-		get(LEAVE_URL, params, new LeaveHTTPHandler(handler));
+		get(handler, LEAVE_URL, params, new LeaveHTTPHandler(handler));
 
 	}
 
