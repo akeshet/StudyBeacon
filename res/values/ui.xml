@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="iconSize">45dp</dimen>
+    <dimen name="iconSizePlus10">50dp</dimen>
     <dimen name="smallIconSize">30dp</dimen>
     
 </resources>
