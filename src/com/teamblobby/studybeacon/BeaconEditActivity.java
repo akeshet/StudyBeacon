@@ -14,6 +14,7 @@ import com.teamblobby.studybeacon.network.APIClient;
 import com.teamblobby.studybeacon.network.ActivityAPIHandler;
 import com.teamblobby.studybeacon.ui.QRButton;
 import com.teamblobby.studybeacon.ui.TextClickToEdit;
+import com.teamblobby.studybeacon.ui.TitleBar;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -538,6 +539,8 @@ public class BeaconEditActivity extends Activity {
 		TextClickToEdit emailC2E = convertToTextClickToEdit(emailLayout, text, false);
 		Linkify.addLinks(emailC2E.getTextView(), Linkify.EMAIL_ADDRESSES);
 
+		// show QR button
+		qrButton.setVisibility(View.VISIBLE);
 	}
 
 	@Override

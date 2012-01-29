@@ -3,7 +3,8 @@
     android:layout_width="fill_parent"
     android:layout_height="@dimen/iconSizePlus10"
     android:background="@color/titleBackground"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:gravity="center_vertical" >
 
     <ImageView
         android:id="@+id/titleIcon"
@@ -25,6 +26,7 @@
         android:id="@+id/qrbutton"
         android:layout_width="@dimen/iconSize"
         android:layout_height="@dimen/iconSize"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:layout_marginRight="2dip"/>
         
 </LinearLayout>
