@@ -197,15 +197,23 @@ public class APIClient {
 		params.put(BEACID_STR,    Integer.toString(beacon.getBeaconId()));
 		if (duration != DURATION_UNCHANGED)
 			params.put(DURATION_STR,  Integer.toString(duration));
-		params.put(TELEPHONE_STR, beacon.getTelephone() );
-		params.put(EMAIL_STR,     beacon.getEmail() );
-		params.put(WORKINGON_STR, beacon.getWorkingOn());
-		params.put(DETAILS_STR,   beacon.getDetails());
+
+		putOrClear(params, TELEPHONE_STR, beacon.getTelephone());
+		putOrClear(params, EMAIL_STR, beacon.getEmail());
+		putOrClear(params, WORKINGON_STR, beacon.getWorkingOn());
+		putOrClear(params, DETAILS_STR, beacon.getDetails());
 
 		Log.d(TAG,"edit string " + params.toString());
 
 		post(context, EDIT_URL, params, new OneBeaconJsonHandler(handler, APICode.CODE_EDIT));
 
+	}
+
+	protected static void putOrClear(RequestParams params, String key, String val) {
+		if ((val == null) || val.equals(""))
+			params.put(key, " " );
+		else
+			params.put(key, val );
 	}
 
 	////////////////////////////////////////////////////////////////
