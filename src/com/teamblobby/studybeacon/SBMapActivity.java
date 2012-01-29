@@ -56,19 +56,19 @@ public class SBMapActivity extends MapActivity
 	// The timer interval is in milliseconds
 	public final static long timerInterval = 10*1000;
 	
-	private class MyActivityApiHandler extends ActivityApiHandler {
+	private class MyActivityApiHandler extends ActivityAPIHandler {
 		@Override
 		public Activity getActivity() {
 			return SBMapActivity.this;
 		}
 		
 		@Override
-		protected void handleFailure(APIHandler.APICode code, Throwable e) {
+		protected void handleFailure(APIClient.APICode code, Throwable e) {
 			SBMapActivity.this.onFailure(code, e);
 		}
 		
 		@Override
-		protected void handleSuccess(APIHandler.APICode code, Object response) {
+		protected void handleSuccess(APIClient.APICode code, Object response) {
 			SBMapActivity.this.onSuccess(code, response);
 		}	
 	}
@@ -404,7 +404,7 @@ public class SBMapActivity extends MapActivity
 	 *  the query and inserting it into the data structures.
 	 */
 	@SuppressWarnings("unchecked")
-	public void onSuccess(APIHandler.APICode code, Object result) {
+	public void onSuccess(APIClient.APICode code, Object result) {
 		switch (code) {
 		case CODE_QUERY:
 			ArrayList<BeaconInfo> beacons = (ArrayList<BeaconInfo>) result;
@@ -431,7 +431,7 @@ public class SBMapActivity extends MapActivity
 		}
 	}
 
-	public void onFailure(APIHandler.APICode code, Throwable t) {
+	public void onFailure(APIClient.APICode code, Throwable t) {
 		// TODO Complain about failure
 		switch (code) {
 		case CODE_QUERY:

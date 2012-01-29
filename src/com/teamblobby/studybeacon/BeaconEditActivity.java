@@ -11,8 +11,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.teamblobby.studybeacon.datastructures.*;
 import com.teamblobby.studybeacon.network.APIClient;
-import com.teamblobby.studybeacon.network.APIHandler;
-import com.teamblobby.studybeacon.network.ActivityApiHandler;
+import com.teamblobby.studybeacon.network.ActivityAPIHandler;
 import com.teamblobby.studybeacon.ui.QRButton;
 import com.teamblobby.studybeacon.ui.TextClickToEdit;
 
@@ -88,19 +87,19 @@ public class BeaconEditActivity extends Activity {
 	private static final double DISTANCE_CUTOFF_JOIN_WARNING_METERS = 100;
 	private QRButton qrButton;
 	
-	private class BeaconEditActivityApiHandler extends ActivityApiHandler {
+	private class BeaconEditActivityApiHandler extends ActivityAPIHandler {
 		@Override
 		public Activity getActivity() {
 			return BeaconEditActivity.this;
 		}
 		
 		@Override
-		protected void handleFailure(APIHandler.APICode code, Throwable e) {
+		protected void handleFailure(APIClient.APICode code, Throwable e) {
 			BeaconEditActivity.this.onFailure(code, e);
 		}
 		
 		@Override
-		protected void handleSuccess(APIHandler.APICode code, Object response) {
+		protected void handleSuccess(APIClient.APICode code, Object response) {
 			BeaconEditActivity.this.onSuccess(code, response);
 		}	
 	}
@@ -684,7 +683,7 @@ public class BeaconEditActivity extends Activity {
 		return this;
 	}
 
-	public void onSuccess(APIHandler.APICode code, Object response) {
+	public void onSuccess(APIClient.APICode code, Object response) {
 		BeaconInfo beacon = null;
 		String messageText = null;
 		switch (code) {
@@ -719,7 +718,7 @@ public class BeaconEditActivity extends Activity {
 		this.finish();
 	}
 
-	public void onFailure(APIHandler.APICode code, Throwable e) {
+	public void onFailure(APIClient.APICode code, Throwable e) {
 		String messageText = null;
 		switch (code) {
 		case CODE_ADD:
@@ -750,7 +749,7 @@ public class BeaconEditActivity extends Activity {
 		Toast.makeText(this, messageText, Toast.LENGTH_SHORT).show();
 		currentDialog.dismiss();
 		// For CODE_LEAVE, we have started a sync; now show a dialog must be after the above dismissal
-		if (code == APIHandler.APICode.CODE_LEAVE)
+		if (code == APIClient.APICode.CODE_LEAVE)
 			currentDialog = ProgressDialog.show(this, "", "Trying to re-sync with server...");
 	}
 
