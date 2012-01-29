@@ -7,11 +7,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.google.android.maps.*;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
+import com.google.zxing.integration.android.*;
 import com.teamblobby.studybeacon.datastructures.*;
-import com.teamblobby.studybeacon.network.APIClient;
-import com.teamblobby.studybeacon.network.APIHandler;
+import com.teamblobby.studybeacon.network.*;
 import com.teamblobby.studybeacon.ui.*;
 
 import android.app.Activity;
@@ -23,15 +21,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
+import android.widget.*;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.Spinner;
-import android.widget.Toast;
 
-public class SBMapActivity extends MapActivity implements APIHandler
+public class SBMapActivity extends MapActivity 
 {
 
 	public final static int REQUESTCODE_RETURNED_FROM_MYCOURSES = 1;
@@ -62,6 +55,25 @@ public class SBMapActivity extends MapActivity implements APIHandler
 	protected TimerTask timerTask;
 	// The timer interval is in milliseconds
 	public final static long timerInterval = 10*1000;
+	
+	private class MyActivityApiHandler extends ActivityApiHandler {
+		@Override
+		public Activity getActivity() {
+			return SBMapActivity.this;
+		}
+		
+		@Override
+		protected void handleFailure(APIHandler.APICode code, Throwable e) {
+			SBMapActivity.this.onFailure(code, e);
+		}
+		
+		@Override
+		protected void handleSuccess(APIHandler.APICode code, Object response) {
+			SBMapActivity.this.onSuccess(code, response);
+		}	
+	}
+	
+	private MyActivityApiHandler myAPIHandler = new MyActivityApiHandler();
 
 	///////////////////////////////////////////////////////
 
@@ -310,7 +322,8 @@ public class SBMapActivity extends MapActivity implements APIHandler
 			queryCourses.add(selected);
 		}
 		
-		APIClient.query(LatE6Min, LatE6Max, LonE6Min, LonE6Max, queryCourses, this);
+		APIClient.query(LatE6Min, LatE6Max, LonE6Min, LonE6Max, queryCourses, myAPIHandler,
+				this);
 	}
 
 	protected void loadCourses(Bundle savedInstanceState) {
@@ -391,7 +404,7 @@ public class SBMapActivity extends MapActivity implements APIHandler
 	 *  the query and inserting it into the data structures.
 	 */
 	@SuppressWarnings("unchecked")
-	public void onSuccess(APICode code, Object result) {
+	public void onSuccess(APIHandler.APICode code, Object result) {
 		switch (code) {
 		case CODE_QUERY:
 			ArrayList<BeaconInfo> beacons = (ArrayList<BeaconInfo>) result;
@@ -418,7 +431,7 @@ public class SBMapActivity extends MapActivity implements APIHandler
 		}
 	}
 
-	public void onFailure(APICode code, Throwable t) {
+	public void onFailure(APIHandler.APICode code, Throwable t) {
 		// TODO Complain about failure
 		switch (code) {
 		case CODE_QUERY:

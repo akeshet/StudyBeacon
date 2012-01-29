@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -29,12 +30,12 @@ public class APIClient {
 	private static SimpleDateFormat df = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
 
 
-	public static void get(APIHandler handler, String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
-		client.get(handler.getActivity(), getAbsoluteUrl(url), params, responseHandler);
+	public static void get(Context context, String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+		client.get(context, getAbsoluteUrl(url), params, responseHandler);
 	}
 
-	public static void post(APIHandler handler, String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
-		client.post(handler.getActivity(), getAbsoluteUrl(url), params, responseHandler);
+	public static void post(Context context, String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+		client.post(context, getAbsoluteUrl(url), params, responseHandler);
 	}
 
 	private static String getAbsoluteUrl(String relativeUrl) {
@@ -44,8 +45,8 @@ public class APIClient {
 
 	////////////////////////////////////////////////////////////////
 	// Interface for canceling requests
-	
-	public static void cancel(APIHandler handler) {
+
+	public static void cancel(ActivityApiHandler handler) {
 		client.cancelRequests(handler.getActivity(), true);
 	}
 
@@ -94,7 +95,7 @@ public class APIClient {
 	public final static String EXPIRES_STR = "Expires";
 
 	public static void query(int LatE6Min, int LatE6Max, int LonE6Min, int LonE6Max, List<String> queryCourses,
-			final APIHandler handler) {
+			final APIHandler handler, Context context) {
 		RequestParams params = new RequestParams();
 
 		params.put(LAT_MIN_STR,Integer.toString(LatE6Min));
@@ -111,7 +112,7 @@ public class APIClient {
 
 		Log.d(TAG,"Query string " + params.toString());
 
-		get(handler, QUERY_URL, params, new QueryJsonHandler(handler));
+		get(context, QUERY_URL, params, new QueryJsonHandler(handler));
 
 	}
 
@@ -136,20 +137,14 @@ public class APIClient {
 					beacons.add(parseJSONObjBeaconInfo(response.getJSONObject(i)));
 
 				// Call the handler's function
-				handler.getActivity().runOnUiThread(new Runnable() {
-					public void run() {
-						handler.onSuccess(APIHandler.APICode.CODE_QUERY, beacons);
-					}
-				});
+				handler.onSuccess(APIHandler.APICode.CODE_QUERY, beacons);
+
 			}
 			catch (final Exception e) {
 				// TODO
 				e.printStackTrace();
-				handler.getActivity().runOnUiThread(new Runnable() {
-					public void run() {
-						handler.onFailure(APIHandler.APICode.CODE_QUERY, e);
-					}
-				});
+				handler.onFailure(APIHandler.APICode.CODE_QUERY, e);
+
 			}
 
 		}
@@ -158,11 +153,8 @@ public class APIClient {
 		public void onFailure(final Throwable arg0) {
 			// TODO Do we do this first or last?
 			super.onFailure(arg0);
-			handler.getActivity().runOnUiThread(new Runnable() {
-				public void run() {
-					handler.onFailure(APIHandler.APICode.CODE_QUERY,arg0);
-				}
-			});
+			handler.onFailure(APIHandler.APICode.CODE_QUERY,arg0);
+
 		}
 	}
 
@@ -177,7 +169,7 @@ public class APIClient {
 
 	public static final int DURATION_UNCHANGED = -1;
 
-	public static void add(BeaconInfo beacon, int duration, final APIHandler handler) {
+	public static void add(BeaconInfo beacon, int duration, final APIHandler handler, Context context) {
 		RequestParams params = new RequestParams();
 
 		params.put(COURSE_STR,    beacon.getCourseName());
@@ -192,11 +184,11 @@ public class APIClient {
 
 		Log.d(TAG,"add string " + params.toString());
 
-		post(handler, ADD_URL, params, new OneBeaconJsonHandler(handler,APICode.CODE_ADD));
+		post(context, ADD_URL, params, new OneBeaconJsonHandler(handler,APICode.CODE_ADD));
 
 	}
 
-	public static void edit(BeaconInfo beacon, int duration, final APIHandler handler) {
+	public static void edit(BeaconInfo beacon, int duration, final APIHandler handler, Context context) {
 		RequestParams params = new RequestParams();
 
 		//params.put(LAT_STR,       Integer.toString(beacon.getLoc().getLatitudeE6()));
@@ -212,7 +204,7 @@ public class APIClient {
 
 		Log.d(TAG,"edit string " + params.toString());
 
-		post(handler, EDIT_URL, params, new OneBeaconJsonHandler(handler,APICode.CODE_EDIT));
+		post(context, EDIT_URL, params, new OneBeaconJsonHandler(handler,APICode.CODE_EDIT));
 
 	}
 
@@ -223,34 +215,34 @@ public class APIClient {
 	public final static String SYNC_URL = "whereami.py";
 	public final static String GETBEACON_URL = "getbeacon.py";
 
-	public static void join(int BeaconId, final APIHandler handler) {
+	public static void join(int BeaconId, final APIHandler handler, Context context) {
 
 		RequestParams params = new RequestParams();
 
 		params.put(DEVID_STR, Global.getMyIdString());
 		params.put(BEACID_STR, Integer.toString(BeaconId));
 
-		get(handler, JOIN_URL, params, new OneBeaconJsonHandler(handler, APICode.CODE_JOIN));
+		get(context, JOIN_URL, params, new OneBeaconJsonHandler(handler, APICode.CODE_JOIN));
 
 	}
 
-	public static void sync(final APIHandler handler) {
+	public static void sync(final APIHandler handler, Context context) {
 
 		RequestParams params = new RequestParams();
 
 		params.put(DEVID_STR, Global.getMyIdString());
 
-		get(handler, SYNC_URL, params, new OneBeaconJsonHandler(handler, APICode.CODE_SYNC));
+		get(context, SYNC_URL, params, new OneBeaconJsonHandler(handler, APICode.CODE_SYNC));
 
 	}
 
-	public static void getBeacon(int BeaconId, final APIHandler handler) {
+	public static void getBeacon(int BeaconId, final APIHandler handler, Context context) {
 
 		RequestParams params = new RequestParams();
 
 		params.put(BEACID_STR, Integer.toString(BeaconId));
 
-		get(handler, GETBEACON_URL, params, new OneBeaconJsonHandler(handler, APICode.CODE_GETBEACON));
+		get(context, GETBEACON_URL, params, new OneBeaconJsonHandler(handler, APICode.CODE_GETBEACON));
 
 	}
 
@@ -258,7 +250,7 @@ public class APIClient {
 
 		protected final APIHandler handler;
 		protected final APIHandler.APICode code;
-		
+
 		public OneBeaconJsonHandler(APIHandler handler, APIHandler.APICode code) {
 			// TODO Auto-generated constructor stub
 			this.handler = handler;
@@ -276,11 +268,8 @@ public class APIClient {
 					throw new JSONException(null);
 			} catch (JSONException e) {
 				Log.d(TAG,"string onsuccess");
-				handler.getActivity().runOnUiThread(new Runnable() {
-					public void run() {
-						handler.onSuccess(code,null);
-					}
-				});
+
+				handler.onSuccess(code,null);
 			}
 		}
 
@@ -290,29 +279,20 @@ public class APIClient {
 			Log.d(TAG, "object onsuccess");
 			try {
 				final BeaconInfo beacon = parseJSONObjBeaconInfo(bObj);
-				handler.getActivity().runOnUiThread(new Runnable() {
-					public void run() {
-						handler.onSuccess(code,beacon);
-					}
-				});
+
+				handler.onSuccess(code,beacon);
 			} catch (final Exception e) {
 				e.printStackTrace();
-				handler.getActivity().runOnUiThread(new Runnable() {
-					public void run() {
-						handler.onFailure(code,e);
-					}
-				});
+				handler.onFailure(code,e);
+
 			}
 		}
 
 		@Override
 		public void onFailure(final Throwable arg0) {
 			super.onFailure(arg0);
-			handler.getActivity().runOnUiThread(new Runnable() {
-				public void run() {
-					handler.onFailure(code,arg0);
-				}
-			});
+			handler.onFailure(code,arg0);
+
 		}
 
 	};
@@ -324,14 +304,14 @@ public class APIClient {
 	public final static String LEAVE_URL = "leave.py";
 
 
-	public static void leave(int BeaconId, final APIHandler handler) {
+	public static void leave(int BeaconId, final APIHandler handler, Context context) {
 
 		RequestParams params = new RequestParams();
 
 		params.put(DEVID_STR, Global.getMyIdString());
 		params.put(BEACID_STR, Integer.toString(BeaconId));
 
-		get(handler, LEAVE_URL, params, new LeaveHTTPHandler(handler));
+		get(context, LEAVE_URL, params, new LeaveHTTPHandler(handler));
 
 	}
 
@@ -348,22 +328,16 @@ public class APIClient {
 			// TODO Auto-generated method stub
 			super.onSuccess(arg0);
 			Log.d(TAG,"Got leave success, response was "+ arg0);
-			handler.getActivity().runOnUiThread(new Runnable() {
-				public void run() {
-					handler.onSuccess(APIHandler.APICode.CODE_LEAVE,null);
-				}
-			});
+
+			handler.onSuccess(APIHandler.APICode.CODE_LEAVE,null);
+
 		}
 
 		@Override
 		public void onFailure(final Throwable arg0) {
 			// TODO Auto-generated method stub
 			super.onFailure(arg0);
-			handler.getActivity().runOnUiThread(new Runnable() {
-				public void run() {
-					handler.onFailure(APIHandler.APICode.CODE_LEAVE,arg0);
-				}
-			});
+			handler.onFailure(APIHandler.APICode.CODE_LEAVE,arg0);
 		}
 
 	}

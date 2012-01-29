@@ -12,6 +12,7 @@ import com.google.zxing.integration.android.IntentResult;
 import com.teamblobby.studybeacon.datastructures.*;
 import com.teamblobby.studybeacon.network.APIClient;
 import com.teamblobby.studybeacon.network.APIHandler;
+import com.teamblobby.studybeacon.network.ActivityApiHandler;
 import com.teamblobby.studybeacon.ui.QRButton;
 
 import android.accounts.Account;
@@ -20,6 +21,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
@@ -34,7 +36,7 @@ import android.telephony.TelephonyManager;
 import android.text.util.*;
 
 
-public class BeaconEditActivity extends Activity implements APIHandler {
+public class BeaconEditActivity extends Activity {
 
 	private static final String SMS_URI_PREFIX = "smsto:";
 	private static final int DEFAULT_WORKINGON_SPINNER_POSITION = 0;
@@ -84,6 +86,25 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 	private String expiresTimeFormatted;
 	private static final double DISTANCE_CUTOFF_JOIN_WARNING_METERS = 100;
 	private QRButton qrButton;
+	
+	private class BeaconEditActivityApiHandler extends ActivityApiHandler {
+		@Override
+		public Activity getActivity() {
+			return BeaconEditActivity.this;
+		}
+		
+		@Override
+		protected void handleFailure(APIHandler.APICode code, Throwable e) {
+			BeaconEditActivity.this.onFailure(code, e);
+		}
+		
+		@Override
+		protected void handleSuccess(APIHandler.APICode code, Object response) {
+			BeaconEditActivity.this.onSuccess(code, response);
+		}	
+	}
+	
+	private BeaconEditActivityApiHandler myAPIHandler = new BeaconEditActivityApiHandler();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -328,7 +349,8 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 			}
 			currentDialog = ProgressDialog.show(mActivity, "", "Creating beacon...");
 			// needs working on from fields
-			APIClient.add(mActivity.newBeaconFromFields(userLocator.getGeoPoint()), mActivity.newDurationFromField(), mActivity);
+			APIClient.add(mActivity.newBeaconFromFields(userLocator.getGeoPoint()), mActivity.newDurationFromField(),
+					myAPIHandler, mActivity);
 		}
 	}
 
@@ -408,7 +430,8 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		beaconActionButton.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
-				APIClient.edit(editBeaconFromFields(), editDurationFromField(), BeaconEditActivity.this);
+				APIClient.edit(editBeaconFromFields(), editDurationFromField(), myAPIHandler,
+						BeaconEditActivity.this);
 				currentDialog = ProgressDialog.show(BeaconEditActivity.this, "", "Updating beacon...");
 			}
 		});
@@ -420,7 +443,8 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 
 			public void onClick(View v) {
 				if (mBeacon != null){
-					APIClient.leave(mBeacon.getBeaconId(), BeaconEditActivity.this);
+					APIClient.leave(mBeacon.getBeaconId(), myAPIHandler,
+							BeaconEditActivity.this);
 					currentDialog = ProgressDialog.show(BeaconEditActivity.this, "", "Leaving beacon...");
 				}else
 					Toast.makeText(BeaconEditActivity.this,
@@ -546,7 +570,8 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 			}
 
 			private void joinBeacon() {
-				APIClient.join(mBeacon.getBeaconId(), BeaconEditActivity.this);
+				APIClient.join(mBeacon.getBeaconId(), myAPIHandler,
+						BeaconEditActivity.this);
 				currentDialog = ProgressDialog.show(BeaconEditActivity.this, "", "Joining beacon...");
 			}
 		});
@@ -658,7 +683,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		return this;
 	}
 
-	public void onSuccess(APICode code, Object response) {
+	public void onSuccess(APIHandler.APICode code, Object response) {
 		BeaconInfo beacon = null;
 		String messageText = null;
 		switch (code) {
@@ -693,7 +718,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		this.finish();
 	}
 
-	public void onFailure(APICode code, Throwable e) {
+	public void onFailure(APIHandler.APICode code, Throwable e) {
 		String messageText = null;
 		switch (code) {
 		case CODE_ADD:
@@ -712,7 +737,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 			break;
 		case CODE_LEAVE:
 			messageText = new String("Failed to leave beacon -- trying to re-sync with server");
-			APIClient.sync(this);
+			APIClient.sync(myAPIHandler, this);
 			break;
 		case CODE_SYNC:
 			messageText = new String("Failed to re-sync with server.");
@@ -724,7 +749,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		Toast.makeText(this, messageText, Toast.LENGTH_SHORT).show();
 		currentDialog.dismiss();
 		// For CODE_LEAVE, we have started a sync; now show a dialog must be after the above dismissal
-		if (code == APICode.CODE_LEAVE)
+		if (code == APIHandler.APICode.CODE_LEAVE)
 			currentDialog = ProgressDialog.show(this, "", "Trying to re-sync with server...");
 	}
 

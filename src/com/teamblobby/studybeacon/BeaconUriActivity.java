@@ -1,8 +1,10 @@
 package com.teamblobby.studybeacon;
 
+
 import com.teamblobby.studybeacon.datastructures.BeaconInfo;
 import com.teamblobby.studybeacon.network.APIClient;
 import com.teamblobby.studybeacon.network.APIHandler;
+import com.teamblobby.studybeacon.network.ActivityApiHandler;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -13,13 +15,33 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-public class BeaconUriActivity extends Activity implements APIHandler{
+public class BeaconUriActivity extends Activity {
 	
 	public static final String EXTRA_AUTOJOIN = "com.teamblobby.studybeacon.BeaconUri.Activity.AUTO_JOIN";
 	private static final String TAG = "BeaconUriActivity";
 	private int beaconId = -1;
 	private ProgressDialog dialog;
 	private boolean autoJoin;
+	
+	private class MyActivityApiHandler extends ActivityApiHandler {
+		@Override
+		public Activity getActivity() {
+			return BeaconUriActivity.this;
+		}
+		
+		@Override
+		protected void handleFailure(APIHandler.APICode code, Throwable e) {
+			BeaconUriActivity.this.onFailure(code, e);
+		}
+		
+		@Override
+		protected void handleSuccess(APIHandler.APICode code, Object response) {
+			BeaconUriActivity.this.onSuccess(code, response);
+		}	
+	}
+	
+	private MyActivityApiHandler myAPIHandler = new MyActivityApiHandler();
+
 
 	/** Called when the activity is first created. */
 	@Override
@@ -39,11 +61,11 @@ public class BeaconUriActivity extends Activity implements APIHandler{
 	    	if ( autoJoin ){
 	    		dialog = ProgressDialog.show(this, "", "Joining beacon...");
 	    		Log.d(TAG,"sending api client call to join");
-	    		APIClient.join(beaconId, this);
+	    		APIClient.join(beaconId, myAPIHandler, this);
 	    	} else {
 	    		dialog = ProgressDialog.show(this, "", "Getting beacon data...");
 	    		Log.d(TAG,"sending api client call to getbeacon");
-	    		APIClient.getBeacon(beaconId, this);
+	    		APIClient.getBeacon(beaconId, myAPIHandler, this);
 	    	}
 	    	
 	    	thingsHappening = true;
@@ -63,7 +85,7 @@ public class BeaconUriActivity extends Activity implements APIHandler{
 		return this;
 	}
 
-	public void onSuccess(APICode code, Object response) {
+	public void onSuccess(APIHandler.APICode code, Object response) {
 		dialog.dismiss();
 		switch (code) {
 		case CODE_GETBEACON:
@@ -89,7 +111,7 @@ public class BeaconUriActivity extends Activity implements APIHandler{
 		finish();
 	}
 
-	public void onFailure(APICode code, Throwable e) {
+	public void onFailure(APIHandler.APICode code, Throwable e) {
 		dialog.dismiss();
 		Toast.makeText(this, "Problem communicating with server.", Toast.LENGTH_SHORT).show();
 		finish();
