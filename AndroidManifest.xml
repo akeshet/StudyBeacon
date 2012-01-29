@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    
+
     <application
         android:name=".Global"
         android:icon="@drawable/ic_launcher"
@@ -37,13 +37,20 @@
         <activity
             android:name=".BeaconEditActivity"
             android:label="@string/app_name"
-            android:windowSoftInputMode="stateHidden"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" >
         </activity>
-        <activity android:name=".CourseResourceActivity"
+        <activity
+            android:name=".CourseResourceActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
+
+        <service android:name="BeaconExpirationService" >
+        	<intent-filter>
+        	    <action android:name="com.teamblobby.studybeacon.BeaconExpirationService"/>
+        	</intent-filter>
+        </service>
     </application>
 
 </manifest>

@@ -123,7 +123,7 @@ public class Global extends Application {
 		}
 	}
 	
-	private static final int NOTIFICATION_BEACON_RUNNING = 1;
+	public static final int NOTIFICATION_BEACON_RUNNING = 1;
 	
 	private static void showBeaconRunningNotification() {
 		NotificationManager manager = (NotificationManager) 
@@ -151,6 +151,9 @@ public class Global extends Application {
 		
 		
 		manager.notify(NOTIFICATION_BEACON_RUNNING, notification);
+		
+		//BeaconExpirationService service = new BeaconExpirationService();
+		
 	}
 	
 	private static void clearBeaconRunningNotification() {
