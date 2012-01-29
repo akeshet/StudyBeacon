@@ -22,6 +22,7 @@
     <com.teamblobby.studybeacon.ui.QRButton
         android:id="@+id/qrbutton"
         android:layout_width="@dimen/iconSize"
-        android:layout_height="@dimen/iconSize"/>
+        android:layout_height="@dimen/iconSize"
+        android:visibility="gone"/>
         
 </LinearLayout>
