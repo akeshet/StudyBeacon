@@ -7,9 +7,12 @@ import java.util.Date;
 import java.util.List;
 
 import com.google.android.maps.*;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.teamblobby.studybeacon.datastructures.*;
 import com.teamblobby.studybeacon.network.APIClient;
 import com.teamblobby.studybeacon.network.APIHandler;
+import com.teamblobby.studybeacon.ui.QRButton;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -79,8 +82,8 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 	private DateFormat df = DateFormat.getTimeInstance(DateFormat.SHORT);
 	protected boolean expiresEdited = false;
 	private String expiresTimeFormatted;
-	
 	private static final double DISTANCE_CUTOFF_JOIN_WARNING_METERS = 100;
+	private QRButton qrButton;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -114,7 +117,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 			setUpForNew(savedInstanceState,startingIntent);
 			break;
 		}
-
+		
 	}
 
 	private void loadUIEls() {
@@ -131,7 +134,10 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		beaconActionButton = (Button) findViewById(R.id.beaconActionButton);
 		beaconSecondaryActionButton = (Button) findViewById(R.id.beaconSecondaryActionButton);
 		locationTV = (TextView) 	  findViewById(R.id.locationTV);
-
+		qrButton = (QRButton) findViewById(R.id.qrbutton);
+		
+		qrButton.updateButton(Global.getCurrentBeacon());
+		
 		// Set the spinners up
 		courseAdapter =
 				new ArrayAdapter<CourseInfo>(this,
@@ -447,6 +453,16 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		TextClickToEdit emailC2E = convertToTextClickToEdit(emailLayout, text, false);
 		Linkify.addLinks(emailC2E.getTextView(), Linkify.EMAIL_ADDRESSES);
 
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+		if (scanResult != null) {
+			qrButton.handleResult(scanResult);
+		}
 	}
 
 	private void setUpForView(Bundle savedInstanceState, Intent startingIntent) {
