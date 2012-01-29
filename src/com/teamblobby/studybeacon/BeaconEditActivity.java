@@ -358,6 +358,21 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		
 
 		mBeacon = Global.getCurrentBeacon();
+		String errorText = null;
+		// Check to make sure we're actually at a good beacon
+		if (mBeacon == null)
+			errorText = new String("Not at a beacon");
+		else if (mBeacon.getExpires().before(new Date()))
+			errorText = new String("Beacon already expired");
+		
+		if (errorText != null) {
+			Toast.makeText(this, "Beacon already expired", Toast.LENGTH_SHORT).show();
+			Global.setCurrentBeacon(null);
+			Global.updateBeaconRunningNotification();
+			finish();
+			return;
+		}
+		
 		loadBeaconData(); // do this first
 
 		// Don't let the class be editable
