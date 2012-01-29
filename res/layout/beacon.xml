@@ -117,6 +117,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|right"
                     android:layout_marginRight="10dip"
+                    android:layout_marginBottom="2dip"
                     android:background="@null"
                     android:onClick="enterMyNumber"
                     android:src="@drawable/insertcontact" />
@@ -139,6 +140,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|right"
                     android:layout_marginRight="10dip"
+                    android:layout_marginBottom="2dip"
                     android:background="@null"
                     android:onClick="enterMyEmail"
                     android:src="@drawable/insertcontact" />
