@@ -14,6 +14,7 @@ import com.teamblobby.studybeacon.network.APIClient;
 import com.teamblobby.studybeacon.network.APIHandler;
 import com.teamblobby.studybeacon.network.ActivityApiHandler;
 import com.teamblobby.studybeacon.ui.QRButton;
+import com.teamblobby.studybeacon.ui.TextClickToEdit;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;

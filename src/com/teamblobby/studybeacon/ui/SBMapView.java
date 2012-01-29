@@ -2,7 +2,7 @@
  * This follows closely MITMapView
  */
 
-package com.teamblobby.studybeacon;
+package com.teamblobby.studybeacon.ui;
 
 import java.util.List;
 
@@ -14,6 +14,10 @@ import android.view.MotionEvent;
 import android.view.GestureDetector.SimpleOnGestureListener;
 
 import com.google.android.maps.*;
+import com.teamblobby.studybeacon.Global;
+import com.teamblobby.studybeacon.R;
+import com.teamblobby.studybeacon.SBMapActivity;
+import com.teamblobby.studybeacon.R.integer;
 
 public class SBMapView extends MapView {
 
@@ -23,7 +27,7 @@ public class SBMapView extends MapView {
 	boolean mPinchZoom = false;
 	int mLastZoomDrawn = -1;
 
-	boolean tapped_overlay = false;
+	private boolean tapped_overlay = false;
 
 	private MyLocationOverlay myLocOverlay;
 
@@ -165,8 +169,8 @@ public class SBMapView extends MapView {
         		if (mTapDetector.onSingleTapUp(ev)) removeAllViews();
         	}
         	*/
-        	if (tapped_overlay) {
-        		tapped_overlay = false;  // ignore and reset flag
+        	if (isTapped_overlay()) {
+        		setTapped_overlay(false);  // ignore and reset flag
         	} else {
         		if (mTapDetector.onSingleTapUp(ev)) {
         			removeAllViews();  // remove bubble bcos non-overlay was tapped
@@ -193,6 +197,14 @@ public class SBMapView extends MapView {
 		// TODO Auto-generated method stub
 		super.onRestoreInstanceState(state);
 		Log.d(TAG,"onRestoreInstanceState()");
+	}
+
+	public boolean isTapped_overlay() {
+		return tapped_overlay;
+	}
+
+	public void setTapped_overlay(boolean tapped_overlay) {
+		this.tapped_overlay = tapped_overlay;
 	}
 
 }

@@ -4,7 +4,7 @@
  * 
  */
 
-package com.teamblobby.studybeacon;
+package com.teamblobby.studybeacon.ui;
 
 import android.content.Context;
 import android.view.Gravity;
@@ -15,6 +15,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.maps.OverlayItem;
+import com.teamblobby.studybeacon.R;
+import com.teamblobby.studybeacon.R.id;
+import com.teamblobby.studybeacon.R.layout;
 
 public class BalloonOverlayView extends FrameLayout {
 
