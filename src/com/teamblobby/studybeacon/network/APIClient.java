@@ -261,20 +261,26 @@ public class APIClient {
 		// This is applicable for sync and getbeacon. It will return a null object.
 		@Override
 		public void onSuccess(String arg0) {
-			// TODO Auto-generated method stub
 			super.onSuccess(arg0);
-			handler.getActivity().runOnUiThread(new Runnable() {
-				public void run() {
-					handler.onSuccess(code,null);
-				}
-			});
+
+			try{
+				JSONObject jObj = new JSONObject(arg0);
+				if ( jObj.equals(JSONObject.NULL) )
+					throw new JSONException(null);
+			} catch (JSONException e) {
+				Log.d(TAG,"string onsuccess");
+				handler.getActivity().runOnUiThread(new Runnable() {
+					public void run() {
+						handler.onSuccess(code,null);
+					}
+				});
+			}
 		}
 
 		@Override
 		public void onSuccess(JSONObject bObj) {
-			// TODO Auto-generated method stub
 			super.onSuccess(bObj);
-
+			Log.d(TAG, "object onsuccess");
 			try {
 				final BeaconInfo beacon = parseJSONObjBeaconInfo(bObj);
 				handler.getActivity().runOnUiThread(new Runnable() {
@@ -283,7 +289,6 @@ public class APIClient {
 					}
 				});
 			} catch (final Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				handler.getActivity().runOnUiThread(new Runnable() {
 					public void run() {
@@ -295,7 +300,6 @@ public class APIClient {
 
 		@Override
 		public void onFailure(final Throwable arg0) {
-			// TODO Auto-generated method stub
 			super.onFailure(arg0);
 			handler.getActivity().runOnUiThread(new Runnable() {
 				public void run() {

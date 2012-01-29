@@ -45,11 +45,20 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
+        <activity android:name="BeaconUriActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="beacon" />
+            </intent-filter>
+        </activity>
 
         <service android:name="BeaconExpirationService" >
-        	<intent-filter>
-        	    <action android:name="com.teamblobby.studybeacon.BeaconExpirationService"/>
-        	</intent-filter>
+            <intent-filter>
+                <action android:name="com.teamblobby.studybeacon.BeaconExpirationService" />
+            </intent-filter>
         </service>
     </application>
 
