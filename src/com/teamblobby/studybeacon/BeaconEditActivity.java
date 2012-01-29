@@ -1,6 +1,8 @@
 package com.teamblobby.studybeacon;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -84,7 +86,8 @@ public class BeaconEditActivity extends Activity {
 	private DateFormat df = DateFormat.getTimeInstance(DateFormat.SHORT);
 	protected boolean expiresEdited = false;
 	private String expiresTimeFormatted;
-	private static final double DISTANCE_CUTOFF_JOIN_WARNING_METERS = 100;
+	private static final double DISTANCE_CUTOFF_JOIN_WARNING_METERS = 100.;
+	private double distanceToBeacon = 0.;
 	private QRButton qrButton;
 	
 	private class MyApiHandler extends ActivityAPIHandler {
@@ -369,9 +372,39 @@ public class BeaconEditActivity extends Activity {
 	
 	private Runnable locationAcquiredCallback = new Runnable() {
 		public void run() {
-			locationTV.setText(R.string.locationAcquired);
+			switch (mode) {
+			case MODE_NEW:
+				locationTV.setText(R.string.locationAcquired);
+				break;
+			case MODE_VIEW:
+				// Calculate the distance to the beacon
+				Location userLocation = userLocator.getLocation(); // This can not fail, since we are being called
+				// TODO Can we ever get here without a beacon?
+				GeoPoint beaconGeoPoint = mBeacon.getLoc();
+				Location beaconLoc = new Location("dummy provider");
+				beaconLoc.setLongitude(beaconGeoPoint.getLongitudeE6()/1000000.0);
+				beaconLoc.setLatitude(beaconGeoPoint.getLatitudeE6()/1000000.0);
+				distanceToBeacon = userLocation.distanceTo(beaconLoc);
+				String distStr = distanceFormat(distanceToBeacon);
+				locationTV.setText("Approximately " + distStr + " away.");
+				break;
+			default:
+				// This should never happen.
+			}
+			
 		}
 	};
+
+	protected String distanceFormat(double dist) {
+		// I really only want one digit of precision on the answer.
+		double nDig = Math.floor(Math.log10(dist));
+		double roundDist = Math.pow(10, nDig)*Math.round(dist * Math.pow(10, -nDig));
+		
+		if (roundDist <1000) {
+			return (new DecimalFormat("#")).format(roundDist) + "m";
+		} else
+			return (new DecimalFormat("#")).format(Math.round(roundDist/1000.)) + "km";
+	}
 
 	private void setUpForNew(Bundle savedInstanceState, Intent startingIntent) {
 		// TODO -- Add logic if already at a beacon
@@ -391,8 +424,6 @@ public class BeaconEditActivity extends Activity {
 		userLocator = new UserLocator(locationAcquiredCallback);
 		userLocator.startLocating();
 	}
-	
-	
 
 	protected final class NewBeaconClickListener implements OnClickListener {
 
@@ -572,7 +603,7 @@ public class BeaconEditActivity extends Activity {
 		//expiresTimeTV.setVisibility(View.VISIBLE);
 		expiresTimeTV = convertToTextClickToEdit(expiresSpinner,expiresTimeFormatted,true);
 		
-		locationTV.setVisibility(View.GONE);
+		locationTV.setVisibility(View.VISIBLE);
 
 		EditText ets[] = {phone, email, details};
 		for (EditText e : ets) {

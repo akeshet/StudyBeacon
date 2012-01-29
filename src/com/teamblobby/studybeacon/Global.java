@@ -136,7 +136,10 @@ public class Global extends Application {
 		Intent intent = new Intent(application, BeaconEditActivity.class);
 		intent.setAction(BeaconEditActivity.ACTION_EDIT);
 
-		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+				| Intent.FLAG_ACTIVITY_NEW_TASK
+				| Intent.FLAG_ACTIVITY_MULTIPLE_TASK
+				| Intent.FLAG_ACTIVITY_SINGLE_TOP );
 
 		
 		PendingIntent pendingIntent = PendingIntent.getActivity(application, 0, intent, 0);
