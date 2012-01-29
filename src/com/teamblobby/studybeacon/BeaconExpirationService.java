@@ -1,58 +1,98 @@
 package com.teamblobby.studybeacon;
 
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import org.json.JSONObject;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.teamblobby.studybeacon.datastructures.*;
 import com.teamblobby.studybeacon.network.*;
 
 public class BeaconExpirationService extends Service {
-	
+
+
 	private static final String TAG = BeaconExpirationService.class.getSimpleName();
 	private static final long TIMER_POLL_PERIOD_MS = 1000*60*10; // 10 minute interval
-	
+
 	public final Binder mBinder = new Binder() {
 		BeaconExpirationService getService() {
 			return BeaconExpirationService.this;
 		}
 	};
-	
+
 	@Override
 	public IBinder onBind(Intent arg0) {
 		return mBinder;
 	}
-	
+
+	private class MyApiHandler implements APIHandler {
+		public void onFailure(APICode code, Throwable e) {
+			if (code==APICode.CODE_SYNC) {
+				Log.e(TAG, "Failure when syncing from server.");
+			}
+			checkBeaconExpiration();
+		}
+
+		public void onSuccess(APICode code, Object response) {
+			if (code == APICode.CODE_SYNC) {
+				if (! (response instanceof BeaconInfo) ) {
+					Log.e(TAG, "Received non-beaconinfo response in onSuccess.");
+				} 
+				else {
+					BeaconInfo beacon = (BeaconInfo) response;
+					Global.setCurrentBeacon(beacon);
+					checkBeaconExpiration();
+				}
+			}
+		}
+	}
+
+	MyApiHandler myApiHandler = new MyApiHandler();
+
+	private void checkBeaconExpiration() {
+		BeaconInfo beacon = Global.getCurrentBeacon();
+		if (beacon==null) {
+			this.stopSelf();
+			return;
+		}
+		if (beacon.getExpires().before(new Date())) {
+			Global.setCurrentBeacon(null);
+			Global.updateBeaconRunningNotification();
+			this.stopSelf();
+		}
+	}
+
 	private class CheckExpiration extends TimerTask {
 		@Override
 		public void run() {
 			if (Global.atBeacon()) {
-				
+				APIClient.sync(myApiHandler, Global.application.getApplicationContext());
 			}
 			else {
 				timer.cancel();
 				BeaconExpirationService.this.stopSelf();
 			}
 		}
-		
+
 	}
-	
+
 	Timer timer;
-	
+
 	@Override
 	public void onCreate() {
-		super.onCreate();
-		
+			super.onCreate();
+
 		timer = new Timer();
 		timer.scheduleAtFixedRate(new CheckExpiration(), TIMER_POLL_PERIOD_MS, 
 				TIMER_POLL_PERIOD_MS);
-		
+
 	}
 	
-	
-
 }
