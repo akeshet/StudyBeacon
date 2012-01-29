@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import com.google.android.maps.*;
 import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.teamblobby.studybeacon.datastructures.*;
 import com.teamblobby.studybeacon.network.APIClient;
 import com.teamblobby.studybeacon.network.APIHandler;
@@ -51,6 +52,8 @@ public class SBMapActivity extends MapActivity implements APIHandler
 	private List<String> courses;
 
 	protected int filterLastSelected = 0;
+
+	private QRButton qrButton;
 	
 	///////////////////////////////////////////////////////
 
@@ -73,6 +76,7 @@ public class SBMapActivity extends MapActivity implements APIHandler
 		});
 
 		beaconButton = (ImageButton) findViewById(R.id.newBeaconButton);
+		qrButton = (QRButton) findViewById(R.id.qrbutton);
 		
 		this.loadCourses(savedInstanceState);
 		// Must come after loadCourses
@@ -101,7 +105,7 @@ public class SBMapActivity extends MapActivity implements APIHandler
 		// TODO -- Do we want to do this?
 		startQuery();
 		
-		((QRButton) findViewById(R.id.qrbutton)).updateButton(Global.getCurrentBeacon());
+		qrButton.updateButton(Global.getCurrentBeacon());
 	}
 
 	@Override
@@ -129,6 +133,11 @@ public class SBMapActivity extends MapActivity implements APIHandler
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+		if (scanResult != null) {
+			qrButton.handleResult(scanResult);
+		}
+		
 		switch (requestCode) {
 		case REQUESTCODE_RETURNED_FROM_MYCOURSES:
 			if (resultCode == MyCoursesActivity.RESULT_COURSES_CHANGED) {
@@ -140,6 +149,7 @@ public class SBMapActivity extends MapActivity implements APIHandler
 		
 		case REQUESTCODE_RETURNED_FROM_BEACON:
 			updateBeaconButton();
+			break;
 		}
 	}
 	

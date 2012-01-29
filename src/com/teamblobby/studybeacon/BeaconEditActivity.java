@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.google.android.maps.*;
 import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.teamblobby.studybeacon.datastructures.*;
 import com.teamblobby.studybeacon.network.APIClient;
 import com.teamblobby.studybeacon.network.APIHandler;
@@ -79,6 +80,7 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 	private DateFormat df = DateFormat.getTimeInstance(DateFormat.SHORT);
 	protected boolean expiresEdited = false;
 	private String expiresTimeFormatted;
+	private QRButton qrButton;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -113,7 +115,6 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 			break;
 		}
 		
-		((QRButton) findViewById(R.id.qrbutton)).updateButton(Global.getCurrentBeacon());
 	}
 
 	private void loadUIEls() {
@@ -129,7 +130,10 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		details          = (EditText) findViewById(R.id.detailsEdit);
 		beaconActionButton = (Button) findViewById(R.id.beaconActionButton);
 		beaconSecondaryActionButton = (Button) findViewById(R.id.beaconSecondaryActionButton);
-
+		qrButton = (QRButton) findViewById(R.id.qrbutton);
+		
+		qrButton.updateButton(Global.getCurrentBeacon());
+		
 		// Set the spinners up
 		courseAdapter =
 				new ArrayAdapter<CourseInfo>(this,
@@ -418,6 +422,16 @@ public class BeaconEditActivity extends Activity implements APIHandler {
 		TextClickToEdit emailC2E = convertToTextClickToEdit(emailLayout, text, false);
 		Linkify.addLinks(emailC2E.getTextView(), Linkify.EMAIL_ADDRESSES);
 
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+		if (scanResult != null) {
+			qrButton.handleResult(scanResult);
+		}
 	}
 
 	private void setUpForView(Bundle savedInstanceState, Intent startingIntent) {
