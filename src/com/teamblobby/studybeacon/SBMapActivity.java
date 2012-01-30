@@ -171,6 +171,12 @@ public class SBMapActivity extends MapActivity
 		stopTimer();
 	}
 
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		APIClient.cancel(this);
+	}
+
 	private void setUpTimer() {
 		timer = new Timer();
 	}

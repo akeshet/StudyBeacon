@@ -44,8 +44,8 @@ public class APIClient {
 	////////////////////////////////////////////////////////////////
 	// Interface for canceling requests
 
-	public static void cancel(ActivityAPIHandler handler) {
-		client.cancelRequests(handler.getActivity(), true);
+	public static void cancel(Context c) {
+		client.cancelRequests(c, true);
 	}
 
 	public static enum APICode {CODE_QUERY, CODE_ADD, CODE_JOIN, CODE_LEAVE, CODE_EDIT, CODE_SYNC, CODE_GETBEACON}

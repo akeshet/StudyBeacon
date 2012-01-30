@@ -206,6 +206,12 @@ public class BeaconEditActivity extends Activity {
 		
 	}
 
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		APIClient.cancel(this);
+	}
+
 	private void loadUIEls() {
 		beaconTitleTV    = (TextView) findViewById(R.id.titleText);
 		courseSpinner    = (Spinner)  findViewById(R.id.courseSpinner);
@@ -806,7 +812,7 @@ public class BeaconEditActivity extends Activity {
 				// make cancelable
 				true, new DialogInterface.OnCancelListener() {
 			public void onCancel(DialogInterface dialog) {
-				APIClient.cancel(myAPIHandler);
+				APIClient.cancel(BeaconEditActivity.this);
 			}
 		});
 	}
