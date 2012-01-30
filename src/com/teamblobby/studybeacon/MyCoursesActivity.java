@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,9 +48,29 @@ public class MyCoursesActivity extends ListActivity {
      	
     	myListView.setAdapter(this.adapter);
     	
+    	doTutorial();
     }
     
-    protected class CourseAdapter extends ArrayAdapter<CourseInfo>{
+    private void doTutorial() {
+		switch (Global.getTutorialStep()) {
+		case 1:
+			// make message
+			(new AlertDialog.Builder(this)).setMessage("Your list of subjects is empty, tap Add Subjects and browse for a subject.").setTitle("My Subject List")
+			.setCancelable(false).setPositiveButton(R.string.OK,
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+						}
+					}).show();
+			// increment
+			Global.incrementTutorialStep();
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	protected class CourseAdapter extends ArrayAdapter<CourseInfo>{
 
 		public CourseAdapter(Context context, int resource,
 				int textViewResourceId, List<CourseInfo> courseInfos) {
