@@ -127,6 +127,7 @@ public class BeaconItemizedOverlay extends ItemizedOverlay {
 	}
 
 	public void cleanUntrackedCourseOverlays(List<String> trackedCourses) {
+		boolean dirtied = false;
 		Iterator<BeaconOverlayItem> iter = mOverlays.iterator();
 		while (iter.hasNext()) {
 			BeaconOverlayItem item = iter.next();
@@ -142,7 +143,13 @@ public class BeaconItemizedOverlay extends ItemizedOverlay {
 					}
 				}
 				iter.remove();
+				dirtied = true;
 			}
+		}
+
+		if (dirtied) {
+			Log.d(TAG,"Dirtied in cleanUntrackedCourseOverlays");
+			populate();
 		}
 	}
 
