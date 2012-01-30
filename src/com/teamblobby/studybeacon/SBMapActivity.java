@@ -140,19 +140,12 @@ public class SBMapActivity extends MapActivity
 	}
 
 	@Override
-	protected void onStart() {
-		// TODO Auto-generated method stub
-		super.onStart();
-
-		checkFirstRun();
-
-	}
-
-	@Override
 	public void onResume() {
 		super.onResume();
 		Log.d(TAG,"onResume()");
 		mapView.resume();
+
+		doTutorial();
 
 		updateBeaconButton();
 		// TODO -- Do we want to do this?
@@ -296,33 +289,44 @@ public class SBMapActivity extends MapActivity
 		startQuery();
 	}
 
-	private void checkFirstRun() {
-		if ( Global.isFirstTimeAtActivity(TAG))
-			(new AlertDialog.Builder(this)).setMessage(R.string.welcomeMapMessage)
-			.setCancelable(false).setPositiveButton(R.string.addCourses,
+	private void doTutorial() {
+		switch ( Global.getTutorialStep() ) {
+		case 0:
+			(new AlertDialog.Builder(this)).setMessage(R.string.welcomeMapMessage).setTitle("Welcome to StudyBeacon!")
+			.setCancelable(true).setPositiveButton(R.string.OK,
 					new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
-					Intent i = new Intent(SBMapActivity.this, CourseResourceActivity.class);
-					startActivityForResult(i, REQUESTCODE_RETURNED_FROM_MYCOURSES);
+				}
+			})
+			.setNegativeButton("Skip Tutorial", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					Global.skipTutorial();
+				}
+			}).show();
+			//increment
+			Global.incrementTutorialStep();
+			break;
+		case 3:
 
+			(new AlertDialog.Builder(SBMapActivity.this)).setMessage(R.string.createBeaconTutorial1).setTitle("Finding a StudyBeacon")
+			.setCancelable(false).setPositiveButton(R.string.OK,
+					new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
 
-					(new AlertDialog.Builder(SBMapActivity.this)).setMessage(R.string.createBeaconTutorial1)
+					(new AlertDialog.Builder(SBMapActivity.this)).setMessage(R.string.createBeaconTutorial2).setTitle("Joining a StudyBeacon")
 					.setCancelable(false).setPositiveButton(R.string.OK,
 							new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
-
-							(new AlertDialog.Builder(SBMapActivity.this)).setMessage(R.string.createBeaconTutorial2)
-							.setCancelable(false).setPositiveButton(R.string.OK,
-									new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog, int which) {
-								}
-							}).show();
-
 						}
 					}).show();
 
 				}
 			}).show();
+			//increment
+			Global.incrementTutorialStep();
+		default:
+			break;
+		}
 	}
 
 	protected Boolean wantAllCourses() {

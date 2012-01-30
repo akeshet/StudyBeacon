@@ -20,7 +20,7 @@ public class Global extends Application {
 
 	public final static String COURSES_STR = "courses";
 
-	private static final String FIRST_MAP_STR = "com.teamblobby.studybeacon.firstTimeAtActivity.";
+	private static final String TUTORIAL_STEP = "com.teamblobby.studybeacon.tutorialStep";
 
 	// Shared Data
 	public static SharedPreferences prefs;
@@ -112,17 +112,22 @@ public class Global extends Application {
 		return BeaconInfoSqlite.atBeacon();
 	}
 
-	public static boolean isFirstTimeAtActivity(String activityString) {
-		if ( prefs.contains(FIRST_MAP_STR + activityString) ) {
-			return false;
-		} else {
-			Editor editor = prefs.edit();
-			editor.putBoolean(FIRST_MAP_STR + activityString, false);
-			editor.commit();
-			return true;
-		}
+	public static int getTutorialStep() {
+		return prefs.getInt(TUTORIAL_STEP, 0);
 	}
-	
+
+	public static void incrementTutorialStep() {
+		Editor editor = prefs.edit();
+		editor.putInt(TUTORIAL_STEP, getTutorialStep()+1);
+		editor.apply();
+	}
+
+	public static void skipTutorial() {
+		Editor editor = prefs.edit();
+		editor.putInt(TUTORIAL_STEP, -1);
+		editor.apply();
+	}
+
 	public static final int NOTIFICATION_BEACON_RUNNING = 1;
 	
 	private static void showBeaconRunningNotification() {

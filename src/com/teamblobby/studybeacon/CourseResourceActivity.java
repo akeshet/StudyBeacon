@@ -101,7 +101,7 @@ public class CourseResourceActivity extends ListActivity {
 		});
 
 		if ((intentExtras != null) && intentExtras.containsKey("category"))
-			checkFirstRun();
+			doTutorial();
 	}
 	
 	private void setStarredCourses() {
@@ -251,18 +251,26 @@ public class CourseResourceActivity extends ListActivity {
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
-	private void checkFirstRun() {
-		if ( !Global.isFirstTimeAtActivity(TAG) )
-			return;
+	private void doTutorial() {
+		//if ( !Global.isFirstTimeAtActivity(TAG) )
+		//	return;
 
-		(new AlertDialog.Builder(this)).setMessage(R.string.welcomeCourseMessage)
-		.setCancelable(false).setPositiveButton(R.string.OK,
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-					}
-				}).show();
+		switch (Global.getTutorialStep()) {
+		case 2:
+			(new AlertDialog.Builder(this)).setMessage(R.string.welcomeCourseMessage).setTitle("Adding a Subject")
+			.setCancelable(false).setPositiveButton(R.string.OK,
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+						}
+					}).show();
+			//increment tutorial
+			Global.incrementTutorialStep();
+			break;
+
+		default:
+			break;
+		}
 
 	}
-    
-    
+
 }
