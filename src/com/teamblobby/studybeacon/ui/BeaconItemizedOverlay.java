@@ -48,6 +48,7 @@ public class BeaconItemizedOverlay extends ItemizedOverlay {
 		this.mapView = mv;
 		this.mc = mv.getController();
 		mOverlays = new ArrayList<BeaconOverlayItem>();
+		populate();
 	}
 
 	public void setCourseToDisplay(String courseToDisplay) {
@@ -70,6 +71,7 @@ public class BeaconItemizedOverlay extends ItemizedOverlay {
 				mapView.removeView(balloonView);
 				balloonVisible = false;
 				selectedIndex = -1;
+				setLastFocusedIndex(selectedIndex);
 			}
 		}
 	}
@@ -89,7 +91,6 @@ public class BeaconItemizedOverlay extends ItemizedOverlay {
 		if (foundOverlay == null) {
 			if (beacon.getVisitors() > 0) {
 				// ADD
-				Log.d(TAG,"add");
 				BeaconOverlayItem newOverlay = new BeaconOverlayItem(beacon);
 				newOverlay.setDisplayed(courseToDisplay);
 				addOverlay(newOverlay);
@@ -99,11 +100,9 @@ public class BeaconItemizedOverlay extends ItemizedOverlay {
 			if (beacon.getVisitors() > 0) {
 				if( !beacon.equals(foundOverlay.getBeacon()) ) {
 					// REPLACE
-					Log.d(TAG,"replace");
 					foundOverlay.setBeacon(beacon);
 					// If this beacon has a currently displayed balloon, update the balloon.
 					if (balloonVisible && (balloonView != null)) {
-						Log.d(TAG,"replace balloon");
 						BeaconOverlayItem balloonItem = (BeaconOverlayItem)getItem(selectedIndex);
 						if ( balloonItem.equals(foundOverlay) ) {
 							mapView.removeView(balloonView);
@@ -113,10 +112,8 @@ public class BeaconItemizedOverlay extends ItemizedOverlay {
 				}
 			} else {
 				// REMOVE
-				Log.d(TAG,"remove");
 				// If this overlay has a balloon associated with it, get rid of the balloon first
-				if (balloonVisible && (balloonView != null)) {
-					Log.d(TAG,"remove balloon");
+				if (balloonVisible && (balloonView != null) && (selectedIndex != -1)) {
 					BeaconOverlayItem balloonItem = (BeaconOverlayItem)getItem(selectedIndex);
 					if ( balloonItem.equals(foundOverlay) ) {
 						mapView.removeView(balloonView);
@@ -144,7 +141,6 @@ public class BeaconItemizedOverlay extends ItemizedOverlay {
 					if ( balloonItem.equals(item) ) {
 						mapView.removeView(balloonView);
 						balloonVisible = false;
-						selectedIndex = -1;
 					}
 				}
 				iter.remove();
@@ -154,17 +150,23 @@ public class BeaconItemizedOverlay extends ItemizedOverlay {
 
 		if (dirtied) {
 			Log.d(TAG,"Dirtied in cleanUntrackedCourseOverlays");
+			selectedIndex = -1;
+			setLastFocusedIndex(selectedIndex);
 			populate();
 		}
 	}
 
 	protected void addOverlay(BeaconOverlayItem overlay) {
 	    mOverlays.add(overlay);
+		selectedIndex = -1;
+		setLastFocusedIndex(selectedIndex);
 	    populate();
 	}
 	
 	protected void removeOverlay(BeaconOverlayItem overlay) {
 		mOverlays.remove(overlay);
+		selectedIndex = -1;
+		setLastFocusedIndex(selectedIndex);
 		populate();
 	}
 	

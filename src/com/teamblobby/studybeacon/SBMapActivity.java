@@ -89,7 +89,7 @@ public class SBMapActivity extends MapActivity
 						if ((presentBeacon.getBeaconId() == beacon.getBeaconId())
 							&& ( ! presentBeacon.equals(beacon) )) {
 							// Update
-							Log.d(TAG,"save updated beacon info");
+//							Log.d(TAG,"save updated beacon info");
 							if (beacon.getVisitors() > 0) {
 								Global.setCurrentBeacon(beacon);
 							} else {
@@ -98,7 +98,7 @@ public class SBMapActivity extends MapActivity
 						}
 					}
 				}
-				Log.d(TAG,"invalidate");
+//				Log.d(TAG,"invalidate");
 				mapView.invalidate();
 				break;
 			default:
@@ -290,7 +290,6 @@ public class SBMapActivity extends MapActivity
 		// Don't fill beacItemOverlay unless you already have some beacons
 		// If we had some beacons from savedInstanceState, we would want to do that here
 		beacItemizedOverlay = new BeaconItemizedOverlay(beaconD, this, mapView);
-		beacItemizedOverlay.addReplaceRemoveBeacon(new BeaconInfoSimple(-1, "", new GeoPoint(0,0), 0, "", "", "", "", new Date(), new Date()));
 
 		// TODO ADD THIS OVERLAY
 		mapView.getOverlays().add(beacItemizedOverlay);
