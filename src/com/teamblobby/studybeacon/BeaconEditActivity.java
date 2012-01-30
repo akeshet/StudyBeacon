@@ -129,7 +129,7 @@ public class BeaconEditActivity extends Activity {
 			currentDialog.dismiss();
 			// For CODE_LEAVE, we have started a sync; now show a dialog must be after the above dismissal
 			if (code == APIClient.APICode.CODE_LEAVE)
-				currentDialog = ProgressDialog.show(BeaconEditActivity.this, "", "Trying to re-sync with server...");
+				showDialog("Trying to re-sync with server...");
 		}
 		
 		@Override
@@ -446,7 +446,7 @@ public class BeaconEditActivity extends Activity {
 				Log.d(TAG, "canceled, still locating");
 				return;
 			}
-			currentDialog = ProgressDialog.show(mActivity, "", "Creating beacon...");
+			showDialog("Creating beacon...");
 			// needs working on from fields
 			APIClient.add(mActivity.newBeaconFromFields(userLocator.getGeoPoint()), mActivity.newDurationFromField(),
 					myAPIHandler, mActivity);
@@ -531,7 +531,7 @@ public class BeaconEditActivity extends Activity {
 			public void onClick(View v) {
 				APIClient.edit(editBeaconFromFields(), editDurationFromField(), myAPIHandler,
 						BeaconEditActivity.this);
-				currentDialog = ProgressDialog.show(BeaconEditActivity.this, "", "Updating beacon...");
+				showDialog("Updating beacon...");
 			}
 		});
 
@@ -544,7 +544,7 @@ public class BeaconEditActivity extends Activity {
 				if (mBeacon != null){
 					APIClient.leave(mBeacon.getBeaconId(), myAPIHandler,
 							BeaconEditActivity.this);
-					currentDialog = ProgressDialog.show(BeaconEditActivity.this, "", "Leaving beacon...");
+					showDialog("Leaving beacon...");
 				}else
 					Toast.makeText(BeaconEditActivity.this,
 							"Something went wrong -- I don't know which beacon you're viewing",
@@ -709,7 +709,7 @@ public class BeaconEditActivity extends Activity {
 		private void joinBeacon() {
 			APIClient.join(mBeacon.getBeaconId(), myAPIHandler,
 					BeaconEditActivity.this);
-			currentDialog = ProgressDialog.show(BeaconEditActivity.this, "", "Joining beacon...");
+			showDialog("Joining beacon...");
 		}
 	}
 
@@ -784,6 +784,18 @@ public class BeaconEditActivity extends Activity {
 		workingOnSpinner.setSelection(position);
 	}
 
+	protected void showDialog(String message) {
+		currentDialog = ProgressDialog.show(BeaconEditActivity.this, "", message,
+				// I don't know what indeterminate is
+				true,
+				// make cancelable
+				true, new DialogInterface.OnCancelListener() {
+			public void onCancel(DialogInterface dialog) {
+				APIClient.cancel(myAPIHandler);
+			}
+		});
+	}
+	
 	protected void addToWorkingOn(final int index, String text) {
 		workingOnAdapter.insert(text, index);
 		workingOnAdapter.notifyDataSetChanged();
