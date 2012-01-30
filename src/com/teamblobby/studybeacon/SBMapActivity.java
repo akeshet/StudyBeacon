@@ -228,6 +228,7 @@ public class SBMapActivity extends MapActivity
 		case REQUESTCODE_RETURNED_FROM_MYCOURSES:
 			if (resultCode == MyCoursesActivity.RESULT_COURSES_CHANGED) {
 				loadCourses(null);
+				beacItemizedOverlay.cleanUntrackedCourseOverlays(courses);
 				updateBeaconButton();
 				startQuery();
 			}

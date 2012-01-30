@@ -126,6 +126,26 @@ public class BeaconItemizedOverlay extends ItemizedOverlay {
 		populate();
 	}
 
+	public void cleanUntrackedCourseOverlays(List<String> trackedCourses) {
+		Iterator<BeaconOverlayItem> iter = mOverlays.iterator();
+		while (iter.hasNext()) {
+			BeaconOverlayItem item = iter.next();
+
+			if (!trackedCourses.contains(item.getBeacon().getCourseName())) {
+				// Need to remove this overlay (and potentially the balloon)
+				if (balloonVisible && (balloonView != null)) {
+					BeaconOverlayItem balloonItem = (BeaconOverlayItem)getItem(selectedIndex);
+					if ( balloonItem.equals(item) ) {
+						mapView.removeView(balloonView);
+						balloonVisible = false;
+						selectedIndex = -1;
+					}
+				}
+				iter.remove();
+			}
+		}
+	}
+
 	protected void addOverlay(BeaconOverlayItem overlay) {
 	    mOverlays.add(overlay);
 	    populate();
