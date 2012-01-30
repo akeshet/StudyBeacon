@@ -309,7 +309,7 @@ public class SBMapActivity extends MapActivity
 	private void doTutorial() {
 		switch ( Global.getTutorialStep() ) {
 		case 0:
-			(new AlertDialog.Builder(this)).setMessage(R.string.welcomeMapMessage).setTitle("Welcome to StudyBeacon!")
+			(new AlertDialog.Builder(this)).setMessage(R.string.welcomeMapMessage).setTitle(R.string.welcomeMapTitle)
 			.setCancelable(true).setPositiveButton(R.string.OK,
 					new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
@@ -325,12 +325,12 @@ public class SBMapActivity extends MapActivity
 			break;
 		case 3:
 
-			(new AlertDialog.Builder(SBMapActivity.this)).setMessage(R.string.createBeaconTutorial1).setTitle("Finding a StudyBeacon")
+			(new AlertDialog.Builder(SBMapActivity.this)).setMessage(R.string.createBeaconTutorial1).setTitle(R.string.findingbeacontutorial)
 			.setCancelable(false).setPositiveButton(R.string.OK,
 					new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
 
-					(new AlertDialog.Builder(SBMapActivity.this)).setMessage(R.string.createBeaconTutorial2).setTitle("Joining a StudyBeacon")
+					(new AlertDialog.Builder(SBMapActivity.this)).setMessage(R.string.QRtutorial).setTitle(R.string.QRtutorialtitle)
 					.setCancelable(false).setPositiveButton(R.string.OK,
 							new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {

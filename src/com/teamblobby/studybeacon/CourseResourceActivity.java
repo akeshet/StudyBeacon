@@ -257,7 +257,7 @@ public class CourseResourceActivity extends ListActivity {
 
 		switch (Global.getTutorialStep()) {
 		case 2:
-			(new AlertDialog.Builder(this)).setMessage(R.string.welcomeCourseMessage).setTitle("Adding a Subject")
+			(new AlertDialog.Builder(this)).setMessage(R.string.welcomeCourseMessage).setTitle(R.string.welcomeCourseTitle)
 			.setCancelable(false).setPositiveButton(R.string.OK,
 					new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
