@@ -325,12 +325,23 @@ public class BeaconItemizedOverlay extends ItemizedOverlay {
 
 			if (beaconOverlay.getBeacon().getExpires().before(now)) {
 				Log.d(TAG,"found an expired beacon");
+				// Check if the current balloon is this beacon's balloon
+				if (balloonVisible && (balloonView != null)) {
+					BeaconOverlayItem balloonItem = (BeaconOverlayItem)getItem(selectedIndex);
+					if ( balloonItem.equals(iter) ) {
+						mapView.removeView(balloonView);
+						balloonVisible = false;
+					}
+				}
 				iter.remove();
 				dirtied = true;
 			}
 
 		}
-		if (dirtied)
+		if (dirtied) {
+			selectedIndex = -1;
+			setLastFocusedIndex(selectedIndex);
 			populate();
+		}
 	}
 }
