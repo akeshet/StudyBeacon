@@ -4,7 +4,7 @@
     <string name="app_name">StudyBeacon</string>
     <string name="myClasses">My Subjects</string>
     <string name="courseSpinnerPrompt">Show subject(s)</string>
-    <string name="allCourses">All</string>
+    <string name="allCourses">Show all</string>
     <string name="editCourses">Add/Remove Subjects…</string>
     <string name="defaultTitle">Study Beacon</string>
     <string name="coursesTitleText">My Subjects</string>
@@ -53,17 +53,23 @@
     <string name="takePicture">Take picture</string>
     <string name="detailHint">How will people find you? Building/Room number…</string>
     <string name="detailHintView">No details given.</string>
-    <string name="phoneHint">(555)–555–1212</string>
-    <string name="emailHint">tbeaver@mit.edu</string>
+    <string name="phoneHint">(555)–555–1212 (optional)</string>
+    <string name="emailHint">tbeaver@mit.edu (optional)</string>
     <string name="contentDescription">A picture that you can\'t see because you are blind</string>
 
-    <string name="welcomeMapMessage">To see beacons on the map, you will need to add subjects, tap My Subjects to begin.</string>
-    <string name="addCourses">Add Courses…</string>
-    <string name="welcomeCourseMessage">Tap a subject to add it to your list, use your back button to return to the map when you are done.</string>
+    <string name="welcomeMapTitle">Welcome to StudyBeacon!</string>
+    <string name="welcomeMapMessage">To see beacons on the map, you will need to add subjects.\nTap My Subjects to begin.</string>
+    <string name="mycoursestutorialtitle">My Subject List</string>
+	<string name="mycoursestutorial">Your list of subjects is empty.\nTap Add Subjects and browse for a subject.</string>
+	<string name="welcomeCourseTitle">Adding a Subject</string>
+    <string name="welcomeCourseMessage">Tap a subject to add it to your list. Use your back button to return to the map when you are done.</string>
     <string name="OK">OK</string>
-    <string name="createBeaconTutorial1">On the map you will see nearby StudyBeacons, or create your own by tapping the icon on the lower right.</string>
-    <string name="createBeaconTutorial2">You can join a StudyBeacon by viewing its details on the map, or scan the QR code of someone who is studying at the beacon by tapping the QR icon on the top right. Thanks for using StudyBeacon!</string>
-
+    <string name="findingbeacontutorial">Finding a StudyBeacon</string>
+    <string name="createBeaconTutorial1">On the map you will see nearby StudyBeacons for the subjects you have selected. Tap a StudyBeacon to see its details. Create your own by tapping the icon on the lower right.</string>
+    <string name="createBeaconTutorial2">You can join a StudyBeacon by viewing its details on the map.</string>
+	<string name="QRtutorialtitle">Using QR codes</string>
+    <string name="QRtutorial">Tapping the QR code icon in the top right will show your QR code if you are in a StudyBeacon. If you are not in a StudyBeacon, the QR icon will let you scan someone\'s code to join their StudyBeacon.</string>
+    
     <string name="notificationText">StudyBeacon joined</string>
     <string name="notificationTitle">Studying</string>
     <string name="notificationDetailText">Tap to edit/leave beacon</string>

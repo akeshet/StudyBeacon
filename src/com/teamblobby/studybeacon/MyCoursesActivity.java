@@ -55,7 +55,7 @@ public class MyCoursesActivity extends ListActivity {
 		switch (Global.getTutorialStep()) {
 		case 1:
 			// make message
-			(new AlertDialog.Builder(this)).setMessage("Your list of subjects is empty, tap Add Subjects and browse for a subject.").setTitle("My Subject List")
+			(new AlertDialog.Builder(this)).setMessage(R.string.mycoursestutorial).setTitle(R.string.mycoursestutorialtitle)
 			.setCancelable(false).setPositiveButton(R.string.OK,
 					new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
