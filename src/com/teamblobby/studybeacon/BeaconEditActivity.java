@@ -71,7 +71,9 @@ public class BeaconEditActivity extends Activity {
 	protected EditText details;
 	protected Button beaconActionButton;
 	protected Button beaconSecondaryActionButton;
+	protected LinearLayout locationLayout;
 	protected TextView locationTV;
+	protected ProgressBar locationProgress;
 
 	// This represents the beacon we are making.
 	protected BeaconInfo mBeacon;
@@ -225,7 +227,9 @@ public class BeaconEditActivity extends Activity {
 		details          = (EditText) findViewById(R.id.detailsEdit);
 		beaconActionButton = (Button) findViewById(R.id.beaconActionButton);
 		beaconSecondaryActionButton = (Button) findViewById(R.id.beaconSecondaryActionButton);
+		locationLayout = (LinearLayout) findViewById(R.id.locationLayout);
 		locationTV = (TextView) 	  findViewById(R.id.locationTV);
+		locationProgress = (ProgressBar) findViewById(R.id.locationProgress);
 		qrButton = (QRButton) findViewById(R.id.qrbutton);
 		
 		qrButton.updateButton(Global.getCurrentBeacon());
@@ -384,6 +388,7 @@ public class BeaconEditActivity extends Activity {
 	
 	private Runnable locationAcquiredCallback = new Runnable() {
 		public void run() {
+			locationProgress.setVisibility(View.GONE);
 			switch (mode) {
 			case MODE_NEW:
 				locationTV.setText(R.string.locationAcquired);
@@ -534,7 +539,7 @@ public class BeaconEditActivity extends Activity {
 		});
 		
 		
-		locationTV.setVisibility(View.GONE);
+		locationLayout.setVisibility(View.GONE);
 
 		beaconActionButton.setText(R.string.saveBeacon);
 		// Set the drawable on the action button
@@ -630,7 +635,7 @@ public class BeaconEditActivity extends Activity {
 		//expiresTimeTV.setVisibility(View.VISIBLE);
 		expiresTimeTV = convertToTextClickToEdit(expiresSpinner,expiresTimeFormatted,true);
 		
-		locationTV.setVisibility(View.VISIBLE);
+		locationLayout.setVisibility(View.VISIBLE);
 
 		EditText ets[] = {phone, email, details};
 		for (EditText e : ets) {
