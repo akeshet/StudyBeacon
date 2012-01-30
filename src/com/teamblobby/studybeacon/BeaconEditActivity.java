@@ -504,7 +504,15 @@ public class BeaconEditActivity extends Activity {
 
 		// Don't let the class be editable
 		//courseSpinner.setEnabled(false);
-		convertToTextClickToEdit(courseSpinner,courseSpinner.getSelectedItem().toString(),true); // true hides the edit button
+		String courseText = courseSpinner.getSelectedItem().toString();
+		int beacNum = mBeacon.getVisitors();
+		if ( beacNum == 1 ){
+			courseText += " (1 person)";
+		} else {
+			courseText += " ("+beacNum+" people)";
+		}
+
+		convertToTextClickToEdit(courseSpinner,courseText,true); // true hides the edit button
 		convertToTextClickToEdit(workingOnSpinner,workingOnSpinner.getSelectedItem().toString(),false);
 			//s.setEnabled(false);
 
@@ -598,10 +606,17 @@ public class BeaconEditActivity extends Activity {
 		loadBeaconData();
 
 		// Turn the spinners into textClickToEdits
-		Spinner spinners[] = {courseSpinner, workingOnSpinner};
-		for (Spinner s : spinners)
-			convertToTextClickToEdit(s,s.getSelectedItem().toString(),true);
-			//s.setEnabled(false);
+
+		String courseText = courseSpinner.getSelectedItem().toString();
+		int beacNum = mBeacon.getVisitors();
+		if ( beacNum == 1 ){
+			courseText += " (1 person)";
+		} else {
+			courseText += " ("+beacNum+" people)";
+		}
+
+		convertToTextClickToEdit(courseSpinner,courseText,true);
+		convertToTextClickToEdit(workingOnSpinner,workingOnSpinner.getSelectedItem().toString(),true);
 
 		// Change the "expires" text
 		expiresTV.setText(R.string.expiresAt);

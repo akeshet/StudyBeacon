@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|left"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColorLink="@android:color/secondary_text_dark" 
+        android:textColorLink="@android:color/secondary_text_dark"
         android:maxLines="1"/>
     
     <ImageButton
