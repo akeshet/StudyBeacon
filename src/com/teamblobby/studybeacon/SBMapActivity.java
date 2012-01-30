@@ -81,13 +81,15 @@ public class SBMapActivity extends MapActivity
 				@SuppressWarnings("unchecked")
 				ArrayList<BeaconInfo> beacons = (ArrayList<BeaconInfo>) result;
 
+				BeaconInfo presentBeacon = Global.getCurrentBeacon();
+
 				for (BeaconInfo beacon : beacons) {
 					beacItemizedOverlay.addReplaceRemoveBeacon(beacon); // also takes care of balloon
-					if (Global.atBeacon()) {
-						BeaconInfo presentBeacon = Global.getCurrentBeacon();
+					if (presentBeacon != null) {
 						if ((presentBeacon.getBeaconId() == beacon.getBeaconId())
 							&& ( ! presentBeacon.equals(beacon) )) {
 							// Update
+							Log.d(TAG,"save updated beacon info");
 							if (beacon.getVisitors() > 0) {
 								Global.setCurrentBeacon(beacon);
 							} else {
@@ -96,6 +98,7 @@ public class SBMapActivity extends MapActivity
 						}
 					}
 				}
+				Log.d(TAG,"invalidate");
 				mapView.invalidate();
 				break;
 			default:

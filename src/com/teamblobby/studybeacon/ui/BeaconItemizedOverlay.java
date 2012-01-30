@@ -89,6 +89,7 @@ public class BeaconItemizedOverlay extends ItemizedOverlay {
 		if (foundOverlay == null) {
 			if (beacon.getVisitors() > 0) {
 				// ADD
+				Log.d(TAG,"add");
 				BeaconOverlayItem newOverlay = new BeaconOverlayItem(beacon);
 				newOverlay.setDisplayed(courseToDisplay);
 				addOverlay(newOverlay);
@@ -98,9 +99,11 @@ public class BeaconItemizedOverlay extends ItemizedOverlay {
 			if (beacon.getVisitors() > 0) {
 				if( !beacon.equals(foundOverlay.getBeacon()) ) {
 					// REPLACE
+					Log.d(TAG,"replace");
 					foundOverlay.setBeacon(beacon);
 					// If this beacon has a currently displayed balloon, update the balloon.
 					if (balloonVisible && (balloonView != null)) {
+						Log.d(TAG,"replace balloon");
 						BeaconOverlayItem balloonItem = (BeaconOverlayItem)getItem(selectedIndex);
 						if ( balloonItem.equals(foundOverlay) ) {
 							mapView.removeView(balloonView);
@@ -110,8 +113,10 @@ public class BeaconItemizedOverlay extends ItemizedOverlay {
 				}
 			} else {
 				// REMOVE
+				Log.d(TAG,"remove");
 				// If this overlay has a balloon associated with it, get rid of the balloon first
 				if (balloonVisible && (balloonView != null)) {
+					Log.d(TAG,"remove balloon");
 					BeaconOverlayItem balloonItem = (BeaconOverlayItem)getItem(selectedIndex);
 					if ( balloonItem.equals(foundOverlay) ) {
 						mapView.removeView(balloonView);
