@@ -129,7 +129,7 @@ public class Global extends Application {
 		NotificationManager manager = (NotificationManager) 
 				application.getSystemService(Context.NOTIFICATION_SERVICE);
 		
-		Notification notification = new Notification(R.drawable.beacon_edit_grey_small, 
+		Notification notification = new Notification(R.drawable.sb_notification,
 				res.getText(R.string.notificationText),
 				System.currentTimeMillis());
 		
