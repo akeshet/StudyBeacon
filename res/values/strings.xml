@@ -53,8 +53,8 @@
     <string name="takePicture">Take picture</string>
     <string name="detailHint">How will people find you? Building/Room number…</string>
     <string name="detailHintView">No details given.</string>
-    <string name="phoneHint">(555)–555–1212</string>
-    <string name="emailHint">tbeaver@mit.edu</string>
+    <string name="phoneHint">(555)–555–1212 (optional)</string>
+    <string name="emailHint">tbeaver@mit.edu (optional)</string>
     <string name="contentDescription">A picture that you can\'t see because you are blind</string>
 
     <string name="welcomeMapMessage">To see beacons on the map, you will need to add subjects, tap My Subjects to begin.</string>
