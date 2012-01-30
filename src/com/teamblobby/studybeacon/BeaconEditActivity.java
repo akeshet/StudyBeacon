@@ -16,6 +16,7 @@ import com.teamblobby.studybeacon.network.APIClient;
 import com.teamblobby.studybeacon.network.ActivityAPIHandler;
 import com.teamblobby.studybeacon.ui.QRButton;
 import com.teamblobby.studybeacon.ui.TextClickToEdit;
+import com.teamblobby.studybeacon.ui.TitleBar;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -334,13 +335,19 @@ public class BeaconEditActivity extends Activity {
 	protected void setCourseSpinnerItem(String course) {
 		if (course != null) {
 			// Set the course spinner's selected element
-			int courseIndex = 0;
+			int courseIndex = -1;
 			int count = courseAdapter.getCount();
 			for ( int j=0; j<count; j++){
 				if (courseAdapter.getItem(j).getName().equals(course)){
 					courseIndex = j;
 					break;
 				}
+			}
+			if ( courseIndex == -1 ){
+				// didn't find it, add it
+				CourseInfo dummyCourse = new CourseInfoSimple(course);
+				courseAdapter.add(dummyCourse);
+				courseIndex = courseAdapter.getPosition(dummyCourse);
 			}
 			courseSpinner.setSelection(courseIndex);
 		}
@@ -569,6 +576,8 @@ public class BeaconEditActivity extends Activity {
 		TextClickToEdit emailC2E = convertToTextClickToEdit(emailLayout, text, false);
 		Linkify.addLinks(emailC2E.getTextView(), Linkify.EMAIL_ADDRESSES);
 
+		// show QR button
+		qrButton.setVisibility(View.VISIBLE);
 	}
 
 	@Override
