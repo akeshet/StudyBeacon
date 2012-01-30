@@ -335,13 +335,19 @@ public class BeaconEditActivity extends Activity {
 	protected void setCourseSpinnerItem(String course) {
 		if (course != null) {
 			// Set the course spinner's selected element
-			int courseIndex = 0;
+			int courseIndex = -1;
 			int count = courseAdapter.getCount();
 			for ( int j=0; j<count; j++){
 				if (courseAdapter.getItem(j).getName().equals(course)){
 					courseIndex = j;
 					break;
 				}
+			}
+			if ( courseIndex == -1 ){
+				// didn't find it, add it
+				CourseInfo dummyCourse = new CourseInfoSimple(course);
+				courseAdapter.add(dummyCourse);
+				courseIndex = courseAdapter.getPosition(dummyCourse);
 			}
 			courseSpinner.setSelection(courseIndex);
 		}
