@@ -69,6 +69,9 @@ public class SBMapActivity extends MapActivity
 			case CODE_QUERY:
 				Toast.makeText(SBMapActivity.this, "Failed to load beacons from server", Toast.LENGTH_SHORT).show();
 				break;
+			case CODE_SYNC:
+				Toast.makeText(SBMapActivity.this,"Failed to sync with server",Toast.LENGTH_SHORT).show();
+				break;
 			default:
 				// Shouldn't ever get here. Complain?
 			}
@@ -91,15 +94,19 @@ public class SBMapActivity extends MapActivity
 							// Update
 //							Log.d(TAG,"save updated beacon info");
 							if (beacon.getVisitors() > 0) {
-								Global.setCurrentBeacon(beacon);
+								Global.setCurrentBeaconUpdateNotification(beacon);
 							} else {
-								Global.setCurrentBeacon(null);
+								Global.setCurrentBeaconUpdateNotification(null);
 							}
 						}
 					}
 				}
 //				Log.d(TAG,"invalidate");
 				mapView.invalidate();
+				break;
+			case CODE_SYNC:
+				BeaconInfo beacon = (BeaconInfo)result;
+				Global.setCurrentBeaconUpdateNotification(beacon);
 				break;
 			default:
 				// Shouldn't ever get here. Complain?
@@ -139,6 +146,8 @@ public class SBMapActivity extends MapActivity
 		this.setUpBeacons(savedInstanceState);
 
 		this.setUpTimer();
+
+		APIClient.sync(myAPIHandler, this);
 
 	}
 

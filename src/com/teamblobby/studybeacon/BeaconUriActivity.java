@@ -99,9 +99,8 @@ public class BeaconUriActivity extends Activity {
 			}
 			break;
 		case CODE_JOIN:
-			Global.setCurrentBeacon((BeaconInfo) response);
+			Global.setCurrentBeaconUpdateNotification((BeaconInfo) response);
 			Toast.makeText(this, "Beacon joined successfully", Toast.LENGTH_SHORT).show();
-			Global.updateBeaconRunningNotification();
 			break;
 		default:
 			break;

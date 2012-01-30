@@ -104,8 +104,7 @@ public class BeaconEditActivity extends Activity {
 			switch (code) {
 			case CODE_ADD:
 				messageText = new String("Failed to add beacon");
-				Global.setCurrentBeacon(null);
-				Global.updateBeaconRunningNotification();
+				Global.setCurrentBeaconUpdateNotification(null);
 				break;
 			case CODE_EDIT:
 				messageText = new String("Failed to save beacon");
@@ -113,8 +112,7 @@ public class BeaconEditActivity extends Activity {
 				break;
 			case CODE_JOIN:
 				messageText = new String("Failed to join beacon");
-				Global.setCurrentBeacon(null);
-				Global.updateBeaconRunningNotification();
+				Global.setCurrentBeaconUpdateNotification(null);
 				break;
 			case CODE_LEAVE:
 				messageText = new String("Failed to leave beacon -- trying to re-sync with server");
@@ -162,8 +160,7 @@ public class BeaconEditActivity extends Activity {
 				// TODO Shouldn't get here ... complain?
 			}
 			Toast.makeText(BeaconEditActivity.this, messageText, Toast.LENGTH_SHORT).show();
-			Global.setCurrentBeacon(beacon);
-			Global.updateBeaconRunningNotification();
+			Global.setCurrentBeaconUpdateNotification(beacon);
 			currentDialog.dismiss();
 			// go back home
 			// TODO Set a result code? SBMapActivity will need to get new data.
@@ -505,8 +502,7 @@ public class BeaconEditActivity extends Activity {
 		
 		if (errorText != null) {
 			Toast.makeText(this, "Beacon already expired", Toast.LENGTH_SHORT).show();
-			Global.setCurrentBeacon(null);
-			Global.updateBeaconRunningNotification();
+			Global.setCurrentBeaconUpdateNotification(null);
 			finish();
 			return;
 		}

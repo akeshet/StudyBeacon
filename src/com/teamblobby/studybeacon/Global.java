@@ -9,6 +9,9 @@ import android.preference.PreferenceManager;
 import android.provider.Settings.Secure;
 import android.util.Log;
 import com.teamblobby.studybeacon.datastructures.*;
+import com.teamblobby.studybeacon.network.*;
+import com.teamblobby.studybeacon.network.APIClient.APICode;
+
 import android.app.*;
 
 public class Global extends Application {
@@ -28,6 +31,8 @@ public class Global extends Application {
 
 	// Singleton reference to the application
 	public static Application application;
+	
+	private static Notification notification = null;
 
 	@Override
 	public void onCreate() {
@@ -51,6 +56,7 @@ public class Global extends Application {
 		//Global.getVersionInfo(mContext, uiHandler);
 
 		//Global.updateData(mContext, uiHandler);
+
 	}
 
 	public static List<String> getCourses() {
@@ -98,9 +104,9 @@ public class Global extends Application {
 	 * Sets the current beacon (in sqlite database) to the passed beacon.
 	 * (by making a copy of the passed beacon and inserting into the database).
 	 * Sets current beacon to none if passed null.
-	 * @param copyMe
+	 * @param beacon
 	 */
-	public static void setCurrentBeacon(BeaconInfo beacon) {
+	public static void setCurrentBeaconSQL(BeaconInfo beacon) {
 		BeaconInfoSqlite.setCurrentBeacon(beacon);
 	}
 	
@@ -134,7 +140,7 @@ public class Global extends Application {
 		NotificationManager manager = (NotificationManager) 
 				application.getSystemService(Context.NOTIFICATION_SERVICE);
 		
-		Notification notification = new Notification(R.drawable.sb_notification,
+		notification = new Notification(R.drawable.sb_notification,
 				res.getText(R.string.notificationText),
 				System.currentTimeMillis());
 		
@@ -169,6 +175,12 @@ public class Global extends Application {
 				application.getSystemService(Context.NOTIFICATION_SERVICE);
 		
 		manager.cancel(NOTIFICATION_BEACON_RUNNING);
+		
+		notification = null;
+	}
+	
+	public static boolean isNotificationRunning() {
+		return (notification != null);
 	}
 	
 	public static void updateBeaconRunningNotification() {
@@ -178,6 +190,28 @@ public class Global extends Application {
 		else {
 			clearBeaconRunningNotification();
 		}
+	}
+
+	public static void setCurrentBeaconUpdateNotification(BeaconInfo newBeacon) {
+		BeaconInfo oldBeacon = getCurrentBeacon();
+		boolean oldAtBeacon;
+		boolean newAtBeacon;
+
+		oldAtBeacon = (oldBeacon != null);
+		newAtBeacon = (newBeacon != null);
+
+		setCurrentBeaconSQL(newBeacon);
+
+		// we want to call updateBeaconRunningNotification
+		// if we are NOT simply updating information on the present beacon.
+		// The condition for an update is
+		// newBeacon.getBeaconId() == oldBeacon.getBeaconId()
+		// OR if the notification is not running and it should be
+		// OR if the notification is running and it should not be
+		if (!(newAtBeacon && oldAtBeacon && (newBeacon.getBeaconId() == oldBeacon.getBeaconId()))
+				|| (newAtBeacon && !isNotificationRunning())
+				|| (!newAtBeacon && isNotificationRunning()))
+			updateBeaconRunningNotification();
 	}
 
 }

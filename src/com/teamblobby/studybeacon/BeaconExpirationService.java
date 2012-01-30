@@ -45,7 +45,7 @@ public class BeaconExpirationService extends Service {
 				} 
 				else {
 					BeaconInfo beacon = (BeaconInfo) response;
-					Global.setCurrentBeacon(beacon);
+					Global.setCurrentBeaconUpdateNotification(beacon);
 					checkBeaconExpiration();
 				}
 			}
@@ -61,7 +61,7 @@ public class BeaconExpirationService extends Service {
 			return;
 		}
 		if (beacon.getExpires().before(new Date())) {
-			Global.setCurrentBeacon(null);
+			Global.setCurrentBeaconUpdateNotification(null);
 			Global.updateBeaconRunningNotification();
 			this.stopSelf();
 		}
